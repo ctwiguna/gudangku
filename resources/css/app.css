@@ -1070,6 +1070,50 @@ body.is-modal-open {
     }
 }
 
+/* ---------- Daftar ringkas ---------- */
+.list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.list__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.list__row:last-child {
+    border-bottom: none;
+}
+
+.list__main {
+    min-width: 0;
+}
+
+.list__title {
+    margin: 0;
+    font-size: var(--text-small);
+    font-weight: 600;
+}
+
+.list__value {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+/* Angka yang perlu perhatian: stok di bawah minimum */
+.is-warn {
+    color: #92400e;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
 /* ---------- Grid utilitas ---------- */
 .grid {
     display: grid;
