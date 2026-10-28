@@ -1,58 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# gudangku
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi pencatatan dan stock opname inventaris outlet.
 
-## About Laravel
+Mengelola stok barang di beberapa outlet, mencatat penerimaan barang dari supplier, mencatat pembelian beserta harga per pcs, serta mencatat pengeluaran operasional per outlet seperti listrik, air, IPAL, gaji mingguan, sewa, dan biaya lain.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Live: **https://43.173.41.195.sslip.io**
+- Repository: https://github.com/ctwiguna/gudangku
+- Copyright 2026 Chandra TW. Dibuat untuk UAS Web Application Development, Universitas Cakrawala.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Lapisan | Teknologi | Versi terpasang |
+| :--- | :--- | :--- |
+| Backend | Laravel | 13.39.0 |
+| Runtime | PHP | 8.5.12 |
+| Frontend | React + Inertia.js + Vite | React 19, Inertia 3.5, Vite 8 |
+| Database | MySQL | 8.0.46 (server), 26.10.0 (lokal) |
+| Styling | CSS variables, komponen sendiri | tanpa UI framework |
+| Server | nginx + PHP-FPM | nginx 1.24.0 |
 
-## Learning Laravel
+## Peran pengguna
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Peran | Hak akses |
+| :--- | :--- |
+| Owner | Melihat semua outlet. Mengatur outlet, user, kategori, supplier, dan produk. Menginput harga barang per pcs. Melihat harga, hutang, pengeluaran, dan laporan. Melengkapi harga pembelian dan menandai pembayaran. |
+| Manajer outlet | Terikat pada satu outlet. Menerima barang datang dengan input jumlah saja, tanpa harga. Wajib melakukan stock opname sekali seminggu. Tidak bisa melihat harga, total pembelian, atau laporan pengeluaran. |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Register publik hanya membuat akun **manajer nonaktif**. Akun tersebut tidak bisa login sebelum owner mengaktifkan dan menugaskan outlet. Form register tidak memiliki field role.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Instalasi lokal
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Prasyarat: PHP 8.5, Composer 2, Node 20 atau lebih baru, MySQL 8.
 
 ```bash
-composer require laravel/boost --dev
+git clone https://github.com/ctwiguna/gudangku.git
+cd gudangku
 
-php artisan boost:install
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Menyiapkan database
 
-## Contributing
+Buat database dan user khusus aplikasi. Aplikasi **tidak** memakai user root:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```sql
+CREATE DATABASE gudangku CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'gudangku'@'127.0.0.1' IDENTIFIED BY 'gudangku_local';
+GRANT ALL PRIVILEGES ON gudangku.* TO 'gudangku'@'127.0.0.1';
+FLUSH PRIVILEGES;
+```
 
-## Code of Conduct
+Sesuaikan `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` di `.env`, lalu:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan migrate --seed
+```
 
-## Security Vulnerabilities
+### Menjalankan
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+npm run dev          # terminal 1: Vite
+php artisan serve    # terminal 2: http://localhost:8000
+```
 
-## License
+Untuk build produksi:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+npm run build
+php artisan config:cache && php artisan route:cache && php artisan view:cache
+```
+
+## Akun contoh (dari seeder)
+
+| Peran | Email | Password | Keterangan |
+| :--- | :--- | :--- | :--- |
+| Owner | `owner@gudangku.test` | `password` | Akses penuh |
+| Manajer | `manajer.pusat@gudangku.test` | `password` | Outlet Cakrawala Pusat |
+| Manajer | `manajer.cabang@gudangku.test` | `password` | Outlet Cakrawala Cabang |
+| Manajer nonaktif | `manajer.baru@gudangku.test` | `password` | Belum punya outlet, tidak bisa login |
+
+Akun ini hanya untuk keperluan demonstrasi UAS.
+
+## Pengujian
+
+```bash
+php artisan test
+composer audit
+npm audit
+```
+
+## Deploy
+
+Langkah deploy lengkap, termasuk masalah yang muncul saat deploy dan solusinya, ada di [docs/DEPLOY_VPS.md](docs/DEPLOY_VPS.md).
+
+## Struktur ringkas
+
+```text
+app/Http/Controllers   route handler, penyaringan props per role
+app/Http/Requests      validasi server side
+app/Http/Middleware    middleware role dan Inertia
+app/Models             Eloquent, relasi, scope outlet
+app/Policies           otorisasi per model
+app/Services           logika stok, pembelian, opname
+resources/js/Pages     halaman React
+resources/js/Components komponen design system
+resources/css/app.css  token warna, tipografi, spasi
+routes/web.php         definisi route dan middleware
+```
+
+## Lisensi pihak ketiga
+
+Laravel (MIT), React (MIT), Inertia.js (MIT), Vite (MIT). Nama dan merek pihak ketiga tetap milik pemiliknya.
