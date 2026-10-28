@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\StockOpnameController;
 use Illuminate\Support\Facades\Route;
 
 // Route redirect, bukan closure, supaya `route:cache` tetap jalan di produksi.
@@ -35,6 +36,10 @@ Route::middleware('auth')->group(function (): void {
     Route::get('receipts/{purchase}', [ReceiptController::class, 'show'])->name('receipts.show');
     Route::get('receipts/{purchase}/edit', [ReceiptController::class, 'edit'])->name('receipts.edit');
     Route::put('receipts/{purchase}', [ReceiptController::class, 'update'])->name('receipts.update');
+
+    // Stock opname mingguan: manajer hanya outlet sendiri, owner boleh semua.
+    Route::get('stock-opnames', [StockOpnameController::class, 'index'])->name('stock-opnames.index');
+    Route::post('stock-opnames', [StockOpnameController::class, 'store'])->name('stock-opnames.store');
 });
 
 // Data keuangan hanya untuk owner. Manajer yang membuka URL langsung mendapat 403.

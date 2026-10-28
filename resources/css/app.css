@@ -1247,6 +1247,13 @@ body.is-modal-open {
     font-variant-numeric: tabular-nums;
 }
 
+/* Selisih positif pada hasil opname */
+.is-ok {
+    color: var(--color-success-text);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
 /* ---------- Grid utilitas ---------- */
 .grid {
     display: grid;
