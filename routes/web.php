@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -58,4 +59,11 @@ Route::middleware(['auth', 'owner'])->group(function (): void {
     Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::patch('products/{product}/status', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
+
+    // Harga dan pembayaran pembelian hanya untuk owner.
+    Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('purchases/{purchase}/price', [PurchaseController::class, 'edit'])->name('purchases.price.edit');
+    Route::put('purchases/{purchase}/price', [PurchaseController::class, 'update'])->name('purchases.price.update');
+    Route::patch('purchases/{purchase}/paid', [PurchaseController::class, 'markPaid'])->name('purchases.paid');
+    Route::delete('purchases/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
 });
