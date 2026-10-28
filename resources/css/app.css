@@ -1070,6 +1070,74 @@ body.is-modal-open {
     }
 }
 
+/* ---------- Filter daftar ---------- */
+.filters {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+}
+
+@media (min-width: 560px) {
+    .filters {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.filters__actions {
+    display: flex;
+    align-items: end;
+    gap: var(--space-2);
+}
+
+/* ---------- Aksi di dalam baris tabel ---------- */
+.row-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.link-danger {
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--color-danger);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.link-danger:hover {
+    text-decoration: underline;
+}
+
+.link-danger:focus-visible {
+    outline: 3px solid rgb(220 38 38 / 0.35);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ---------- Ringkasan error di atas form ---------- */
+.form-summary {
+    padding: var(--space-4);
+    margin-bottom: var(--space-4);
+    background: var(--color-danger-soft);
+    border: 1px solid #fecaca;
+    border-radius: var(--radius-card);
+    color: var(--color-danger-text);
+}
+
+.form-summary__title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-small);
+    font-weight: 600;
+}
+
+.form-summary ul {
+    margin: 0;
+    padding-left: var(--space-5);
+    font-size: var(--text-small);
+}
+
 /* ---------- Daftar ringkas ---------- */
 .list {
     margin: 0;
