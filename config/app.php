@@ -65,7 +65,9 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // PRD mensyaratkan Asia/Jakarta. Laravel menyimpan default 'UTC' di file ini
+    // dan TIDAK membaca APP_TIMEZONE otomatis, jadi harus diarahkan eksplisit.
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------
