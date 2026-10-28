@@ -89,6 +89,12 @@ class Product extends Model
         );
     }
 
+    /** Saldo gabungan seluruh outlet, dipakai owner yang tidak terikat satu outlet. */
+    public function scopeWithTotalStock(Builder $query): Builder
+    {
+        return $query->withSum('stockMovements as stock_qty', 'quantity');
+    }
+
     /**
      * Produk dengan saldo di bawah min_stock pada outlet tertentu.
      *

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,9 @@ Route::middleware('guest')->group(function (): void {
 Route::middleware('auth')->group(function (): void {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Owner melihat semua outlet, manajer hanya stok outlet sendiri dan tanpa harga.
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
 });
 
 // Data keuangan hanya untuk owner. Manajer yang membuka URL langsung mendapat 403.
@@ -37,4 +41,12 @@ Route::middleware(['auth', 'owner'])->group(function (): void {
     Route::post('master-data/supplier', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::put('master-data/supplier/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('master-data/supplier/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+
+    // Produk hanya boleh dikelola owner, termasuk harga beli per pcs.
+    Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::patch('products/{product}/status', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
 });

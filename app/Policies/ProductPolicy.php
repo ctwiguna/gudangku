@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\Product;
+use App\Models\User;
+
+class ProductPolicy
+{
+    /**
+     * Owner dan manajer boleh melihat daftar produk.
+     * Manajer hanya melihat stok outlet sendiri dan tanpa harga.
+     */
+    public function viewAny(User $user): bool
+    {
+        return true;
+    }
+
+    public function view(User $user, Product $product): bool
+    {
+        return true;
+    }
+
+    /**
+     * Hanya owner yang boleh menambah, mengubah, dan menghapus produk,
+     * termasuk mengisi harga beli per pcs.
+     */
+    public function create(User $user): bool
+    {
+        return $user->isOwner();
+    }
+
+    public function update(User $user, Product $product): bool
+    {
+        return $user->isOwner();
+    }
+
+    public function delete(User $user, Product $product): bool
+    {
+        return $user->isOwner();
+    }
+}
