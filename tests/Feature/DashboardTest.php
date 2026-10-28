@@ -115,7 +115,8 @@ class DashboardTest extends TestCase
     }
 
     /**
-     * Otorisasi tingkat field: manajer tidak menerima props uang sama sekali.
+     * Otorisasi tingkat field: manajer menerima data stok outlet sendiri,
+     * tetapi tidak menerima satu pun nilai uang.
      */
     public function test_manager_dashboard_props_contain_no_money_fields(): void
     {
@@ -126,14 +127,76 @@ class DashboardTest extends TestCase
 
         $this->assertSame('Dashboard/Manager', $page['component']);
 
-        foreach (['summary', 'outlets', 'belowMin', 'recentReceipts', 'recentExpenses'] as $key) {
+        // Props agregat milik owner tidak boleh ikut terkirim.
+        foreach (['outlets', 'recentExpenses'] as $key) {
             $this->assertArrayNotHasKey($key, $page['props'], "Props manajer tidak boleh memuat {$key}.");
         }
 
-        $blob = json_encode($page['props']);
+        // Diperiksa per nama key, bukan substring: key `is_priced` adalah
+        // penanda status boolean, bukan nilai harga.
+        $keys = $this->collectKeys($page['props']);
 
-        foreach (['price_buy', 'subtotal', 'amount', 'debt_total', 'stock_value', 'expenses_this_month'] as $key) {
-            $this->assertStringNotContainsString($key, $blob, "Props manajer tidak boleh memuat {$key}.");
+        foreach (
+            ['price', 'price_buy', 'subtotal', 'amount', 'total', 'debt', 'debt_total', 'stock_value', 'expenses_this_month'] as $key
+        ) {
+            $this->assertNotContains($key, $keys, "Props manajer tidak boleh memuat key {$key}.");
         }
+    }
+
+    /**
+     * Kumpulkan seluruh nama key di dalam props secara rekursif.
+     *
+     * @param  array<array-key, mixed>  $data
+     * @return array<int, string>
+     */
+    private function collectKeys(array $data): array
+    {
+        $keys = [];
+
+        foreach ($data as $key => $value) {
+            $keys[] = (string) $key;
+
+            if (is_array($value)) {
+                $keys = array_merge($keys, $this->collectKeys($value));
+            }
+        }
+
+        return $keys;
+    }
+
+    public function test_manager_opname_reminder_follows_outlet_compliance(): void
+    {
+        // Outlet pusat sudah opname minggu ini, jadi tidak ada pengingat.
+        $pusatPage = $this->inertiaPage($this->actingAs($this->manager())->get('/dashboard'));
+        $this->assertFalse($pusatPage['props']['summary']['opname_due']);
+
+        // Outlet cabang belum opname, jadi pengingat aktif.
+        $cabang = User::where('email', 'manajer.cabang@gudangku.test')->firstOrFail();
+        $cabangPage = $this->inertiaPage($this->actingAs($cabang)->get('/dashboard'));
+        $this->assertTrue($cabangPage['props']['summary']['opname_due']);
+    }
+
+    public function test_manager_dashboard_is_scoped_to_own_outlet(): void
+    {
+        $cabang = User::where('email', 'manajer.cabang@gudangku.test')->firstOrFail();
+
+        $page = $this->inertiaPage($this->actingAs($cabang)->get('/dashboard'));
+
+        $expected = Purchase::forOutlet((int) $cabang->outlet_id)->pluck('id')->sort()->values()->all();
+        $actual = collect($page['props']['recentReceipts'])->pluck('id')->sort()->values()->all();
+
+        $this->assertSame($expected, $actual, 'Manajer hanya boleh menerima pembelian outlet sendiri.');
+        $this->assertNotEmpty($actual);
+
+        // Produk di bawah minimum juga hanya dari outlet sendiri.
+        $ownOutletProducts = Product::active()
+            ->belowMinStock((int) $cabang->outlet_id)
+            ->pluck('sku')
+            ->sort()
+            ->values()
+            ->all();
+        $listed = collect($page['props']['belowMin'])->pluck('sku')->sort()->values()->all();
+
+        $this->assertSame($ownOutletProducts, $listed);
     }
 }

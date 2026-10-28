@@ -22,7 +22,13 @@ class DashboardController extends Controller
         $user = $request->user();
 
         if (! $user->isOwner()) {
-            return Inertia::render('Dashboard/Manager');
+            $outletId = (int) $user->outlet_id;
+
+            return Inertia::render('Dashboard/Manager', [
+                'summary' => $this->dashboard->managerSummary($user),
+                'belowMin' => $this->dashboard->belowMinProductsForOutlet($outletId),
+                'recentReceipts' => $this->dashboard->recentReceiptsForOutlet($outletId),
+            ]);
         }
 
         return Inertia::render('Dashboard/Owner', [

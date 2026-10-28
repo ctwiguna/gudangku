@@ -8,6 +8,7 @@ use App\Models\Outlet;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\StockOpname;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -137,6 +138,86 @@ class DashboardService
                 'category_label' => $expense->category->label(),
                 'amount' => (float) $expense->amount,
                 'note' => $expense->note,
+            ])
+            ->all();
+    }
+
+    /**
+     * Ringkasan untuk manajer outlet. Tidak ada satu pun nilai uang di sini:
+     * tidak ada harga, nominal, subtotal, hutang, maupun nilai stok.
+     *
+     * @return array<string, mixed>
+     */
+    public function managerSummary(User $manager): array
+    {
+        $outletId = (int) $manager->outlet_id;
+        [$weekStart, $weekEnd] = StockOpname::currentWeek();
+
+        $lastOpname = StockOpname::forOutlet($outletId)->latestWeeks()->first();
+        $opnameDone = StockOpname::forOutlet($outletId)
+            ->forWeek($weekStart->toDateString())
+            ->exists();
+
+        return [
+            'outlet' => $manager->outlet?->only(['id', 'name', 'code']),
+            'week_start' => $weekStart->toDateString(),
+            'week_end' => $weekEnd->toDateString(),
+            'opname_due' => ! $opnameDone,
+            'last_opname_week' => $lastOpname?->week_start?->toDateString(),
+            'product_count' => Product::active()->count(),
+            'below_min_count' => $this->belowMinCountForOutlet($outletId),
+            'receipts_this_week' => Purchase::forOutlet($outletId)
+                ->whereBetween('received_at', [$weekStart->toDateString(), $weekEnd->toDateString()])
+                ->count(),
+        ];
+    }
+
+    /**
+     * Produk di bawah minimum untuk satu outlet. Tanpa harga.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function belowMinProductsForOutlet(int $outletId, int $limit = 10): array
+    {
+        return Product::active()
+            ->belowMinStock($outletId)
+            ->get()
+            ->map(fn (Product $product) => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'sku' => $product->sku,
+                'unit' => $product->unit,
+                'stock' => (int) $product->stock_qty,
+                'min_stock' => (int) $product->min_stock,
+            ])
+            ->sortBy(fn (array $row) => $row['stock'] - $row['min_stock'])
+            ->values()
+            ->take($limit)
+            ->all();
+    }
+
+    /**
+     * Penerimaan terakhir outlet sendiri. Tanpa harga, tanpa total.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function recentReceiptsForOutlet(int $outletId, int $limit = 5): array
+    {
+        return Purchase::with('supplier')
+            ->forOutlet($outletId)
+            ->withCount('items')
+            ->withSum('items as qty', 'quantity')
+            ->latestReceived()
+            ->limit($limit)
+            ->get()
+            ->map(fn (Purchase $purchase) => [
+                'id' => $purchase->id,
+                'received_at' => $purchase->received_at?->toDateString(),
+                'supplier' => $purchase->supplier?->name,
+                'invoice_no' => $purchase->invoice_no,
+                'items' => (int) $purchase->items_count,
+                'qty' => (int) ($purchase->qty ?? 0),
+                'is_priced' => $purchase->isPriced(),
             ])
             ->all();
     }
