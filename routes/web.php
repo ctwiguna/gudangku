@@ -7,6 +7,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ReportController;
@@ -30,6 +31,10 @@ Route::middleware('guest')->group(function (): void {
 Route::middleware('auth')->group(function (): void {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Profil sendiri untuk kedua role. Role dan outlet tidak bisa diubah dari sini.
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Owner melihat semua outlet, manajer hanya stok outlet sendiri dan tanpa harga.
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
