@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,14 @@ Route::middleware('auth')->group(function (): void {
 
     // Owner melihat semua outlet, manajer hanya stok outlet sendiri dan tanpa harga.
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
+
+    // Penerimaan barang: owner dan manajer, manajer hanya outlet sendiri.
+    Route::get('receipts', [ReceiptController::class, 'index'])->name('receipts.index');
+    Route::get('receipts/create', [ReceiptController::class, 'create'])->name('receipts.create');
+    Route::post('receipts', [ReceiptController::class, 'store'])->name('receipts.store');
+    Route::get('receipts/{purchase}', [ReceiptController::class, 'show'])->name('receipts.show');
+    Route::get('receipts/{purchase}/edit', [ReceiptController::class, 'edit'])->name('receipts.edit');
+    Route::put('receipts/{purchase}', [ReceiptController::class, 'update'])->name('receipts.update');
 });
 
 // Data keuangan hanya untuk owner. Manajer yang membuka URL langsung mendapat 403.

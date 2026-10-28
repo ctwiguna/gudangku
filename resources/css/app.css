@@ -1070,6 +1070,51 @@ body.is-modal-open {
     }
 }
 
+/* ---------- Baris item dinamis pada form penerimaan ---------- */
+.items {
+    margin: var(--space-5) 0;
+}
+
+.items__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.items__title {
+    margin: 0;
+    font-size: var(--text-title-sm);
+}
+
+.items__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 110px auto;
+    align-items: end;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+}
+
+.items__row + .items__row {
+    margin-top: var(--space-3);
+}
+
+/* Tombol hapus baris sejajar dengan input di atasnya. */
+.items__remove {
+    display: flex;
+    align-items: flex-end;
+}
+
+@media (max-width: 560px) {
+    .items__row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
 /* ---------- Filter daftar ---------- */
 .filters {
     display: grid;
