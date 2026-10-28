@@ -140,6 +140,17 @@ export default function Manager({ summary, belowMin, recentReceipts }) {
                     </li>
                 </ul>
             </Card>
+
+            <Card title="Riwayat stok" subtitle="Ledger pergerakan outlet ini">
+                <p className="muted">
+                    Saldo stok adalah jumlah baris ledger, jadi selalu bisa diaudit sampai pergerakan asalnya.
+                </p>
+                <div className="actions">
+                    <Link href="/stock-movements" className="btn btn--outline">
+                        Buka riwayat stok
+                    </Link>
+                </div>
+            </Card>
         </AppShell>
     );
 }

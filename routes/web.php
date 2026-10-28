@@ -84,6 +84,7 @@ Route::middleware(['auth', 'owner'])->group(function (): void {
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 
     // Laporan ringkas hanya untuk owner.
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 
     Route::get('outlets', [OutletController::class, 'index'])->name('outlets.index');
     Route::post('outlets', [OutletController::class, 'store'])->name('outlets.store');

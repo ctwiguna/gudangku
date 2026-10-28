@@ -59,7 +59,7 @@ export default function Owner({ summary, outlets, belowMin, recentReceipts, rece
                 />
             </div>
 
-            <Card title="Status opname per outlet" subtitle="Minggu berjalan, Senin sampai Minggu">
+            <Card title="Status opname per outlet" subtitle="Minggu berjalan, Senin sampai Minggu" action={<Link href="/reports">Buka laporan</Link>}>
                 <DataTable
                     caption="Status opname per outlet"
                     columns={[
@@ -237,6 +237,17 @@ export default function Owner({ summary, outlets, belowMin, recentReceipts, rece
                     }}
                     empty={<EmptyState title="Belum ada pengeluaran" />}
                 />
+            </Card>
+
+            <Card title="Audit stok" subtitle="Setiap perubahan stok tercatat sebagai baris ledger">
+                <div className="actions">
+                    <Link href="/reports" className="btn">
+                        Buka laporan
+                    </Link>
+                    <Link href="/stock-movements" className="btn btn--outline">
+                        Riwayat stok
+                    </Link>
+                </div>
             </Card>
         </AppShell>
     );

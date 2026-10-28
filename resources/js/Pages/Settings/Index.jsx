@@ -33,6 +33,18 @@ export default function Index({ counts }) {
             description: 'Harga per pcs, stok minimum, dan status aktif produk.',
             meta: `${number(counts.products)} produk`,
         },
+        {
+            href: '/reports',
+            title: 'Laporan',
+            description: 'Pengeluaran per kategori dan outlet, hutang supplier, dan nilai stok.',
+            meta: 'khusus owner',
+        },
+        {
+            href: '/stock-movements',
+            title: 'Riwayat stok',
+            description: 'Ledger pergerakan stok untuk audit saldo per outlet.',
+            meta: 'owner dan manajer',
+        },
     ];
 
     return (
