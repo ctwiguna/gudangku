@@ -5,11 +5,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\OutletController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReceiptController;
-use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StockOpnameController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Route redirect, bukan closure, supaya `route:cache` tetap jalan di produksi.
@@ -71,4 +74,19 @@ Route::middleware(['auth', 'owner'])->group(function (): void {
     Route::put('purchases/{purchase}/price', [PurchaseController::class, 'update'])->name('purchases.price.update');
     Route::patch('purchases/{purchase}/paid', [PurchaseController::class, 'markPaid'])->name('purchases.paid');
     Route::delete('purchases/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
+
+    // Pengaturan owner: outlet dan user.
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+
+    Route::get('outlets', [OutletController::class, 'index'])->name('outlets.index');
+    Route::post('outlets', [OutletController::class, 'store'])->name('outlets.store');
+    Route::put('outlets/{outlet}', [OutletController::class, 'update'])->name('outlets.update');
+    Route::patch('outlets/{outlet}/status', [OutletController::class, 'toggleStatus'])->name('outlets.toggle-status');
+    Route::delete('outlets/{outlet}', [OutletController::class, 'destroy'])->name('outlets.destroy');
+
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::post('users', [UserController::class, 'store'])->name('users.store');
+    Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::patch('users/{user}/status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 });
