@@ -42,6 +42,30 @@ sudo sshd -T | grep -E '^(passwordauthentication|permitrootlogin|pubkeyauthentic
 
 Hasil: `passwordauthentication no`, `permitrootlogin without-password`, `pubkeyauthentication yes`.
 
+## 1b. Dua jebakan yang muncul saat mengisi data (D1.3)
+
+**Jebakan A — mengubah migrasi yang sudah pernah jalan.** Migrasi `users` semula memakai versi bawaan Laravel dan sudah tercatat di tabel `migrations` pada deploy pertama. Ketika kolom `outlet_id`, `role`, dan `is_active` ditambahkan dengan mengedit file migrasi lama, server tidak menerapkannya karena migrasi itu sudah dianggap selesai. Gejalanya: seeder gagal dengan `SQLSTATE[42S22]: Column not found: 1054 Unknown column 'role' in 'field list'`, padahal database lokal baik-baik saja karena di sana dijalankan `migrate:fresh`.
+
+Perbaikan untuk server demo: `php artisan migrate:fresh --seed --force`. Aturan jangka panjangnya: **jangan pernah mengedit migrasi yang sudah dijalankan**; tambahkan migrasi baru.
+
+Verifikasi skema setelah perbaikan:
+
+```sql
+SHOW COLUMNS FROM users;
+-- id, outlet_id, name, email, email_verified_at, password, role, is_active, remember_token, created_at, updated_at
+```
+
+**Jebakan B — permission `storage/logs`.** Error seeder menutupi dirinya sendiri karena `storage/logs/laravel.log` tidak bisa dibuka: CLI berjalan sebagai `ubuntu`, sedangkan berkas dibuat oleh `www-data` (php-fpm). Laravel gagal menulis log, lalu melempar exception permission yang menyembunyikan error aslinya.
+
+```bash
+sudo chown -R ubuntu:www-data storage bootstrap/cache
+sudo find storage bootstrap/cache -type d -exec chmod 2775 {} \;
+sudo find storage bootstrap/cache -type f -exec chmod 664 {} \;
+touch storage/logs/laravel.log && chmod 664 storage/logs/laravel.log
+```
+
+Pelajaran untuk esai: ketika sebuah aplikasi "gagal tanpa pesan jelas", periksa jalur logging lebih dulu. Hak tulis log adalah bagian dari observability, bukan sekadar kosmetik.
+
 ## 2. PHP 8.5.12
 
 Ubuntu 24.04 hanya menyediakan PHP 8.3, sedangkan kebutuhan keamanan proyek adalah PHP 8.5.12 (patch CVE-2026-109618 dan CVE-2026-109619).
