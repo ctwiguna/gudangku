@@ -9,7 +9,9 @@ use App\Http\Controllers\OutletController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -43,6 +45,9 @@ Route::middleware('auth')->group(function (): void {
     // Stock opname mingguan: manajer hanya outlet sendiri, owner boleh semua.
     Route::get('stock-opnames', [StockOpnameController::class, 'index'])->name('stock-opnames.index');
     Route::post('stock-opnames', [StockOpnameController::class, 'store'])->name('stock-opnames.store');
+
+    // Riwayat stok dari ledger: owner semua outlet, manajer outlet sendiri.
+    Route::get('stock-movements', [StockMovementController::class, 'index'])->name('stock-movements.index');
 });
 
 // Data keuangan hanya untuk owner. Manajer yang membuka URL langsung mendapat 403.
@@ -77,6 +82,8 @@ Route::middleware(['auth', 'owner'])->group(function (): void {
 
     // Pengaturan owner: outlet dan user.
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+
+    // Laporan ringkas hanya untuk owner.
 
     Route::get('outlets', [OutletController::class, 'index'])->name('outlets.index');
     Route::post('outlets', [OutletController::class, 'store'])->name('outlets.store');
