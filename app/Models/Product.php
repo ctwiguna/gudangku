@@ -91,11 +91,18 @@ class Product extends Model
 
     /**
      * Produk dengan saldo di bawah min_stock pada outlet tertentu.
-     * Nilai outlet diambil dari binding parameter, bukan dirangkai ke SQL.
+     *
+     * Memakai subquery berkorelasi dengan binding parameter, bukan HAVING pada
+     * alias, karena MySQL mengizinkan HAVING tanpa GROUP BY tetapi SQLite menolak
+     * ("HAVING clause on a non-aggregate query"). Nilai outlet tetap dikirim
+     * sebagai binding, bukan dirangkai ke string SQL.
      */
     public function scopeBelowMinStock(Builder $query, int $outletId): Builder
     {
+        $balance = 'select coalesce(sum(sm.quantity), 0) from stock_movements as sm '
+            .'where sm.product_id = products.id and sm.outlet_id = ?';
+
         return $query->withStock($outletId)
-            ->havingRaw('coalesce(stock_qty, 0) < products.min_stock');
+            ->whereRaw("({$balance}) < products.min_stock", [$outletId]);
     }
 }
