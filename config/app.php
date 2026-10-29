@@ -16,6 +16,13 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
 
     /*
+    | Tagline aplikasi. Satu sumber kebenaran: dipakai di halaman login,
+    | header aplikasi, dan catatan kaki lewat props Inertia bersama.
+    */
+
+    'tagline' => env('APP_TAGLINE', 'Catat, monitor dan audit stok + Pengeluaran bisnis'),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------

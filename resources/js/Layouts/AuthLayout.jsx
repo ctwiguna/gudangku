@@ -1,6 +1,9 @@
+import { usePage } from '@inertiajs/react';
 import Toast from '../Components/Toast';
 
 export default function AuthLayout({ title, description, children }) {
+    const { app } = usePage().props;
+
     return (
         <div className="auth-shell">
             <Toast />
@@ -8,6 +11,9 @@ export default function AuthLayout({ title, description, children }) {
             <main className="auth-shell__inner">
                 <header className="auth-shell__brand">
                     <p className="badge">gudangku</p>
+
+                    {app?.tagline ? <p className="auth-shell__tagline">{app.tagline}</p> : null}
+
                     <h1 className="auth-shell__title">{title}</h1>
                     {description ? <p className="muted">{description}</p> : null}
                 </header>

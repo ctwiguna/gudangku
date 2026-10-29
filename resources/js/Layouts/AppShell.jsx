@@ -22,13 +22,21 @@ export default function AppShell({
     reminderActionLabel = 'Isi opname',
     children,
 }) {
-    const { auth } = usePage().props;
+    const { auth, app } = usePage().props;
     const role = auth?.user?.is_owner ? 'owner' : 'manager';
 
     return (
         <div className="app-shell">
             <div className="app-shell__content">
                 <Toast />
+
+                {app?.tagline ? (
+                    <p className="app-shell__tagline">
+                        <span className="app-shell__wordmark">gudangku</span>
+                        <span aria-hidden="true"> · </span>
+                        {app.tagline}
+                    </p>
+                ) : null}
 
                 <PageHeader
                     title={title}
@@ -48,6 +56,12 @@ export default function AppShell({
                 ) : null}
 
                 {children}
+
+                {app?.tagline ? (
+                    <p className="app-note">
+                        <strong>{app.name ?? 'gudangku'}</strong> — {app.tagline}
+                    </p>
+                ) : null}
             </div>
 
             <BottomNav role={role} reminder={reminder} reminderHref={reminderHref} />

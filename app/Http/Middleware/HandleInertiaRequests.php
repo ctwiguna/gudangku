@@ -26,6 +26,11 @@ class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
+            // Identitas aplikasi dipakai di halaman login, header, dan catatan kaki.
+            'app' => [
+                'name' => config('app.name'),
+                'tagline' => config('app.tagline'),
+            ],
             'auth' => [
                 'user' => $user === null ? null : [
                     'id' => $user->id,
