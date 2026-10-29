@@ -84,6 +84,7 @@ class OutletController extends Controller
 
         $counts = [
             'user' => $outlet->users()->count(),
+            'karyawan' => $outlet->employees()->count(),
             'pembelian' => $outlet->purchases()->count(),
             'pergerakan stok' => $outlet->stockMovements()->count(),
             'opname' => $outlet->stockOpnames()->count(),

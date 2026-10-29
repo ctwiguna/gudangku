@@ -276,6 +276,8 @@ class EmployeeTest extends TestCase
             ->delete("/outlets/{$pusat->id}")
             ->assertSessionHas('error');
 
+        // Pesannya menyebut karyawan sebagai penahan, bukan error SQL mentah.
+        $this->assertStringContainsString('karyawan', session('error'));
         $this->assertDatabaseHas('outlets', ['id' => $pusat->id]);
     }
 
