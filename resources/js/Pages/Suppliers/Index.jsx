@@ -167,7 +167,11 @@ export default function Index({ suppliers, openCreate = false }) {
                                     `${number(row.lead_time_days)} hari`
                                 );
                             case 'top':
-                                return row.term_of_payment ?? <span className="muted">-</span>;
+                                return row.term_of_payment === null ? (
+                                    <span className="muted">-</span>
+                                ) : (
+                                    `${number(row.term_of_payment)} hari`
+                                );
                             case 'select':
                                 return (
                                     <label className="row-select">
@@ -273,10 +277,14 @@ export default function Index({ suppliers, openCreate = false }) {
                             label="Term of payment (TOP)"
                             htmlFor="supplier-top"
                             error={form.errors.term_of_payment}
-                            hint="Contoh: COD, NET 14, NET 30."
+                            hint="Dalam hari. Contoh: 7, 14, atau 30 hari."
                         >
                             <TextInput
                                 id="supplier-top"
+                                type="number"
+                                inputMode="numeric"
+                                min="0"
+                                max="365"
                                 value={form.data.term_of_payment}
                                 error={Boolean(form.errors.term_of_payment)}
                                 onChange={(event) => form.setData('term_of_payment', event.target.value)}

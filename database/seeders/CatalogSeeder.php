@@ -23,8 +23,8 @@ class CatalogSeeder extends Seeder
         }
 
         $suppliers = [
-            ['name' => 'PT Sumber Gas Nusantara', 'contact_name' => 'Hendra', 'phone' => '021-7001111', 'address' => 'Jl. Industri Gas No. 4, Bekasi'],
-            ['name' => 'CV Aroma Kemas Nusantara', 'contact_name' => 'Lestari', 'phone' => '021-7002222', 'address' => 'Jl. Kemasan Raya No. 21, Tangerang'],
+            ['name' => 'PT Sumber Gas Nusantara', 'contact_name' => 'Hendra', 'phone' => '021-7001111', 'address' => 'Jl. Industri Gas No. 4, Bekasi', 'lead_time_days' => 3, 'term_of_payment' => 14],
+            ['name' => 'CV Aroma Kemas Nusantara', 'contact_name' => 'Lestari', 'phone' => '021-7002222', 'address' => 'Jl. Kemasan Raya No. 21, Tangerang', 'lead_time_days' => 7, 'term_of_payment' => 30],
         ];
 
         foreach ($suppliers as $supplier) {

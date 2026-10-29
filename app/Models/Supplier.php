@@ -25,6 +25,7 @@ class Supplier extends Model
     {
         return [
             'lead_time_days' => 'integer',
+            'term_of_payment' => 'integer',
         ];
     }
 

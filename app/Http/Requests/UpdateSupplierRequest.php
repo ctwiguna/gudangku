@@ -28,7 +28,8 @@ class UpdateSupplierRequest extends FormRequest
             'phone' => ['nullable', 'string', 'max:32'],
             'address' => ['nullable', 'string', 'max:255'],
             'lead_time_days' => ['nullable', 'integer', 'min:0', 'max:365'],
-            'term_of_payment' => ['nullable', 'string', 'max:64'],
+            // Term of payment dihitung dalam hari, contoh 7, 14, atau 30.
+            'term_of_payment' => ['nullable', 'integer', 'min:0', 'max:365'],
         ];
     }
 
@@ -46,7 +47,9 @@ class UpdateSupplierRequest extends FormRequest
             'lead_time_days.integer' => 'Lead time harus berupa angka hari.',
             'lead_time_days.min' => 'Lead time tidak boleh negatif.',
             'lead_time_days.max' => 'Lead time maksimal 365 hari.',
-            'term_of_payment.max' => 'Term of payment maksimal 64 karakter.',
+            'term_of_payment.integer' => 'Term of payment harus berupa angka hari.',
+            'term_of_payment.min' => 'Term of payment tidak boleh negatif.',
+            'term_of_payment.max' => 'Term of payment maksimal 365 hari.',
         ];
     }
 }

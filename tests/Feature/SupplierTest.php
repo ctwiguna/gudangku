@@ -88,14 +88,14 @@ class SupplierTest extends TestCase
                 'phone' => '021-1234567',
                 'address' => 'Jl. Pemasok No. 5',
                 'lead_time_days' => 3,
-                'term_of_payment' => 'NET 30',
+                'term_of_payment' => 30,
             ])
             ->assertSessionHasNoErrors();
 
         $this->assertDatabaseHas('suppliers', [
             'name' => 'PT Pemasok Cepat',
             'lead_time_days' => 3,
-            'term_of_payment' => 'NET 30',
+            'term_of_payment' => 30,
         ]);
     }
 
@@ -110,14 +110,27 @@ class SupplierTest extends TestCase
                 'phone' => $supplier->phone,
                 'address' => $supplier->address,
                 'lead_time_days' => 7,
-                'term_of_payment' => 'COD',
+                'term_of_payment' => 7,
             ])
             ->assertSessionHasNoErrors();
 
         $fresh = $supplier->fresh();
 
         $this->assertSame(7, $fresh->lead_time_days);
-        $this->assertSame('COD', $fresh->term_of_payment);
+        $this->assertSame(7, $fresh->term_of_payment);
+    }
+
+    public function test_term_of_payment_must_be_number_of_days(): void
+    {
+        $this->actingAs($this->owner())
+            ->post('/suppliers', [
+                'name' => 'Supplier TOP Salah',
+                'lead_time_days' => 2,
+                'term_of_payment' => 'NET 30',
+            ])
+            ->assertSessionHasErrors('term_of_payment');
+
+        $this->assertDatabaseMissing('suppliers', ['name' => 'Supplier TOP Salah']);
     }
 
     public function test_lead_time_out_of_range_is_rejected(): void
