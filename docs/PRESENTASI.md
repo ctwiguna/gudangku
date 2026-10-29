@@ -190,6 +190,8 @@ Semua file di `docs/screenshots/`, diambil pada viewport 390×844 (2× DPR) mema
 | `01-login.png` | Form login, state default |
 | `15-login-tagline.png` | Tagline aplikasi di layar login |
 | `17-warehouse.png` | Menu Gudang: hanya dua menu, Kelola Outlet dan Kelola Supplier |
+| `20-barang.png` | Halaman barang: kolom Barang, Kategori, Satuan, Stok, Min, Harga beli |
+| `21-outlet.png` | Halaman outlet tanpa kolom transaksi yang membingungkan |
 | `18-tambah-kategori.png` | Form tambah kategori terbuka langsung dari menu Gudang |
 | `19-tambah-outlet.png` | Form tambah outlet terbuka langsung dari menu Gudang |
 | `16-dashboard-tagline.png` | Tagline di header aplikasi (dashboard owner) |
