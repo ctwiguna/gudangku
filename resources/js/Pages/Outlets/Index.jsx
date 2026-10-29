@@ -103,7 +103,6 @@ export default function Index({ outlets, openCreate: startWithFormOpen = false }
                         { key: 'outlet', label: 'Outlet' },
                         { key: 'contact', label: 'Kontak' },
                         { key: 'users', label: 'User', align: 'right' },
-                        { key: 'transactions', label: 'Transaksi', align: 'right' },
                         { key: 'status', label: 'Status' },
                         { key: 'action', label: 'Aksi' },
                     ]}
@@ -130,16 +129,6 @@ export default function Index({ outlets, openCreate: startWithFormOpen = false }
                                 );
                             case 'users':
                                 return number(row.users_count);
-                            case 'transactions':
-                                return (
-                                    <span>
-                                        {number(row.purchases_count)} beli
-                                        <br />
-                                        <span className="muted">
-                                            {number(row.movements_count)} gerak · {number(row.opnames_count)} opname
-                                        </span>
-                                    </span>
-                                );
                             case 'status':
                                 return row.is_active ? (
                                     <Badge tone="success">Aktif</Badge>

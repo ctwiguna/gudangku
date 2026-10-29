@@ -39,12 +39,12 @@ export default function Form({ product, categories, suppliers }) {
 
     return (
         <AppShell
-            title={editing ? 'Ubah produk' : 'Tambah produk'}
+            title={editing ? 'Ubah barang' : 'Tambah barang'}
             subtitle="Harga per pcs hanya untuk owner"
             badge={<Badge>Owner</Badge>}
             backHref="/products"
         >
-            <Head title={editing ? 'Ubah produk' : 'Tambah produk'} />
+            <Head title={editing ? 'Ubah barang' : 'Tambah barang'} />
 
             {errorList.length > 0 ? (
                 <div className="form-summary" role="alert">
@@ -60,11 +60,11 @@ export default function Form({ product, categories, suppliers }) {
             <Card>
                 <form onSubmit={submit} noValidate>
                     <div className="stack">
-                        <FormField label="Nama produk" htmlFor="name" error={errors.name} required>
+                        <FormField label="Nama barang" htmlFor="name" error={errors.name} required>
                             <TextInput
                                 id="name"
                                 value={data.name}
-                                placeholder="Contoh: Plastik packing kecil"
+                                placeholder="Contoh: Gas LPG 12kg"
                                 error={Boolean(errors.name)}
                                 onChange={(event) => setData('name', event.target.value)}
                             />
@@ -85,7 +85,7 @@ export default function Form({ product, categories, suppliers }) {
                                 label="Satuan"
                                 htmlFor="unit"
                                 error={errors.unit}
-                                hint="Contoh: pcs, box, botol."
+                                hint="Bawaan pcs. Ubah hanya kalau satuannya berbeda."
                                 required
                             >
                                 <TextInput

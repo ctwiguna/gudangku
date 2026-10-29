@@ -52,9 +52,9 @@ export default function Index({ products, canManage, outletLabel, filters, outle
     }
 
     const columns = [
-        { key: 'product', label: 'Produk' },
+        { key: 'product', label: 'Barang' },
         { key: 'category', label: 'Kategori' },
-        { key: 'supplier', label: 'Supplier' },
+        { key: 'unit', label: 'Satuan' },
         { key: 'stock', label: 'Stok', align: 'right' },
         { key: 'min', label: 'Min', align: 'right' },
     ];
@@ -71,21 +71,21 @@ export default function Index({ products, canManage, outletLabel, filters, outle
 
     return (
         <AppShell
-            title={canManage ? 'Produk' : 'Stok'}
+            title={canManage ? 'Barang' : 'Stok'}
             subtitle={outletLabel}
             badge={<Badge>{auth.user.role_label}</Badge>}
             actions={
                 canManage ? (
                     <Link href="/products/create" className="btn">
-                        Tambah produk
+                        Tambah barang
                     </Link>
                 ) : null
             }
         >
-            <Head title={canManage ? 'Produk' : 'Stok'} />
+            <Head title={canManage ? 'Barang' : 'Stok'} />
 
             <div className="stat-grid">
-                <StatCard label="Jumlah produk" value={number(products.length)} hint="terdaftar" />
+                <StatCard label="Jumlah barang" value={number(products.length)} hint="terdaftar" />
                 <StatCard label="Produk aktif" value={number(activeCount)} hint="muncul di form baru" />
                 <StatCard
                     label="Di bawah minimum"
@@ -121,7 +121,7 @@ export default function Index({ products, canManage, outletLabel, filters, outle
             ) : null}
 
             <Card
-                title="Daftar produk"
+                title="Daftar barang"
                 subtitle={
                     canManage
                         ? 'Saldo stok dihitung dari ledger pergerakan'
@@ -139,15 +139,13 @@ export default function Index({ products, canManage, outletLabel, filters, outle
                                     <span>
                                         {row.name}
                                         <br />
-                                        <span className="muted">
-                                            {row.sku} · {row.unit}
-                                        </span>
+                                        <span className="muted">{row.sku}</span>
                                     </span>
                                 );
                             case 'category':
                                 return row.category ?? <span className="muted">-</span>;
-                            case 'supplier':
-                                return row.supplier ?? <span className="muted">-</span>;
+                            case 'unit':
+                                return row.unit ?? <span className="muted">-</span>;
                             case 'stock':
                                 return (
                                     <span className={row.below_min ? 'is-warn' : ''}>{number(row.stock)}</span>
@@ -190,11 +188,11 @@ export default function Index({ products, canManage, outletLabel, filters, outle
                     empty={
                         <EmptyState
                             title="Belum ada produk"
-                            description="Tambahkan produk lebih dulu sebelum mencatat penerimaan barang."
+                            description="Tambahkan barang lebih dulu sebelum mencatat penerimaan."
                             action={
                                 canManage ? (
                                     <Link href="/products/create" className="btn">
-                                        Tambah produk
+                                        Tambah barang
                                     </Link>
                                 ) : null
                             }

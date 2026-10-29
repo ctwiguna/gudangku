@@ -179,7 +179,7 @@ Grup route: `/*` publik (login/register), `auth` (dashboard, produk, penerimaan,
 11. CRUD produk, kategori, supplier, outlet, user.
 12. Laporan owner per periode dan outlet.
 13. Ekspor Excel pengeluaran per outlet per bulan, empat sheet: Ringkasan (outlet × bulan), Per Kategori (per bulan per kategori + subtotal), Pembelian Produk (per bulan per kategori produk, mis. Gas LPG), dan Rincian.
-14. Menu Gudang dengan aksi cepat tambah produk, kategori, supplier, dan outlet.
+14. Menu Gudang dengan dua menu saja: Kelola Outlet (tambah/hapus outlet) dan Kelola Supplier (tambah barang, ubah harga Rupiah, ganti satuan bawaan pcs, hapus barang).
 
 ## 10. Screenshot (mobile 390px)
 
@@ -189,7 +189,7 @@ Semua file di `docs/screenshots/`, diambil pada viewport 390×844 (2× DPR) mema
 | :--- | :--- |
 | `01-login.png` | Form login, state default |
 | `15-login-tagline.png` | Tagline aplikasi di layar login |
-| `17-warehouse.png` | Menu Gudang dengan aksi cepat tambah produk, kategori, supplier, outlet |
+| `17-warehouse.png` | Menu Gudang: hanya dua menu, Kelola Outlet dan Kelola Supplier |
 | `18-tambah-kategori.png` | Form tambah kategori terbuka langsung dari menu Gudang |
 | `19-tambah-outlet.png` | Form tambah outlet terbuka langsung dari menu Gudang |
 | `16-dashboard-tagline.png` | Tagline di header aplikasi (dashboard owner) |
