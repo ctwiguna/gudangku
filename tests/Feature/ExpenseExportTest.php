@@ -32,7 +32,7 @@ class ExpenseExportTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     /**
@@ -134,7 +134,7 @@ class ExpenseExportTest extends TestCase
     {
         $year = (int) Carbon::now('Asia/Jakarta')->year;
         $month = (int) Carbon::now('Asia/Jakarta')->month;
-        $outlet = Outlet::where('code', 'CKR-01')->firstOrFail();
+        $outlet = Outlet::where('code', 'KDM-01')->firstOrFail();
 
         $spreadsheet = $this->loadDownloadedFile(
             $this->actingAs($this->owner())->get("/reports/expenses-export?year={$year}"),
@@ -170,7 +170,7 @@ class ExpenseExportTest extends TestCase
     public function test_category_breakdown_matches_database_and_has_subtotals(): void
     {
         $year = (int) Carbon::now('Asia/Jakarta')->year;
-        $outlet = Outlet::where('code', 'CKR-01')->firstOrFail();
+        $outlet = Outlet::where('code', 'KDM-01')->firstOrFail();
 
         $spreadsheet = $this->loadDownloadedFile(
             $this->actingAs($this->owner())->get("/reports/expenses-export?year={$year}"),
@@ -224,7 +224,7 @@ class ExpenseExportTest extends TestCase
     {
         $year = (int) Carbon::now('Asia/Jakarta')->year;
         $gasProduct = Product::where('sku', 'LPG-12')->firstOrFail();
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
 
         $spreadsheet = $this->loadDownloadedFile(
             $this->actingAs($this->owner())->get("/reports/expenses-export?year={$year}"),

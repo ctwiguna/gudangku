@@ -8,24 +8,31 @@ use Illuminate\Database\Seeder;
 
 class EmployeeSeeder extends Seeder
 {
+    /**
+     * Karyawan per outlet. Gaji diset seragam Rp600.000 per minggu.
+     * Beberapa nama (Ina, Salsi, Nafa) juga dipakai sebagai akun manajer outlet.
+     */
     public function run(): void
     {
-        // Data acuan gaji. Pengeluaran gaji per outlet tetap dicatat
-        // di tabel expenses kategori gaji.
-        $pusat = Outlet::where('code', 'CKR-01')->first();
-        $cabang = Outlet::where('code', 'CKR-02')->first();
-
-        $employees = [
-            ['outlet_id' => $pusat?->id, 'name' => 'Siti Aminah', 'salary' => 120000, 'salary_unit' => 'harian', 'note' => 'bagian cuci'],
-            ['outlet_id' => $pusat?->id, 'name' => 'Budi Santoso', 'salary' => 1500000, 'salary_unit' => 'bulanan', 'note' => 'kasir'],
-            ['outlet_id' => $cabang?->id, 'name' => 'Rina Marlina', 'salary' => 350000, 'salary_unit' => 'mingguan', 'note' => 'setrika'],
+        $perOutlet = [
+            'KDM-01' => ['Salsa', 'Ida', 'Fera', 'Mila', 'Cynthia', 'Sevina', 'Salwa', 'Ina'],
+            'TMB-01' => ['Dinda', 'Salsi', 'Valen', 'Shifa'],
+            'ALT-01' => ['Nafa', 'Ajwa'],
         ];
 
-        foreach ($employees as $employee) {
-            Employee::updateOrCreate(
-                ['name' => $employee['name']],
-                [...$employee, 'is_active' => true],
-            );
+        foreach ($perOutlet as $code => $names) {
+            $outlet = Outlet::where('code', $code)->first();
+
+            foreach ($names as $name) {
+                Employee::updateOrCreate(
+                    ['outlet_id' => $outlet?->id, 'name' => $name],
+                    [
+                        'salary' => 600000,
+                        'salary_unit' => 'mingguan',
+                        'is_active' => true,
+                    ],
+                );
+            }
         }
     }
 }

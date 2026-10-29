@@ -11,8 +11,9 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
-        $cabang = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $kedungmundu = Outlet::where('code', 'KDM-01')->firstOrFail();
+        $tembalang = Outlet::where('code', 'TMB-01')->firstOrFail();
+        $alton = Outlet::where('code', 'ALT-01')->firstOrFail();
 
         $users = [
             [
@@ -23,24 +24,32 @@ class UserSeeder extends Seeder
                 'is_active' => true,
             ],
             [
-                'email' => 'manajer.pusat@gudangku.test',
-                'name' => 'Rina Manajer Pusat',
-                'outlet_id' => $pusat->id,
+                // Manajer sekaligus karyawan di outlet Kedungmundu.
+                'email' => 'ina@gudangku.test',
+                'name' => 'Ina',
+                'outlet_id' => $kedungmundu->id,
                 'role' => UserRole::Manajer,
                 'is_active' => true,
             ],
             [
-                'email' => 'manajer.cabang@gudangku.test',
-                'name' => 'Budi Manajer Cabang',
-                'outlet_id' => $cabang->id,
+                'email' => 'salsi@gudangku.test',
+                'name' => 'Salsi',
+                'outlet_id' => $tembalang->id,
+                'role' => UserRole::Manajer,
+                'is_active' => true,
+            ],
+            [
+                'email' => 'nafa@gudangku.test',
+                'name' => 'Nafa',
+                'outlet_id' => $alton->id,
                 'role' => UserRole::Manajer,
                 'is_active' => true,
             ],
             [
                 // Akun hasil register publik: belum aktif dan belum punya outlet,
                 // jadi tidak bisa login sebelum owner mengaktifkan dan menugaskan outlet.
-                'email' => 'manajer.baru@gudangku.test',
-                'name' => 'Sari Pendaftar Baru',
+                'email' => 'kandidat@gudangku.test',
+                'name' => 'Kandidat Pendaftar',
                 'outlet_id' => null,
                 'role' => UserRole::Manajer,
                 'is_active' => false,

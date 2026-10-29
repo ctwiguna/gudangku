@@ -18,8 +18,8 @@ class StockOpnameSeeder extends Seeder
      */
     public function run(): void
     {
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
-        $manajer = User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
+        $manajer = User::where('email', 'ina@gudangku.test')->firstOrFail();
 
         [$weekStart, $weekEnd] = StockOpname::currentWeek();
 

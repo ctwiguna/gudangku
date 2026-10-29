@@ -16,13 +16,13 @@ class PurchaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
-        $cabang = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
+        $cabang = Outlet::where('code', 'TMB-01')->firstOrFail();
         $gas = Supplier::where('name', 'PT Sumber Gas Nusantara')->firstOrFail();
         $kemas = Supplier::where('name', 'CV Aroma Kemas Nusantara')->firstOrFail();
         $owner = User::where('email', 'owner@gudangku.test')->firstOrFail();
-        $manajerPusat = User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
-        $manajerCabang = User::where('email', 'manajer.cabang@gudangku.test')->firstOrFail();
+        $manajerPusat = User::where('email', 'ina@gudangku.test')->firstOrFail();
+        $manajerCabang = User::where('email', 'salsi@gudangku.test')->firstOrFail();
 
         $today = Carbon::now('Asia/Jakarta')->startOfDay();
 

@@ -31,7 +31,7 @@ class DashboardTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     /**
@@ -90,8 +90,8 @@ class DashboardTest extends TestCase
 
     public function test_outlet_status_marks_opname_per_outlet(): void
     {
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
-        $cabang = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
+        $cabang = Outlet::where('code', 'TMB-01')->firstOrFail();
 
         $page = $this->inertiaPage($this->actingAs($this->owner())->get('/dashboard'));
         $outlets = collect($page['props']['outlets'])->keyBy('code');
@@ -171,14 +171,14 @@ class DashboardTest extends TestCase
         $this->assertFalse($pusatPage['props']['summary']['opname_due']);
 
         // Outlet cabang belum opname, jadi pengingat aktif.
-        $cabang = User::where('email', 'manajer.cabang@gudangku.test')->firstOrFail();
+        $cabang = User::where('email', 'salsi@gudangku.test')->firstOrFail();
         $cabangPage = $this->inertiaPage($this->actingAs($cabang)->get('/dashboard'));
         $this->assertTrue($cabangPage['props']['summary']['opname_due']);
     }
 
     public function test_manager_dashboard_is_scoped_to_own_outlet(): void
     {
-        $cabang = User::where('email', 'manajer.cabang@gudangku.test')->firstOrFail();
+        $cabang = User::where('email', 'salsi@gudangku.test')->firstOrFail();
 
         $page = $this->inertiaPage($this->actingAs($cabang)->get('/dashboard'));
 

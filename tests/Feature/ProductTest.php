@@ -28,12 +28,12 @@ class ProductTest extends TestCase
 
     private function managerPusat(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     private function managerCabang(): User
     {
-        return User::where('email', 'manajer.cabang@gudangku.test')->firstOrFail();
+        return User::where('email', 'salsi@gudangku.test')->firstOrFail();
     }
 
     /**
@@ -91,8 +91,8 @@ class ProductTest extends TestCase
 
     public function test_manager_stock_is_scoped_to_own_outlet(): void
     {
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
-        $cabang = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
+        $cabang = Outlet::where('code', 'TMB-01')->firstOrFail();
         $product = Product::where('sku', 'BTL-PRF')->firstOrFail();
 
         $pagePusat = $this->inertiaPage($this->actingAs($this->managerPusat())->get('/products'));

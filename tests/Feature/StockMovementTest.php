@@ -29,12 +29,12 @@ class StockMovementTest extends TestCase
 
     private function managerPusat(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     private function outletPusat(): Outlet
     {
-        return Outlet::where('code', 'CKR-01')->firstOrFail();
+        return Outlet::where('code', 'KDM-01')->firstOrFail();
     }
 
     private function product(string $sku = 'PLK-KCL'): Product

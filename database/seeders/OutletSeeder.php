@@ -11,17 +11,24 @@ class OutletSeeder extends Seeder
     {
         $outlets = [
             [
-                'code' => 'CKR-01',
-                'name' => 'Outlet Cakrawala Pusat',
-                'address' => 'Jl. Merdeka No. 10, Jakarta Pusat',
-                'phone' => '021-5550101',
+                'code' => 'KDM-01',
+                'name' => 'Kedungmundu',
+                'address' => 'Jl. Kedungmundu Raya, Semarang',
+                'phone' => '024-767001',
                 'is_active' => true,
             ],
             [
-                'code' => 'CKR-02',
-                'name' => 'Outlet Cakrawala Cabang',
-                'address' => 'Jl. Raya Bogor No. 88, Jakarta Timur',
-                'phone' => '021-5550202',
+                'code' => 'TMB-01',
+                'name' => 'Tembalang',
+                'address' => 'Jl. Setiabudi, Tembalang, Semarang',
+                'phone' => '024-767002',
+                'is_active' => true,
+            ],
+            [
+                'code' => 'ALT-01',
+                'name' => 'Alton',
+                'address' => 'Kawasan Alton, Semarang',
+                'phone' => '024-767003',
                 'is_active' => true,
             ],
         ];

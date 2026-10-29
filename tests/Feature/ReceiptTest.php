@@ -28,7 +28,7 @@ class ReceiptTest extends TestCase
 
     private function managerPusat(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     private function owner(): User
@@ -38,7 +38,7 @@ class ReceiptTest extends TestCase
 
     private function outletPusat(): Outlet
     {
-        return Outlet::where('code', 'CKR-01')->firstOrFail();
+        return Outlet::where('code', 'KDM-01')->firstOrFail();
     }
 
     private function product(string $sku = 'PLK-KCL'): Product
@@ -122,7 +122,7 @@ class ReceiptTest extends TestCase
 
     public function test_manager_receipt_always_uses_own_outlet(): void
     {
-        $cabang = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $cabang = Outlet::where('code', 'TMB-01')->firstOrFail();
 
         $this->actingAs($this->managerPusat())->post('/receipts', [
             'outlet_id' => $cabang->id,
@@ -139,7 +139,7 @@ class ReceiptTest extends TestCase
 
     public function test_manager_cannot_view_other_outlet_receipt(): void
     {
-        $lain = Purchase::whereHas('outlet', fn ($query) => $query->where('code', 'CKR-02'))
+        $lain = Purchase::whereHas('outlet', fn ($query) => $query->where('code', 'TMB-01'))
             ->firstOrFail();
 
         $this->actingAs($this->managerPusat())
@@ -154,7 +154,7 @@ class ReceiptTest extends TestCase
     public function test_manager_cannot_edit_receipt_that_is_already_priced(): void
     {
         $priced = Purchase::whereNotNull('priced_at')
-            ->whereHas('outlet', fn ($query) => $query->where('code', 'CKR-01'))
+            ->whereHas('outlet', fn ($query) => $query->where('code', 'KDM-01'))
             ->firstOrFail();
 
         $this->actingAs($this->managerPusat())
@@ -169,7 +169,7 @@ class ReceiptTest extends TestCase
     public function test_manager_can_change_quantity_while_unpriced_and_stock_follows(): void
     {
         $purchase = Purchase::whereNull('priced_at')
-            ->whereHas('outlet', fn ($query) => $query->where('code', 'CKR-01'))
+            ->whereHas('outlet', fn ($query) => $query->where('code', 'KDM-01'))
             ->firstOrFail();
 
         $item = $purchase->items()->firstOrFail();
@@ -202,7 +202,7 @@ class ReceiptTest extends TestCase
     public function test_removing_item_returns_stock(): void
     {
         $purchase = Purchase::whereNull('priced_at')
-            ->whereHas('outlet', fn ($query) => $query->where('code', 'CKR-01'))
+            ->whereHas('outlet', fn ($query) => $query->where('code', 'KDM-01'))
             ->firstOrFail();
 
         $outlet = $this->outletPusat();
@@ -240,7 +240,7 @@ class ReceiptTest extends TestCase
     public function test_removing_item_is_rejected_when_stock_would_go_negative(): void
     {
         $purchase = Purchase::whereNull('priced_at')
-            ->whereHas('outlet', fn ($query) => $query->where('code', 'CKR-01'))
+            ->whereHas('outlet', fn ($query) => $query->where('code', 'KDM-01'))
             ->firstOrFail();
 
         $outlet = $this->outletPusat();
@@ -318,7 +318,7 @@ class ReceiptTest extends TestCase
      */
     public function test_manager_receipt_detail_has_no_price_fields(): void
     {
-        $purchase = Purchase::whereHas('outlet', fn ($query) => $query->where('code', 'CKR-01'))
+        $purchase = Purchase::whereHas('outlet', fn ($query) => $query->where('code', 'KDM-01'))
             ->firstOrFail();
 
         $page = $this->inertiaPage(

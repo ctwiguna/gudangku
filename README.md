@@ -57,9 +57,10 @@ Register publik hanya membuat akun **manajer nonaktif**. Akun tersebut tidak bis
 | Peran | Email | Password | Keterangan |
 | :--- | :--- | :--- | :--- |
 | Owner | `owner@gudangku.test` | `password` | Akses penuh, tidak terikat outlet |
-| Manajer | `manajer.pusat@gudangku.test` | `password` | Outlet Cakrawala Pusat (CKR-01) |
-| Manajer | `manajer.cabang@gudangku.test` | `password` | Outlet Cakrawala Cabang (CKR-02) |
-| Manajer nonaktif | `manajer.baru@gudangku.test` | `password` | Belum punya outlet, tidak bisa login |
+| Manajer | `ina@gudangku.test` | `password` | Outlet Kedungmundu (KDM-01) |
+| Manajer | `salsi@gudangku.test` | `password` | Outlet Tembalang (TMB-01) |
+| Manajer | `nafa@gudangku.test` | `password` | Outlet Alton (ALT-01) |
+| Manajer nonaktif | `kandidat@gudangku.test` | `password` | Belum punya outlet, tidak bisa login |
 
 Akun ini hanya untuk keperluan demonstrasi UAS.
 

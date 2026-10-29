@@ -30,12 +30,12 @@ class ReportTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     private function outlet(): Outlet
     {
-        return Outlet::where('code', 'CKR-01')->firstOrFail();
+        return Outlet::where('code', 'KDM-01')->firstOrFail();
     }
 
     /**

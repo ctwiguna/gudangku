@@ -31,12 +31,12 @@ class SecurityTest extends TestCase
 
     private function managerPusat(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     private function outletPusat(): Outlet
     {
-        return Outlet::where('code', 'CKR-01')->firstOrFail();
+        return Outlet::where('code', 'KDM-01')->firstOrFail();
     }
 
     /**
@@ -174,7 +174,7 @@ class SecurityTest extends TestCase
 
     public function test_manager_cannot_open_other_outlet_receipt_by_id(): void
     {
-        $lain = Purchase::whereHas('outlet', fn ($query) => $query->where('code', 'CKR-02'))
+        $lain = Purchase::whereHas('outlet', fn ($query) => $query->where('code', 'TMB-01'))
             ->firstOrFail();
 
         $this->actingAs($this->managerPusat())

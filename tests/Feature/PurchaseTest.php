@@ -31,19 +31,19 @@ class PurchaseTest extends TestCase
 
     private function managerPusat(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     private function outletPusat(): Outlet
     {
-        return Outlet::where('code', 'CKR-01')->firstOrFail();
+        return Outlet::where('code', 'KDM-01')->firstOrFail();
     }
 
     /** Pembelian outlet pusat yang belum dihargai. */
     private function unpriced(): Purchase
     {
         return Purchase::whereNull('priced_at')
-            ->whereHas('outlet', fn ($query) => $query->where('code', 'CKR-01'))
+            ->whereHas('outlet', fn ($query) => $query->where('code', 'KDM-01'))
             ->firstOrFail();
     }
 

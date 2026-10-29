@@ -26,7 +26,7 @@ class SessionSecurityTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     private function insertSession(int $userId, string $id): void

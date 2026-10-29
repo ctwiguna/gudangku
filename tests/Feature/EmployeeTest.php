@@ -27,10 +27,10 @@ class EmployeeTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
-    private function outlet(string $code = 'CKR-01'): Outlet
+    private function outlet(string $code = 'KDM-01'): Outlet
     {
         return Outlet::where('code', $code)->firstOrFail();
     }
@@ -197,8 +197,8 @@ class EmployeeTest extends TestCase
      */
     public function test_employee_list_can_be_filtered_by_outlet(): void
     {
-        $pusat = $this->outlet('CKR-01');
-        $cabang = $this->outlet('CKR-02');
+        $pusat = $this->outlet('KDM-01');
+        $cabang = $this->outlet('TMB-01');
 
         Employee::create([
             'outlet_id' => $pusat->id,
@@ -233,8 +233,8 @@ class EmployeeTest extends TestCase
 
     public function test_employee_can_be_moved_to_another_outlet(): void
     {
-        $pusat = $this->outlet('CKR-01');
-        $cabang = $this->outlet('CKR-02');
+        $pusat = $this->outlet('KDM-01');
+        $cabang = $this->outlet('TMB-01');
 
         $employee = Employee::create([
             'outlet_id' => $pusat->id,
@@ -262,7 +262,7 @@ class EmployeeTest extends TestCase
      */
     public function test_outlet_with_employee_cannot_be_deleted(): void
     {
-        $pusat = $this->outlet('CKR-01');
+        $pusat = $this->outlet('KDM-01');
 
         Employee::create([
             'outlet_id' => $pusat->id,

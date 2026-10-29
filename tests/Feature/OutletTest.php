@@ -26,7 +26,7 @@ class OutletTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     /**
@@ -75,32 +75,32 @@ class OutletTest extends TestCase
     public function test_duplicate_outlet_code_is_rejected(): void
     {
         $this->actingAs($this->owner())
-            ->post('/outlets', ['name' => 'Duplikat', 'code' => 'CKR-01'])
+            ->post('/outlets', ['name' => 'Duplikat', 'code' => 'KDM-01'])
             ->assertSessionHasErrors('code');
 
-        $this->assertSame(1, Outlet::where('code', 'CKR-01')->count());
+        $this->assertSame(1, Outlet::where('code', 'KDM-01')->count());
     }
 
     public function test_owner_can_update_outlet(): void
     {
-        $outlet = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $outlet = Outlet::where('code', 'TMB-01')->firstOrFail();
 
         $this->actingAs($this->owner())
             ->put("/outlets/{$outlet->id}", [
-                'name' => 'Outlet Cakrawala Cabang Baru',
-                'code' => 'CKR-02',
+                'name' => 'Tembalang Baru',
+                'code' => 'TMB-01',
                 'address' => 'Alamat baru',
                 'phone' => '021-9999999',
                 'is_active' => true,
             ])
             ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseHas('outlets', ['id' => $outlet->id, 'name' => 'Outlet Cakrawala Cabang Baru']);
+        $this->assertDatabaseHas('outlets', ['id' => $outlet->id, 'name' => 'Tembalang Baru']);
     }
 
     public function test_owner_can_toggle_outlet_status(): void
     {
-        $outlet = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $outlet = Outlet::where('code', 'TMB-01')->firstOrFail();
 
         $this->actingAs($this->owner())
             ->patch("/outlets/{$outlet->id}/status")
@@ -115,7 +115,7 @@ class OutletTest extends TestCase
 
     public function test_outlet_with_data_cannot_be_deleted(): void
     {
-        $outlet = Outlet::where('code', 'CKR-01')->firstOrFail();
+        $outlet = Outlet::where('code', 'KDM-01')->firstOrFail();
 
         $response = $this->actingAs($this->owner())->delete("/outlets/{$outlet->id}");
 
@@ -141,7 +141,7 @@ class OutletTest extends TestCase
 
     public function test_manager_is_forbidden_on_outlet_routes(): void
     {
-        $outlet = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $outlet = Outlet::where('code', 'TMB-01')->firstOrFail();
         $manager = $this->manager();
 
         $this->actingAs($manager)->get('/outlets')->assertForbidden();

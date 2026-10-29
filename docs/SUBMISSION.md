@@ -73,9 +73,10 @@ Ringkasan ini bisa dipakai sebagai naskah pendukung video; versi lengkap ada di 
 | Peran | Email | Password |
 | :--- | :--- | :--- |
 | Owner | `owner@gudangku.test` | `password` |
-| Manajer pusat | `manajer.pusat@gudangku.test` | `password` |
-| Manajer cabang | `manajer.cabang@gudangku.test` | `password` |
-| Manajer nonaktif | `manajer.baru@gudangku.test` | `password` |
+| Manajer | `ina@gudangku.test` | `password` | Outlet Kedungmundu (KDM-01) |
+| Manajer | `salsi@gudangku.test` | `password` | Outlet Tembalang (TMB-01) |
+| Manajer | `nafa@gudangku.test` | `password` | Outlet Alton (ALT-01) |
+| Manajer nonaktif | `kandidat@gudangku.test` | `password` | Belum punya outlet |
 
 ## 7. Catatan untuk penilai
 

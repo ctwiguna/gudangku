@@ -14,8 +14,8 @@ class ExpenseSeeder extends Seeder
     public function run(): void
     {
         $owner = User::where('email', 'owner@gudangku.test')->firstOrFail();
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
-        $cabang = Outlet::where('code', 'CKR-02')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
+        $cabang = Outlet::where('code', 'TMB-01')->firstOrFail();
 
         // Tanggal dibuat relatif terhadap bulan berjalan supaya kartu
         // "pengeluaran bulan ini" di dashboard selalu berisi.

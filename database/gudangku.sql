@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'c014ecb0-d29a-11f1-8990-ed9626fb7b76:1-514';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'c014ecb0-d29a-11f1-8990-ed9626fb7b76:1-729';
 
 --
 -- Table structure for table `cache`
@@ -97,8 +97,42 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'Gas LPG',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(2,'Deterjen',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(3,'Plastik packing kecil',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(4,'Plastik packing besar',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(5,'Botol parfum',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(6,'Softener',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(7,'Botol parfum ruangan',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(8,'Pembersih lantai',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(9,'Selotip',NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `categories` VALUES (1,'Gas LPG',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,'Deterjen',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,'Plastik packing kecil',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,'Plastik packing besar',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,'Botol parfum',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,'Softener',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,'Botol parfum ruangan',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,'Pembersih lantai',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,'Selotip',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employees`
+--
+
+DROP TABLE IF EXISTS `employees`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employees` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `outlet_id` bigint unsigned DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `salary` decimal(14,2) NOT NULL,
+  `salary_unit` enum('harian','mingguan','bulanan') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `employees_is_active_name_index` (`is_active`,`name`),
+  KEY `employees_outlet_id_foreign` (`outlet_id`),
+  CONSTRAINT `employees_outlet_id_foreign` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employees`
+--
+
+LOCK TABLES `employees` WRITE;
+/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES (1,1,'Salsa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,'Ida',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,'Fera',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,1,'Mila',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,'Cynthia',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,1,'Sevina',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,1,'Salwa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,1,'Ina',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,2,'Dinda',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(10,2,'Salsi',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(11,2,'Valen',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(12,2,'Shifa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(13,3,'Nafa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(14,3,'Ajwa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42');
+/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -135,7 +169,7 @@ CREATE TABLE `expenses` (
 
 LOCK TABLES `expenses` WRITE;
 /*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
-INSERT INTO `expenses` VALUES (1,1,1,'sewa','2026-10-01',NULL,NULL,3000000.00,'Sewa tempat bulan berjalan','2026-10-28 06:42:32','2026-10-28 06:42:32'),(2,1,1,'listrik','2026-10-05',NULL,NULL,350000.00,'Token listrik outlet pusat','2026-10-28 06:42:32','2026-10-28 06:42:32'),(3,1,1,'air','2026-10-06',NULL,NULL,180000.00,'Tagihan PDAM','2026-10-28 06:42:32','2026-10-28 06:42:32'),(4,1,1,'ipal','2026-10-07',NULL,NULL,250000.00,'Iuran IPAL bulanan','2026-10-28 06:42:32','2026-10-28 06:42:32'),(5,1,1,'lain','2026-10-10',NULL,NULL,120000.00,'Perbaikan keran dan lampu','2026-10-28 06:42:32','2026-10-28 06:42:32'),(6,1,1,'gaji','2026-10-19','2026-10-19','2026-10-25',1500000.00,'Gaji karyawan minggu ketiga','2026-10-28 06:42:32','2026-10-28 06:42:32'),(7,2,1,'sewa','2026-10-01',NULL,NULL,2250000.00,'Sewa tempat cabang','2026-10-28 06:42:32','2026-10-28 06:42:32'),(8,2,1,'listrik','2026-10-05',NULL,NULL,275000.00,'Token listrik cabang','2026-10-28 06:42:32','2026-10-28 06:42:32'),(9,2,1,'air','2026-10-06',NULL,NULL,150000.00,'Tagihan PDAM cabang','2026-10-28 06:42:32','2026-10-28 06:42:32'),(10,2,1,'ipal','2026-10-07',NULL,NULL,200000.00,'Iuran IPAL cabang','2026-10-28 06:42:32','2026-10-28 06:42:32'),(11,2,1,'gaji','2026-10-19','2026-10-19','2026-10-25',1400000.00,'Gaji karyawan minggu ketiga','2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `expenses` VALUES (1,1,1,'sewa','2026-10-01',NULL,NULL,3000000.00,'Sewa tempat bulan berjalan','2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,1,'listrik','2026-10-05',NULL,NULL,350000.00,'Token listrik outlet pusat','2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,1,'air','2026-10-06',NULL,NULL,180000.00,'Tagihan PDAM','2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,1,1,'ipal','2026-10-07',NULL,NULL,250000.00,'Iuran IPAL bulanan','2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,1,'lain','2026-10-10',NULL,NULL,120000.00,'Perbaikan keran dan lampu','2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,1,1,'gaji','2026-10-19','2026-10-19','2026-10-25',1500000.00,'Gaji karyawan minggu ketiga','2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,2,1,'sewa','2026-10-01',NULL,NULL,2250000.00,'Sewa tempat cabang','2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,2,1,'listrik','2026-10-05',NULL,NULL,275000.00,'Token listrik cabang','2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,2,1,'air','2026-10-06',NULL,NULL,150000.00,'Tagihan PDAM cabang','2026-10-29 09:42:42','2026-10-29 09:42:42'),(10,2,1,'ipal','2026-10-07',NULL,NULL,200000.00,'Iuran IPAL cabang','2026-10-29 09:42:42','2026-10-29 09:42:42'),(11,2,1,'gaji','2026-10-19','2026-10-19','2026-10-25',1400000.00,'Gaji karyawan minggu ketiga','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,7 +275,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,7 +284,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'0000_01_01_000000_create_outlets_table',1),(2,'0001_01_01_000000_create_users_table',1),(3,'0001_01_01_000001_create_cache_table',1),(4,'0001_01_01_000002_create_jobs_table',1),(5,'2026_10_28_000100_create_categories_table',1),(6,'2026_10_28_000200_create_suppliers_table',1),(7,'2026_10_28_000300_create_products_table',1),(8,'2026_10_28_000400_create_purchases_table',1),(9,'2026_10_28_000500_create_purchase_items_table',1),(10,'2026_10_28_000600_create_stock_movements_table',1),(11,'2026_10_28_000700_create_stock_opnames_table',1),(12,'2026_10_28_000800_create_stock_opname_items_table',1),(13,'2026_10_28_000900_create_expenses_table',1);
+INSERT INTO `migrations` VALUES (1,'0000_01_01_000000_create_outlets_table',1),(2,'0001_01_01_000000_create_users_table',1),(3,'0001_01_01_000001_create_cache_table',1),(4,'0001_01_01_000002_create_jobs_table',1),(5,'2026_10_28_000100_create_categories_table',1),(6,'2026_10_28_000200_create_suppliers_table',1),(7,'2026_10_28_000300_create_products_table',1),(8,'2026_10_28_000400_create_purchases_table',1),(9,'2026_10_28_000500_create_purchase_items_table',1),(10,'2026_10_28_000600_create_stock_movements_table',1),(11,'2026_10_28_000700_create_stock_opnames_table',1),(12,'2026_10_28_000800_create_stock_opname_items_table',1),(13,'2026_10_28_000900_create_expenses_table',1),(14,'2026_10_29_000100_add_supplier_terms_to_suppliers_table',1),(15,'2026_10_29_000200_add_price_updated_at_to_products_table',1),(16,'2026_10_29_000300_create_employees_table',1),(17,'2026_10_29_000400_change_term_of_payment_to_days',1),(18,'2026_10_29_000500_add_outlet_to_employees_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,7 +306,7 @@ CREATE TABLE `outlets` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `outlets_code_unique` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +315,7 @@ CREATE TABLE `outlets` (
 
 LOCK TABLES `outlets` WRITE;
 /*!40000 ALTER TABLE `outlets` DISABLE KEYS */;
-INSERT INTO `outlets` VALUES (1,'Outlet Cakrawala Pusat','CKR-01','Jl. Merdeka No. 10, Jakarta Pusat','021-5550101',1,'2026-10-28 06:42:30','2026-10-28 06:42:30'),(2,'Outlet Cakrawala Cabang','CKR-02','Jl. Raya Bogor No. 88, Jakarta Timur','021-5550202',1,'2026-10-28 06:42:30','2026-10-28 06:42:30');
+INSERT INTO `outlets` VALUES (1,'Kedungmundu','KDM-01','Jl. Kedungmundu Raya, Semarang','024-767001',1,'2026-10-29 09:42:41','2026-10-29 09:42:41'),(2,'Tembalang','TMB-01','Jl. Setiabudi, Tembalang, Semarang','024-767002',1,'2026-10-29 09:42:41','2026-10-29 09:42:41'),(3,'Alton','ALT-01','Kawasan Alton, Semarang','024-767003',1,'2026-10-29 09:42:41','2026-10-29 09:42:41');
 /*!40000 ALTER TABLE `outlets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,6 +359,7 @@ CREATE TABLE `products` (
   `unit` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pcs',
   `min_stock` int unsigned NOT NULL DEFAULT '0',
   `price_buy` decimal(14,2) NOT NULL DEFAULT '0.00',
+  `price_updated_at` date DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -344,7 +379,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,1,1,'Gas LPG 12kg kondisi full','LPG-12','pcs',6,21000.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(2,2,2,'Jerigen deterjen','DTR-JRG','pcs',4,33000.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(3,3,2,'Plastik packing kecil','PLK-KCL','pcs',50,500.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(4,4,2,'Plastik packing besar','PLK-BSR','pcs',30,1200.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(5,5,2,'Botol parfum','BTL-PRF','pcs',20,4200.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(6,6,2,'Box sachet softener','BOX-SFT','pcs',10,7800.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(7,7,2,'Botol parfum ruangan','BTL-PRR','pcs',12,9500.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(8,8,2,'Pembersih lantai','PBR-LNT','pcs',10,18000.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(9,9,2,'Selotip','SLT-01','pcs',6,5000.00,1,'2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `products` VALUES (1,1,1,'Gas LPG 12kg kondisi full','LPG-12','pcs',6,21000.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,2,2,'Jerigen deterjen','DTR-JRG','pcs',4,33000.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,3,2,'Plastik packing kecil','PLK-KCL','pcs',50,500.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,4,2,'Plastik packing besar','PLK-BSR','pcs',30,1200.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,5,2,'Botol parfum','BTL-PRF','pcs',20,4200.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,6,2,'Box sachet softener','BOX-SFT','pcs',10,7800.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,7,2,'Botol parfum ruangan','BTL-PRR','pcs',12,9500.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,8,2,'Pembersih lantai','PBR-LNT','pcs',10,18000.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,9,2,'Selotip','SLT-01','pcs',6,5000.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,7 +413,7 @@ CREATE TABLE `purchase_items` (
 
 LOCK TABLES `purchase_items` WRITE;
 /*!40000 ALTER TABLE `purchase_items` DISABLE KEYS */;
-INSERT INTO `purchase_items` VALUES (1,1,3,100,NULL,0.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(2,1,4,50,NULL,0.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(3,1,9,20,NULL,0.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(4,2,1,10,21000.00,210000.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(5,2,2,5,33000.00,165000.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(6,3,5,30,4200.00,126000.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(7,3,6,12,7800.00,93600.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(8,4,8,8,NULL,0.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(9,4,7,10,NULL,0.00,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(10,5,8,6,19500.00,117000.00,'2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `purchase_items` VALUES (1,1,3,100,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,4,50,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,9,20,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,2,1,10,21000.00,210000.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,2,2,5,33000.00,165000.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,3,5,30,4200.00,126000.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,3,6,12,7800.00,93600.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,4,8,8,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,4,7,10,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(10,5,8,6,19500.00,117000.00,'2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `purchase_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,7 +454,7 @@ CREATE TABLE `purchases` (
 
 LOCK TABLES `purchases` WRITE;
 /*!40000 ALTER TABLE `purchases` DISABLE KEYS */;
-INSERT INTO `purchases` VALUES (1,1,2,2,'INV-SEED-001','2026-10-25',NULL,NULL,0.00,'Penerimaan rutin mingguan, menunggu harga owner.','2026-10-28 06:42:32','2026-10-28 06:42:32'),(2,1,1,2,'INV-SEED-002','2026-10-21','2026-10-22',NULL,375000.00,'Gas LPG dan deterjen, masuk hitungan hutang.','2026-10-28 06:42:32','2026-10-28 06:42:32'),(3,2,2,3,'INV-SEED-003','2026-10-18','2026-10-18','2026-10-19',219600.00,'Pembelian packaging cabang, sudah dilunasi.','2026-10-28 06:42:32','2026-10-28 06:42:32'),(4,2,2,3,'INV-SEED-004','2026-10-27',NULL,NULL,0.00,'Penerimaan cabang, menunggu harga.','2026-10-28 06:42:32','2026-10-28 06:42:32'),(5,1,2,1,'INV-SEED-005','2026-10-26','2026-10-26',NULL,117000.00,'Dibuat owner lengkap dengan harga sejak awal.','2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `purchases` VALUES (1,1,2,2,'INV-SEED-001','2026-10-26',NULL,NULL,0.00,'Penerimaan rutin mingguan, menunggu harga owner.','2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,1,2,'INV-SEED-002','2026-10-22','2026-10-23',NULL,375000.00,'Gas LPG dan deterjen, masuk hitungan hutang.','2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,2,2,3,'INV-SEED-003','2026-10-19','2026-10-19','2026-10-20',219600.00,'Pembelian packaging cabang, sudah dilunasi.','2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,2,2,3,'INV-SEED-004','2026-10-28',NULL,NULL,0.00,'Penerimaan cabang, menunggu harga.','2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,2,1,'INV-SEED-005','2026-10-27','2026-10-27',NULL,117000.00,'Dibuat owner lengkap dengan harga sejak awal.','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `purchases` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -490,7 +525,7 @@ CREATE TABLE `stock_movements` (
 
 LOCK TABLES `stock_movements` WRITE;
 /*!40000 ALTER TABLE `stock_movements` DISABLE KEYS */;
-INSERT INTO `stock_movements` VALUES (1,1,3,2,'in',100,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-25 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(2,1,4,2,'in',50,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-25 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(3,1,9,2,'in',20,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-25 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(4,1,1,2,'in',10,'App\\Models\\Purchase',2,'Penerimaan INV-SEED-002','2026-10-21 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(5,1,2,2,'in',5,'App\\Models\\Purchase',2,'Penerimaan INV-SEED-002','2026-10-21 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(6,2,5,3,'in',30,'App\\Models\\Purchase',3,'Penerimaan INV-SEED-003','2026-10-18 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(7,2,6,3,'in',12,'App\\Models\\Purchase',3,'Penerimaan INV-SEED-003','2026-10-18 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(8,2,8,3,'in',8,'App\\Models\\Purchase',4,'Penerimaan INV-SEED-004','2026-10-27 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(9,2,7,3,'in',10,'App\\Models\\Purchase',4,'Penerimaan INV-SEED-004','2026-10-27 09:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(10,1,8,1,'in',6,'App\\Models\\Purchase',5,'Penerimaan INV-SEED-005','2026-10-26 10:00:00','2026-10-28 06:42:32','2026-10-28 06:42:32'),(11,1,3,2,'adjustment',-4,'App\\Models\\StockOpname',1,'Penyesuaian stock opname 2026-10-26','2026-10-28 13:42:32','2026-10-28 06:42:32','2026-10-28 06:42:32'),(12,1,9,2,'adjustment',2,'App\\Models\\StockOpname',1,'Penyesuaian stock opname 2026-10-26','2026-10-28 13:42:32','2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `stock_movements` VALUES (1,1,3,2,'in',100,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-26 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,4,2,'in',50,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-26 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,9,2,'in',20,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-26 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,1,1,2,'in',10,'App\\Models\\Purchase',2,'Penerimaan INV-SEED-002','2026-10-22 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,2,2,'in',5,'App\\Models\\Purchase',2,'Penerimaan INV-SEED-002','2026-10-22 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,2,5,3,'in',30,'App\\Models\\Purchase',3,'Penerimaan INV-SEED-003','2026-10-19 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,2,6,3,'in',12,'App\\Models\\Purchase',3,'Penerimaan INV-SEED-003','2026-10-19 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,2,8,3,'in',8,'App\\Models\\Purchase',4,'Penerimaan INV-SEED-004','2026-10-28 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,2,7,3,'in',10,'App\\Models\\Purchase',4,'Penerimaan INV-SEED-004','2026-10-28 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(10,1,8,1,'in',6,'App\\Models\\Purchase',5,'Penerimaan INV-SEED-005','2026-10-27 10:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(11,1,3,2,'adjustment',-4,'App\\Models\\StockOpname',1,'Penyesuaian stock opname 2026-10-26','2026-10-29 16:42:42','2026-10-29 09:42:42','2026-10-29 09:42:42'),(12,1,9,2,'adjustment',2,'App\\Models\\StockOpname',1,'Penyesuaian stock opname 2026-10-26','2026-10-29 16:42:42','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `stock_movements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -525,7 +560,7 @@ CREATE TABLE `stock_opname_items` (
 
 LOCK TABLES `stock_opname_items` WRITE;
 /*!40000 ALTER TABLE `stock_opname_items` DISABLE KEYS */;
-INSERT INTO `stock_opname_items` VALUES (1,1,5,0,0,0,NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(2,1,7,0,0,0,NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(3,1,6,0,0,0,NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(4,1,1,10,10,0,NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(5,1,2,5,5,0,NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(6,1,8,6,6,0,NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(7,1,4,50,50,0,NULL,'2026-10-28 06:42:32','2026-10-28 06:42:32'),(8,1,3,100,96,-4,'Selisih hasil hitung fisik','2026-10-28 06:42:32','2026-10-28 06:42:32'),(9,1,9,20,22,2,'Selisih hasil hitung fisik','2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `stock_opname_items` VALUES (1,1,5,0,0,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,7,0,0,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,6,0,0,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,1,1,10,10,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,2,5,5,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,1,8,6,6,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,1,4,50,50,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,1,3,100,96,-4,'Selisih hasil hitung fisik','2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,1,9,20,22,2,'Selisih hasil hitung fisik','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `stock_opname_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -560,7 +595,7 @@ CREATE TABLE `stock_opnames` (
 
 LOCK TABLES `stock_opnames` WRITE;
 /*!40000 ALTER TABLE `stock_opnames` DISABLE KEYS */;
-INSERT INTO `stock_opnames` VALUES (1,1,2,'2026-10-26','2026-11-01','2026-10-28 09:30:00','Opname rutin mingguan outlet pusat.','2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `stock_opnames` VALUES (1,1,2,'2026-10-26','2026-11-01','2026-10-28 09:30:00','Opname rutin mingguan outlet pusat.','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `stock_opnames` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -576,6 +611,8 @@ CREATE TABLE `suppliers` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contact_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lead_time_days` smallint unsigned DEFAULT NULL,
+  `term_of_payment` smallint unsigned DEFAULT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -590,7 +627,7 @@ CREATE TABLE `suppliers` (
 
 LOCK TABLES `suppliers` WRITE;
 /*!40000 ALTER TABLE `suppliers` DISABLE KEYS */;
-INSERT INTO `suppliers` VALUES (1,'PT Sumber Gas Nusantara','Hendra','021-7001111','Jl. Industri Gas No. 4, Bekasi','2026-10-28 06:42:32','2026-10-28 06:42:32'),(2,'CV Aroma Kemas Nusantara','Lestari','021-7002222','Jl. Kemasan Raya No. 21, Tangerang','2026-10-28 06:42:32','2026-10-28 06:42:32');
+INSERT INTO `suppliers` VALUES (1,'PT Sumber Gas Nusantara','Hendra','021-7001111',3,14,'Jl. Industri Gas No. 4, Bekasi','2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,'CV Aroma Kemas Nusantara','Lestari','021-7002222',7,30,'Jl. Kemasan Raya No. 21, Tangerang','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `suppliers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -618,7 +655,7 @@ CREATE TABLE `users` (
   KEY `users_outlet_id_foreign` (`outlet_id`),
   KEY `users_role_is_active_index` (`role`,`is_active`),
   CONSTRAINT `users_outlet_id_foreign` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -627,7 +664,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'Chandra TW','owner@gudangku.test',NULL,'$2y$12$.avotegFIQ/I01DNrG1cRe8yEAHOnGi5YUo9O6vN3lVtEGnQcukIO','owner',1,NULL,'2026-10-28 06:42:31','2026-10-28 06:42:34'),(2,1,'Rina Manajer Pusat','manajer.pusat@gudangku.test',NULL,'$2y$12$VzbMD7jc.XULXSv7gvLSVe5M2a5Rcvk.EzwZTUekhmITqJTN0aiR.','manajer',1,NULL,'2026-10-28 06:42:31','2026-10-28 06:42:34'),(3,2,'Budi Manajer Cabang','manajer.cabang@gudangku.test',NULL,'$2y$12$R4mNaQbkfdfQUAHYPx6pEu1h5sbYH9tP00N6aYm4fA.6z7A0ip5ci','manajer',1,NULL,'2026-10-28 06:42:31','2026-10-28 06:42:34'),(4,NULL,'Sari Pendaftar Baru','manajer.baru@gudangku.test',NULL,'$2y$12$lgEimMhdit.NpRT3qNhoWugUodTuXOUvu.Bw/FDEge/L1GNzEW6EW','manajer',0,NULL,'2026-10-28 06:42:32','2026-10-28 06:42:34');
+INSERT INTO `users` VALUES (1,NULL,'Chandra TW','owner@gudangku.test',NULL,'$2y$12$4kW3r2PszsOdC.yxHhZhROugYL4LJJrlISw7gpKVzGcIO7V1bvLXC','owner',1,NULL,'2026-10-29 09:42:41','2026-10-29 09:42:41'),(2,1,'Ina','ina@gudangku.test',NULL,'$2y$12$94TfOgv7Qt1KlW9GWRxMA.pL.kjXoxYXRm4uLtuF5AaAxNgK71lmG','manajer',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,2,'Salsi','salsi@gudangku.test',NULL,'$2y$12$1VgF3B/yyPpRavE/l81vC.U6MjY3X9zwBinR7UJr9EZEjC/eTRY3K','manajer',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,3,'Nafa','nafa@gudangku.test',NULL,'$2y$12$hL0WRO8KW4ic2iLYf/D3ceDYgct272pgKIdQ1mOg/sWZ7b4sY1rfe','manajer',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,NULL,'Kandidat Pendaftar','kandidat@gudangku.test',NULL,'$2y$12$dOFOp.MaYfHXTxUDocdeF.nWs266Tks9kQbk076CYytx.zYOvpzNK','manajer',0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
@@ -641,4 +678,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-29  6:27:55
+-- Dump completed on 2026-10-29 16:43:40

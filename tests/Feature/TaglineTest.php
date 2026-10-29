@@ -70,7 +70,7 @@ class TaglineTest extends TestCase
     public function test_tagline_is_shared_on_authenticated_pages(): void
     {
         $owner = User::where('email', 'owner@gudangku.test')->firstOrFail();
-        $manager = User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        $manager = User::where('email', 'ina@gudangku.test')->firstOrFail();
 
         foreach ([[$owner, '/dashboard'], [$owner, '/reports'], [$manager, '/dashboard']] as [$user, $path]) {
             $page = $this->inertiaPage($this->actingAs($user)->get($path));

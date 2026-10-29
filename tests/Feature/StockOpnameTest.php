@@ -31,18 +31,18 @@ class StockOpnameTest extends TestCase
 
     private function managerPusat(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     /** Outlet cabang belum punya opname minggu ini. */
     private function managerCabang(): User
     {
-        return User::where('email', 'manajer.cabang@gudangku.test')->firstOrFail();
+        return User::where('email', 'salsi@gudangku.test')->firstOrFail();
     }
 
     private function outletCabang(): Outlet
     {
-        return Outlet::where('code', 'CKR-02')->firstOrFail();
+        return Outlet::where('code', 'TMB-01')->firstOrFail();
     }
 
     /**
@@ -169,7 +169,7 @@ class StockOpnameTest extends TestCase
     public function test_second_opname_in_same_week_is_rejected(): void
     {
         // Outlet pusat sudah opname minggu ini lewat seeder.
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
         $before = StockOpname::count();
 
         $response = $this->actingAs($this->managerPusat())
@@ -183,7 +183,7 @@ class StockOpnameTest extends TestCase
 
     public function test_manager_cannot_target_another_outlet(): void
     {
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
 
         $this->actingAs($this->managerCabang())->post('/stock-opnames', [
             'outlet_id' => $pusat->id,
@@ -198,7 +198,7 @@ class StockOpnameTest extends TestCase
 
     public function test_owner_can_submit_opname_for_any_outlet(): void
     {
-        $pusat = Outlet::where('code', 'CKR-01')->firstOrFail();
+        $pusat = Outlet::where('code', 'KDM-01')->firstOrFail();
 
         // Owner mengulang opname minggu ini di outlet pusat: tetap ditolak
         // karena aturan satu opname per minggu berlaku untuk semua role.
@@ -272,14 +272,14 @@ class StockOpnameTest extends TestCase
         $pusatPage = $this->inertiaPage($this->actingAs($this->managerPusat())->get('/stock-opnames'));
         $pusatCodes = collect($pusatPage['props']['history'])->pluck('outlet_code')->unique()->values()->all();
 
-        $this->assertSame(['CKR-01'], $pusatCodes, 'Manajer pusat hanya melihat riwayat outlet pusat.');
+        $this->assertSame(['KDM-01'], $pusatCodes, 'Manajer pusat hanya melihat riwayat outlet pusat.');
         $this->assertEmpty($pusatPage['props']['outlets']);
         $this->assertEmpty($pusatPage['props']['outletStatuses']);
 
         $cabangPage = $this->inertiaPage($this->actingAs($this->managerCabang())->get('/stock-opnames'));
         $cabangCodes = collect($cabangPage['props']['history'])->pluck('outlet_code')->unique()->values()->all();
 
-        $this->assertSame(['CKR-02'], $cabangCodes, 'Manajer cabang hanya melihat riwayat outlet cabang.');
+        $this->assertSame(['TMB-01'], $cabangCodes, 'Manajer cabang hanya melihat riwayat outlet cabang.');
     }
 
     public function test_all_active_products_must_be_counted(): void

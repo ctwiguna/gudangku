@@ -27,12 +27,12 @@ class UserTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        return User::where('email', 'ina@gudangku.test')->firstOrFail();
     }
 
     private function outlet(): Outlet
     {
-        return Outlet::where('code', 'CKR-02')->firstOrFail();
+        return Outlet::where('code', 'TMB-01')->firstOrFail();
     }
 
     /**
@@ -160,7 +160,7 @@ class UserTest extends TestCase
      */
     public function test_owner_can_activate_pending_account(): void
     {
-        $pending = User::where('email', 'manajer.baru@gudangku.test')->firstOrFail();
+        $pending = User::where('email', 'kandidat@gudangku.test')->firstOrFail();
 
         $this->assertFalse($pending->is_active);
         $this->assertNull($pending->outlet_id);
@@ -219,7 +219,7 @@ class UserTest extends TestCase
 
         // Owner kedua dibuat lebih dulu supaya penghapusan diuji lewat akun lain,
         // bukan lewat aturan "tidak bisa menghapus diri sendiri".
-        $second = User::where('email', 'manajer.pusat@gudangku.test')->firstOrFail();
+        $second = User::where('email', 'ina@gudangku.test')->firstOrFail();
 
         $this->actingAs($owner)
             ->delete("/users/{$owner->id}")
@@ -247,7 +247,7 @@ class UserTest extends TestCase
 
     public function test_user_without_transactions_can_be_deleted(): void
     {
-        $pending = User::where('email', 'manajer.baru@gudangku.test')->firstOrFail();
+        $pending = User::where('email', 'kandidat@gudangku.test')->firstOrFail();
 
         $this->actingAs($this->owner())
             ->delete("/users/{$pending->id}")
@@ -259,7 +259,7 @@ class UserTest extends TestCase
     public function test_manager_is_forbidden_on_user_routes(): void
     {
         $manager = $this->manager();
-        $target = User::where('email', 'manajer.cabang@gudangku.test')->firstOrFail();
+        $target = User::where('email', 'salsi@gudangku.test')->firstOrFail();
 
         $this->actingAs($manager)->get('/users')->assertForbidden();
         $this->actingAs($manager)->post('/users', [
