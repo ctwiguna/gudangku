@@ -120,3 +120,17 @@ Yang **tidak** disarankan untuk aplikasi ini: memasang JWT + refresh token, atau
 3. Best practice nomor 2 (timestamp) benar arahnya, tetapi timestamp harus di **server**; `last_activity` sudah ada untuk idle, absolute cap belum.
 4. Mekanisme 1/2 (access vs refresh token) adalah solusi untuk arsitektur token/API. Untuk aplikasi session-based ini, padanannya adalah kombinasi idle timeout + absolute cap + revoke on password change — tanpa perlu refresh token.
 5. Tiga peningkatan yang benar-benar menambah keamanan di konteks outlet: `SESSION_EXPIRE_ON_CLOSE=true`, idle lebih pendek, dan `SESSION_ENCRYPT=true`, plus absolute cap bila ingin setara praktik industri keuangan.
+
+## 8. Status implementasi
+
+| Nomor rekomendasi | Status | Berkas / bukti |
+| :--- | :--- | :--- |
+| 1. `SESSION_EXPIRE_ON_CLOSE=true` | **diterapkan** | `config/session.php`, `.env.example` |
+| 2. Idle timeout 60 menit | **diterapkan** | `SESSION_LIFETIME=60` |
+| 3. `SESSION_ENCRYPT=true` | **diterapkan** | payload sesi terenkripsi di database |
+| 4. Absolute timeout sejak login | **diterapkan** | middleware `EnsureSessionIsFresh` + `SESSION_ABSOLUTE_LIFETIME=720`; timestamp `auth.login_at` disimpan di server saat login |
+| 5. Cabut sesi lain saat ganti password | **diterapkan** | `SessionService::revokeForUser()`, dipakai `ProfileController` dan `UserController` (juga saat user dinonaktifkan) |
+
+Semua kontrol dikunci `tests/Feature/SessionSecurityTest.php` (10 test, 35 assertion).
+
+Konsekuensi yang disadari: menutup browser bererti harus login lagi, dan sesi berakhir setelah 60 menit tanpa aktivitas atau 720 menit sejak login, berapa pun aktivitasnya. Ini pilihan sadar untuk konteks perangkat bersama di outlet.

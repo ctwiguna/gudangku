@@ -28,7 +28,7 @@ Route::middleware('guest')->group(function (): void {
     Route::post('register', [AuthController::class, 'register']);
 });
 
-Route::middleware('auth')->group(function (): void {
+Route::middleware(['auth', 'session.fresh'])->group(function (): void {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function (): void {
 });
 
 // Data keuangan hanya untuk owner. Manajer yang membuka URL langsung mendapat 403.
-Route::middleware(['auth', 'owner'])->group(function (): void {
+Route::middleware(['auth', 'owner', 'session.fresh'])->group(function (): void {
     Route::resource('expenses', ExpenseController::class)->except(['show']);
 
     // Kategori dan supplier dalam satu halaman bertab.

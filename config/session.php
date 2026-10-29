@@ -34,6 +34,20 @@ return [
 
     'lifetime' => (int) env('SESSION_LIFETIME', 120),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Batas Waktu Maksimum Sejak Login
+    |--------------------------------------------------------------------------
+    |
+    | Idle timeout di atas bersifat sliding, jadi sesi bisa hidup berhari-hari
+    | selama aktif dipakai. Nilai ini (dalam menit) memaksa login ulang setelah
+    | jangka waktu tersebut, berapa pun aktivitas pengguna. Dipakai oleh
+    | middleware App\Http\Middleware\EnsureSessionIsFresh.
+    |
+    */
+
+    'absolute_lifetime' => (int) env('SESSION_ABSOLUTE_LIFETIME', 720),
+
     'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
 
     /*

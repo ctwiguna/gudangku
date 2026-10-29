@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Outlet;
 use App\Models\User;
+use App\Services\SessionService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,10 @@ use Inertia\Response;
 
 class UserController extends Controller
 {
+    public function __construct(private readonly SessionService $sessions)
+    {
+    }
+
     public function index(): Response
     {
         $this->authorize('viewAny', User::class);
@@ -110,7 +115,22 @@ class UserController extends Controller
             'is_active' => $active,
         ])->save();
 
-        return back()->with('success', "Perubahan user {$user->name} tersimpan.");
+        // Owner mengganti password user lain: sesi user tersebut dicabut supaya
+        // password lama tidak lagi berlaku di perangkat mana pun. Kalau passwordnya
+        // milik akun sendiri, sesi yang sedang dipakai dipertahankan.
+        $passwordChanged = ! empty($validated['password']);
+        $revoked = 0;
+
+        if ($passwordChanged || ! $active) {
+            $revoked = $this->sessions->revokeForUser(
+                (int) $user->id,
+                $user->id === $actingId ? $request->session()->getId() : null,
+            );
+        }
+
+        $note = $revoked > 0 ? " {$revoked} sesi aktif dicabut." : '';
+
+        return back()->with('success', "Perubahan user {$user->name} tersimpan.{$note}");
     }
 
     public function toggleStatus(Request $request, User $user): RedirectResponse
@@ -126,6 +146,11 @@ class UserController extends Controller
         }
 
         $user->forceFill(['is_active' => ! $user->is_active])->save();
+
+        // Akun yang dinonaktifkan harus langsung keluar dari perangkat yang masih aktif.
+        if (! $user->is_active) {
+            $this->sessions->revokeForUser((int) $user->id);
+        }
 
         $state = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
 

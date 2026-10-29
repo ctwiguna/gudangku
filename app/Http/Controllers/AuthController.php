@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -61,6 +62,10 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
+
+        // Titik awal absolute timeout. Disimpan di server (payload sesi),
+        // bukan di client, supaya tidak bisa dimanipulasi pengguna.
+        $request->session()->put('auth.login_at', Carbon::now('Asia/Jakarta')->timestamp);
 
         return redirect()->intended(route('dashboard'));
     }

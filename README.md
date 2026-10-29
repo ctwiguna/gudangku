@@ -103,7 +103,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 ## Pengujian
 
 ```bash
-php artisan test        # 133 test, 609 assertion
+php artisan test        # 143 test, 644 assertion
 composer audit          # tanpa advisory
 npm audit               # 0 vulnerability
 ```
@@ -120,6 +120,26 @@ mysqldump --no-tablespaces --skip-lock-tables --add-drop-table \
 ```
 
 Hasil ekspor contoh ada di `database/gudangku.sql` (19 tabel, data seed 4 akun demo).
+
+## Keamanan sesi
+
+Aplikasi **tidak menyimpan kunci apa pun di localStorage** — tidak ada access token, refresh token, atau JWT. Yang ada di browser hanya ID sesi pada cookie yang tidak bisa dibaca JavaScript.
+
+| Kontrol | Nilai |
+| :--- | :--- |
+| Cookie sesi | `HttpOnly`, `Secure` (produksi), `SameSite=Lax` |
+| Cookie CSRF | `XSRF-TOKEN`, sengaja bisa dibaca JavaScript (pola double-submit), bukan kredensial |
+| Regenerasi sesi | `regenerate()` saat login, `invalidate()` + `regenerateToken()` saat logout |
+| Idle timeout | 60 menit tanpa aktivitas (`SESSION_LIFETIME`) |
+| Absolute timeout | 720 menit sejak login (`SESSION_ABSOLUTE_LIFETIME`), dipaksa middleware `EnsureSessionIsFresh` |
+| Tutup browser | sesi berakhir (`SESSION_EXPIRE_ON_CLOSE=true`) — penting untuk perangkat bersama di outlet |
+| Payload sesi | dienkripsi di database (`SESSION_ENCRYPT=true`) |
+| Ganti password | seluruh sesi lain milik user itu dicabut (`SessionService::revokeForUser()`) |
+| Nonaktifkan user | sesi user tersebut langsung dicabut |
+| Rate limit login | 5 percobaan per menit per email + IP |
+| Session fixation | dicegah dengan regenerasi ID sesi saat login |
+
+Analisis lengkap pertimbangan localStorage vs cookie HttpOnly, idle vs absolute timeout, dan kapan refresh token diperlukan ada di [docs/ANALISIS_SESI.md](docs/ANALISIS_SESI.md).
 
 ## Deploy
 
