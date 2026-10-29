@@ -1275,6 +1275,14 @@ body.is-modal-open {
     white-space: nowrap;
 }
 
+/* Baris daftar yang sedang dipakai sebagai filter aktif */
+.list__row.is-active-row {
+    padding-right: var(--space-3);
+    padding-left: var(--space-3);
+    background: var(--color-primary-soft);
+    border-radius: var(--radius-input);
+}
+
 /* Angka yang perlu perhatian: stok di bawah minimum */
 .is-warn {
     color: #92400e;

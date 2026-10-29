@@ -1,4 +1,4 @@
-import { Head, router, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import Badge from '../../Components/Badge';
 import Button from '../../Components/Button';
@@ -16,6 +16,7 @@ import AppShell from '../../Layouts/AppShell';
 import { number, rupiah } from '../../utils/format';
 
 const emptyForm = {
+    outlet_id: '',
     name: '',
     salary: '',
     salary_unit: 'bulanan',
@@ -23,28 +24,33 @@ const emptyForm = {
     note: '',
 };
 
-export default function Index({ employees, salaryUnits, summary }) {
+export default function Index({ employees, outlets, filters, perOutlet, salaryUnits, summary }) {
     const { auth } = usePage().props;
     const [formOpen, setFormOpen] = useState(false);
     const [editing, setEditing] = useState(null);
     const [pendingDelete, setPendingDelete] = useState(null);
     const [selected, setSelected] = useState(null);
     const [deleting, setDeleting] = useState(false);
-    const [busyId, setBusyId] = useState(null);
 
     const form = useForm({ ...emptyForm });
 
+    const activeOutletId = filters?.outlet ?? null;
+
     function openCreate() {
         form.clearErrors();
-        form.setData({ ...emptyForm });
+        form.setData({
+            ...emptyForm,
+            // Kalau sedang memfilter satu outlet, langsung pilih outlet itu.
+            outlet_id: activeOutletId ? String(activeOutletId) : '',
+        });
         setEditing(null);
-        form.setData('salary', '');
         setFormOpen(true);
     }
 
     function openEdit(employee) {
         form.clearErrors();
         form.setData({
+            outlet_id: employee.outlet_id ? String(employee.outlet_id) : '',
             name: employee.name,
             salary: Number(employee.salary),
             salary_unit: employee.salary_unit,
@@ -76,11 +82,6 @@ export default function Index({ employees, salaryUnits, summary }) {
         form.post('/employees', options);
     }
 
-    function toggleStatus(employee) {
-        setBusyId(employee.id);
-        router.patch(`/employees/${employee.id}/status`, {}, { preserveScroll: true, onFinish: () => setBusyId(null) });
-    }
-
     function confirmDelete() {
         if (!pendingDelete) {
             return;
@@ -100,7 +101,7 @@ export default function Index({ employees, salaryUnits, summary }) {
     return (
         <AppShell
             title="Kelola Karyawan"
-            subtitle="Data acuan gaji. Pengeluaran gaji tetap dicatat di menu Pengeluaran."
+            subtitle="Dikelompokkan per outlet. Pengeluaran gaji tetap dicatat di menu Pengeluaran."
             badge={<Badge>{auth.user.role_label}</Badge>}
             backHref="/warehouse"
             actions={
@@ -129,16 +130,59 @@ export default function Index({ employees, salaryUnits, summary }) {
             <Head title="Kelola Karyawan" />
 
             <div className="stat-grid">
-                <StatCard label="Karyawan" value={number(summary.total)} hint="terdaftar" />
+                <StatCard label="Karyawan" value={number(summary.total)} hint="semua outlet" />
                 <StatCard label="Aktif" value={number(summary.active)} hint="masih bekerja" />
+                <StatCard label="Outlet" value={number(summary.outlets)} hint="terdaftar" />
             </div>
 
-            <Card title="Daftar karyawan" subtitle={`${number(employees.length)} karyawan`}>
+            <Card
+                title="Karyawan per outlet"
+                subtitle="Klik outlet untuk menyaring daftar"
+                action={
+                    activeOutletId ? (
+                        <Link href="/employees">Tampilkan semua</Link>
+                    ) : (
+                        <span className="muted">Semua outlet</span>
+                    )
+                }
+            >
+                <ul className="list">
+                    {perOutlet.map((row) => (
+                        <li
+                            key={row.id}
+                            className={
+                                activeOutletId === row.id ? 'list__row is-active-row' : 'list__row'
+                            }
+                        >
+                            <div className="list__main">
+                                <p className="list__title">
+                                    <Link href={`/employees?outlet=${row.id}`}>{row.outlet}</Link>
+                                </p>
+                                <p className="muted">{row.code}</p>
+                            </div>
+                            <div className="list__value">
+                                <strong>{number(row.total)}</strong>
+                                <span className="muted">karyawan · {number(row.active)} aktif</span>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </Card>
+
+            <Card
+                title="Daftar karyawan"
+                subtitle={
+                    activeOutletId
+                        ? `${number(employees.length)} karyawan pada outlet terpilih`
+                        : `${number(employees.length)} karyawan dari semua outlet`
+                }
+            >
                 <DataTable
-                    caption="Daftar karyawan"
+                    caption="Daftar karyawan per outlet"
                     columns={[
                         { key: 'select', label: '' },
                         { key: 'id', label: 'ID', align: 'right' },
+                        { key: 'outlet', label: 'Outlet' },
                         { key: 'name', label: 'Nama Karyawan' },
                         { key: 'salary', label: 'Gaji', align: 'right' },
                         { key: 'unit', label: 'Satuan Gaji' },
@@ -150,6 +194,14 @@ export default function Index({ employees, salaryUnits, summary }) {
                         switch (column.key) {
                             case 'id':
                                 return row.id;
+                            case 'outlet':
+                                return (
+                                    <span>
+                                        {row.outlet ?? 'Tanpa outlet'}
+                                        <br />
+                                        <span className="muted">{row.outlet_code ?? '-'}</span>
+                                    </span>
+                                );
                             case 'name':
                                 return (
                                     <span>
@@ -184,7 +236,6 @@ export default function Index({ employees, salaryUnits, summary }) {
                                         />
                                     </label>
                                 );
-
                             default:
                                 return null;
                         }
@@ -192,7 +243,7 @@ export default function Index({ employees, salaryUnits, summary }) {
                     empty={
                         <EmptyState
                             title="Belum ada karyawan"
-                            description="Tambahkan nama karyawan, gaji, dan satuan gajinya."
+                            description="Tambahkan nama karyawan, pilih outlet, lalu isi gaji dan satuannya."
                             action={<Button onClick={openCreate}>Tambah karyawan</Button>}
                         />
                     }
@@ -221,6 +272,26 @@ export default function Index({ employees, salaryUnits, summary }) {
             >
                 <form id="employee-form" onSubmit={submit} noValidate>
                     <div className="stack">
+                        <FormField
+                            label="Outlet"
+                            htmlFor="employee-outlet"
+                            error={form.errors.outlet_id}
+                            hint="Karyawan dikelompokkan per outlet."
+                            required
+                        >
+                            <SelectInput
+                                id="employee-outlet"
+                                value={form.data.outlet_id}
+                                placeholder="Pilih outlet"
+                                options={outlets.map((outlet) => ({
+                                    value: String(outlet.id),
+                                    label: `${outlet.name} (${outlet.code})`,
+                                }))}
+                                error={Boolean(form.errors.outlet_id)}
+                                onChange={(event) => form.setData('outlet_id', event.target.value)}
+                            />
+                        </FormField>
+
                         <FormField label="Nama karyawan" htmlFor="employee-name" error={form.errors.name} required>
                             <TextInput
                                 id="employee-name"
@@ -280,7 +351,11 @@ export default function Index({ employees, salaryUnits, summary }) {
                 open={pendingDelete !== null}
                 title="Hapus karyawan"
                 message="Data karyawan berikut akan dihapus permanen."
-                itemName={pendingDelete ? `${pendingDelete.name} · ${rupiah(pendingDelete.salary)} ${pendingDelete.salary_unit_label}` : null}
+                itemName={
+                    pendingDelete
+                        ? `${pendingDelete.name} · ${pendingDelete.outlet ?? 'tanpa outlet'} · ${rupiah(pendingDelete.salary)} ${pendingDelete.salary_unit_label}`
+                        : null
+                }
                 processing={deleting}
                 onConfirm={confirmDelete}
                 onCancel={() => setPendingDelete(null)}
