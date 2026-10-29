@@ -8,7 +8,7 @@ import DataTable from '../../Components/DataTable';
 import EmptyState from '../../Components/EmptyState';
 import StatCard from '../../Components/StatCard';
 import AppShell from '../../Layouts/AppShell';
-import { number, rupiah } from '../../utils/format';
+import { dateId, number, rupiah } from '../../utils/format';
 
 export default function Index({ products, canManage, outletLabel, filters, outlets }) {
     const { auth } = usePage().props;
@@ -51,27 +51,29 @@ export default function Index({ products, canManage, outletLabel, filters, outle
         );
     }
 
-    const columns = [
-        { key: 'product', label: 'Barang' },
-        { key: 'category', label: 'Kategori' },
-        { key: 'unit', label: 'Satuan' },
-        { key: 'stock', label: 'Stok', align: 'right' },
-        { key: 'min', label: 'Min', align: 'right' },
-    ];
-
-    if (canManage) {
-        columns.push({ key: 'price', label: 'Harga beli', align: 'right' });
-    }
-
-    columns.push({ key: 'status', label: 'Status' });
-
-    if (canManage) {
-        columns.push({ key: 'action', label: 'Aksi' });
-    }
+    // Owner melihat daftar harga barang; manajer melihat saldo stok (tanpa harga).
+    const columns = canManage
+        ? [
+              { key: 'sku', label: 'Kode Barang' },
+              { key: 'name', label: 'Nama Barang' },
+              { key: 'unit', label: 'Satuan' },
+              { key: 'supplier_id', label: 'ID Supplier', align: 'right' },
+              { key: 'price', label: 'Harga Satuan', align: 'right' },
+              { key: 'updated', label: 'Tanggal Update Harga' },
+              { key: 'action', label: 'Aksi' },
+          ]
+        : [
+              { key: 'product', label: 'Barang' },
+              { key: 'category', label: 'Kategori' },
+              { key: 'unit', label: 'Satuan' },
+              { key: 'stock', label: 'Stok', align: 'right' },
+              { key: 'min', label: 'Min', align: 'right' },
+              { key: 'status', label: 'Status' },
+          ];
 
     return (
         <AppShell
-            title={canManage ? 'Barang' : 'Stok'}
+            title={canManage ? 'Harga Barang' : 'Stok'}
             subtitle={outletLabel}
             badge={<Badge>{auth.user.role_label}</Badge>}
             actions={
@@ -82,7 +84,7 @@ export default function Index({ products, canManage, outletLabel, filters, outle
                 ) : null
             }
         >
-            <Head title={canManage ? 'Barang' : 'Stok'} />
+            <Head title={canManage ? 'Harga Barang' : 'Stok'} />
 
             <div className="stat-grid">
                 <StatCard label="Jumlah barang" value={number(products.length)} hint="terdaftar" />
@@ -121,7 +123,7 @@ export default function Index({ products, canManage, outletLabel, filters, outle
             ) : null}
 
             <Card
-                title="Daftar barang"
+                title={canManage ? 'Daftar harga barang' : 'Daftar stok'}
                 subtitle={
                     canManage
                         ? 'Saldo stok dihitung dari ledger pergerakan'
@@ -134,6 +136,16 @@ export default function Index({ products, canManage, outletLabel, filters, outle
                     rows={products}
                     renderCell={(row, column) => {
                         switch (column.key) {
+                            case 'sku':
+                                return row.sku;
+                            case 'name':
+                                return row.name;
+                            case 'supplier_id':
+                                return row.supplier_id ?? <span className="muted">-</span>;
+                            case 'updated':
+                                return row.price_updated_at
+                                    ? dateId(row.price_updated_at)
+                                    : <span className="muted">-</span>;
                             case 'product':
                                 return (
                                     <span>

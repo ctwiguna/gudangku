@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProductRequest extends FormRequest
 {
@@ -21,7 +22,7 @@ class StoreProductRequest extends FormRequest
             'supplier_id' => ['nullable', 'integer', 'exists:suppliers,id'],
             'name' => ['required', 'string', 'max:150'],
             'sku' => ['required', 'string', 'max:64', 'unique:products,sku'],
-            'unit' => ['required', 'string', 'max:16'],
+            'unit' => ['required', 'string', Rule::in(['pcs', 'dus', 'kg'])],
             'min_stock' => ['required', 'integer', 'min:0', 'max:1000000'],
             'price_buy' => ['required', 'numeric', 'min:0', 'max:999999999999'],
             'is_active' => ['nullable', 'boolean'],
@@ -40,7 +41,8 @@ class StoreProductRequest extends FormRequest
             'name.required' => 'Nama produk wajib diisi.',
             'sku.required' => 'Kode SKU wajib diisi.',
             'sku.unique' => 'Kode SKU ini sudah dipakai produk lain.',
-            'unit.required' => 'Satuan wajib diisi, contoh pcs.',
+            'unit.required' => 'Pilih satuan barang.',
+            'unit.in' => 'Satuan harus salah satu dari: pcs, dus, atau kg.',
             'min_stock.required' => 'Stok minimum wajib diisi.',
             'min_stock.integer' => 'Stok minimum harus berupa angka bulat.',
             'min_stock.min' => 'Stok minimum tidak boleh negatif.',

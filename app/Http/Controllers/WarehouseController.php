@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Employee;
 use App\Models\Outlet;
 use App\Models\Product;
 use App\Models\Purchase;
@@ -27,6 +28,7 @@ class WarehouseController extends Controller
                 'products_active' => Product::where('is_active', true)->count(),
                 'categories' => Category::count(),
                 'suppliers' => Supplier::count(),
+                'employees' => Employee::count(),
                 'outlets' => Outlet::count(),
                 'unpriced' => Purchase::whereNull('priced_at')->count(),
             ],

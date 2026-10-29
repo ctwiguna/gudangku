@@ -100,7 +100,8 @@ export default function Index({ outlets, openCreate: startWithFormOpen = false }
                 <DataTable
                     caption="Daftar outlet"
                     columns={[
-                        { key: 'outlet', label: 'Outlet' },
+                        { key: 'id', label: 'ID', align: 'right' },
+                        { key: 'outlet', label: 'Nama Outlet' },
                         { key: 'contact', label: 'Kontak' },
                         { key: 'users', label: 'User', align: 'right' },
                         { key: 'status', label: 'Status' },
@@ -109,6 +110,8 @@ export default function Index({ outlets, openCreate: startWithFormOpen = false }
                     rows={outlets}
                     renderCell={(row, column) => {
                         switch (column.key) {
+                            case 'id':
+                                return row.id;
                             case 'outlet':
                                 return (
                                     <span>

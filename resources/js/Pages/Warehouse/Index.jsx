@@ -1,55 +1,57 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import Badge from '../../Components/Badge';
-import Card from '../../Components/Card';
 import AppShell from '../../Layouts/AppShell';
 import { number } from '../../utils/format';
 
 /**
- * Menu Gudang sengaja hanya berisi dua pintu masuk supaya tidak membingungkan.
- * Aksi lanjutan (kategori, supplier, min stok) tetap ada di dalam halaman barang.
+ * Menu Gudang: satu kartu = satu klik. Tidak ada tombol di dalam kartu,
+ * aksi tambah/ubah/hapus ada di dalam halaman masing-masing.
  */
 export default function Index({ counts }) {
     const { auth } = usePage().props;
 
     const menus = [
         {
+            href: '/outlets',
             title: 'Kelola Outlet',
-            description: 'Tambah outlet baru atau hapus outlet yang tidak dipakai.',
-            meta: `${number(counts.outlets)} outlet terdaftar`,
-            primary: { href: '/outlets?new=1', label: 'Tambah outlet' },
-            secondary: { href: '/outlets', label: 'Lihat & hapus outlet' },
+            description: 'Tambah, ubah, dan hapus outlet.',
+            meta: `${number(counts.outlets)} outlet`,
         },
         {
-            title: 'Kelola Supplier',
-            description: 'Tambah barang, ubah harga (Rupiah), dan ganti satuan (bawaan pcs).',
-            meta: `${number(counts.products)} barang terdaftar`,
-            primary: { href: '/products/create', label: 'Tambah barang' },
-            secondary: { href: '/products', label: 'Lihat, ubah harga & hapus barang' },
+            href: '/suppliers',
+            title: 'Database Supplier',
+            description: 'Kontak, alamat, lead time, dan term of payment pemasok.',
+            meta: `${number(counts.suppliers)} supplier`,
+        },
+        {
+            href: '/products',
+            title: 'Harga Barang',
+            description: 'Kode, nama, satuan, supplier, harga satuan, dan tanggal update harga.',
+            meta: `${number(counts.products)} barang`,
+        },
+        {
+            href: '/employees',
+            title: 'Kelola Karyawan',
+            description: 'Nama karyawan, gaji, dan satuan gaji (harian, mingguan, bulanan).',
+            meta: `${number(counts.employees)} karyawan`,
         },
     ];
 
     return (
         <AppShell
             title="Kelola gudang"
-            subtitle="Dua menu utama"
+            subtitle="Pilih satu menu"
             badge={<Badge>{auth.user.role_label}</Badge>}
         >
             <Head title="Kelola gudang" />
 
             <div className="grid grid--2">
                 {menus.map((menu) => (
-                    <Card key={menu.title} title={menu.title} subtitle={menu.description}>
-                        <p className="muted">{menu.meta}</p>
-
-                        <div className="actions">
-                            <Link href={menu.primary.href} className="btn">
-                                {menu.primary.label}
-                            </Link>
-                            <Link href={menu.secondary.href} className="btn btn--outline">
-                                {menu.secondary.label}
-                            </Link>
-                        </div>
-                    </Card>
+                    <Link key={menu.href} href={menu.href} className="card card--link">
+                        <h2 className="card__title">{menu.title}</h2>
+                        <p className="muted">{menu.description}</p>
+                        <span className="card__meta">{menu.meta}</span>
+                    </Link>
                 ))}
             </div>
         </AppShell>

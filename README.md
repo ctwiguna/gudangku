@@ -34,7 +34,11 @@ Register publik hanya membuat akun **manajer nonaktif**. Akun tersebut tidak bis
 11. Laporan owner: pengeluaran per kategori dan outlet, hutang, nilai stok, pembelian per periode.
 12. Keamanan: CSRF, escaping React, Eloquent binding, rate limit, RBAC middleware + policy, penyaringan harga di controller, halaman 403/404 sendiri.
 13. **Ekspor Excel** pengeluaran per outlet per bulan (`.xlsx`, empat sheet: **Ringkasan** total per outlet per bulan, **Per Kategori** pengeluaran per bulan per kategori (listrik, air, ipal, gaji, sewa, lain) dengan subtotal bulanan dan total tahunan per outlet, **Pembelian Produk** pembelian per bulan per kategori produk (mis. Gas LPG) dengan subtotal, dan **Rincian** daftar datar untuk pivot).
-14. **Menu Gudang** (tab tengah navigasi owner) sengaja dibuat hanya **dua menu** agar tidak membingungkan: **Kelola Outlet** (tambah outlet, lihat & hapus outlet) dan **Kelola Supplier** (tambah barang, lihat/ubah harga dalam Rupiah, ganti satuan dengan bawaan `pcs`, hapus barang). Keduanya mendukung pembukaan form langsung lewat `?new=1`.
+14. **Menu Gudang** (tab tengah navigasi owner) berisi **empat kartu yang seluruhnya bisa diklik** — satu kartu, satu klik, tanpa tombol di dalam kartu:
+    - **Kelola Outlet** — tambah, ubah, dan hapus outlet (kolom ID dan Nama Outlet).
+    - **Database Supplier** — informasi lengkap pemasok: ID, nama, kontak/telepon, alamat, **lead time (hari pengiriman)**, dan **term of payment (TOP)**.
+    - **Harga Barang** — kode barang, nama barang, **satuan (pcs/dus/kg, bawaan pcs)**, ID supplier, **harga satuan dalam Rupiah**, dan **tanggal update harga** (diisi otomatis oleh server).
+    - **Kelola Karyawan** — nama karyawan, gaji, dan satuan gaji (harian, mingguan, bulanan).
 
 ## Stack
 
@@ -107,7 +111,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 ## Pengujian
 
 ```bash
-php artisan test        # 154 test, 679 assertion
+php artisan test        # 175 test, 751 assertion
 composer audit          # tanpa advisory
 npm audit               # 0 vulnerability
 ```
@@ -171,7 +175,7 @@ database/gudangku.sql  ekspor database contoh
 
 ## Catatan jujur
 
-1. **Ekspor Excel berada di luar scope PRD.** PRD §5 menaruh "ekspor Excel atau PDF laporan" sebagai fitur di luar scope, dan fitur ini ditambahkan atas permintaan setelah aplikasi selesai. Dicatat sebagai penyimpangan yang disengaja. Library yang dipakai: `phpoffice/phpspreadsheet` (MIT).
+1. **Ekspor Excel dan Kelola Karyawan berada di luar scope PRD.** PRD §5 menaruh "ekspor Excel atau PDF laporan" dan "gaji per karyawan" sebagai fitur di luar scope, dan keduanya ditambahkan atas permintaan setelah aplikasi selesai. Dicatat sebagai penyimpangan yang disengaja. Library ekspor: `phpoffice/phpspreadsheet` (MIT). Data karyawan hanya acuan (nama, gaji, satuan gaji); pengeluaran gaji per outlet tetap dicatat di menu Pengeluaran kategori gaji.
 2. Server produksi memakai **MySQL 8.0.46**, bukan 26.10.0 seperti tertulis di PRD. Tidak ada fitur aplikasi yang bergantung pada versi tersebut.
 3. Domain memakai `sslip.io` karena keterbatasan waktu; mengganti ke domain sendiri hanya perlu mengubah `server_name`, A record, dan menerbitkan ulang sertifikat.
 4. Start command produksi memakai `php artisan serve` di belakang nginx. Untuk trafik nyata, ganti ke `php-fpm` + nginx (sudah terpasang) atau FrankenPHP.

@@ -21,6 +21,8 @@ class StoreSupplierRequest extends FormRequest
             'contact_name' => ['nullable', 'string', 'max:100'],
             'phone' => ['nullable', 'string', 'max:32'],
             'address' => ['nullable', 'string', 'max:255'],
+            'lead_time_days' => ['nullable', 'integer', 'min:0', 'max:365'],
+            'term_of_payment' => ['nullable', 'string', 'max:64'],
         ];
     }
 
@@ -35,6 +37,10 @@ class StoreSupplierRequest extends FormRequest
             'name.max' => 'Nama supplier maksimal 100 karakter.',
             'phone.max' => 'Nomor telepon maksimal 32 karakter.',
             'address.max' => 'Alamat maksimal 255 karakter.',
+            'lead_time_days.integer' => 'Lead time harus berupa angka hari.',
+            'lead_time_days.min' => 'Lead time tidak boleh negatif.',
+            'lead_time_days.max' => 'Lead time maksimal 365 hari.',
+            'term_of_payment.max' => 'Term of payment maksimal 64 karakter.',
         ];
     }
 }

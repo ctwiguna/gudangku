@@ -21,6 +21,7 @@ class Product extends Model
         'unit',
         'min_stock',
         'price_buy',
+        'price_updated_at',
         'is_active',
     ];
 
@@ -29,6 +30,7 @@ class Product extends Model
         return [
             'min_stock' => 'integer',
             'price_buy' => 'decimal:2',
+            'price_updated_at' => 'date',
             'is_active' => 'boolean',
         ];
     }

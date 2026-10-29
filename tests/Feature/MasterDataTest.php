@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
-use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
@@ -44,7 +43,7 @@ class MasterDataTest extends TestCase
         return json_decode(json_encode($page), true) ?? [];
     }
 
-    public function test_owner_can_open_master_data_with_both_tabs(): void
+    public function test_owner_can_open_category_page(): void
     {
         $response = $this->actingAs($this->owner())->get('/master-data');
 
@@ -53,18 +52,15 @@ class MasterDataTest extends TestCase
         $page = $this->inertiaPage($response);
 
         $this->assertSame('MasterData/Index', $page['component']);
-        $this->assertSame('kategori', $page['props']['tab']);
         $this->assertNotEmpty($page['props']['categories']);
-        $this->assertNotEmpty($page['props']['suppliers']);
+        $this->assertFalse($page['props']['openCreate']);
     }
 
-    public function test_supplier_tab_is_selected_from_query_string(): void
+    public function test_category_page_opens_create_form_from_query_string(): void
     {
-        $page = $this->inertiaPage(
-            $this->actingAs($this->owner())->get('/master-data?tab=supplier'),
-        );
+        $page = $this->inertiaPage($this->actingAs($this->owner())->get('/master-data?new=1'));
 
-        $this->assertSame('supplier', $page['props']['tab']);
+        $this->assertTrue($page['props']['openCreate']);
     }
 
     public function test_owner_can_create_category(): void
@@ -74,7 +70,6 @@ class MasterDataTest extends TestCase
             'description' => 'Bahan tambahan',
         ]);
 
-        $response->assertRedirect('/master-data?tab=kategori');
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('categories', ['name' => 'Pewangi laundry']);
@@ -84,11 +79,10 @@ class MasterDataTest extends TestCase
     {
         $existing = Category::firstOrFail();
 
-        $response = $this->actingAs($this->owner())->post('/master-data/kategori', [
-            'name' => $existing->name,
-        ]);
+        $this->actingAs($this->owner())
+            ->post('/master-data/kategori', ['name' => $existing->name])
+            ->assertSessionHasErrors('name');
 
-        $response->assertSessionHasErrors('name');
         $this->assertSame(1, Category::where('name', $existing->name)->count());
     }
 
@@ -106,12 +100,11 @@ class MasterDataTest extends TestCase
         $this->assertDatabaseHas('categories', [
             'id' => $category->id,
             'name' => 'Kategori Diperbarui',
-            'description' => 'Keterangan baru',
         ]);
     }
 
     /**
-     * Aturan foreign key RESTRICT: kategori yang dipakai produk tidak boleh hilang.
+     * Foreign key RESTRICT: kategori yang dipakai barang tidak boleh hilang.
      * Pesannya menjelaskan langkah perbaikan, bukan error SQL mentah.
      */
     public function test_category_used_by_products_cannot_be_deleted(): void
@@ -121,19 +114,16 @@ class MasterDataTest extends TestCase
         $response = $this->actingAs($this->owner())
             ->delete("/master-data/kategori/{$category->id}");
 
-        $response->assertRedirect('/master-data?tab=kategori');
         $response->assertSessionHas('error');
-
-        $message = session('error');
-        $this->assertStringContainsString('masih dipakai', $message);
-        $this->assertStringContainsString($category->name, $message);
+        $this->assertStringContainsString('masih dipakai', session('error'));
+        $this->assertStringContainsString($category->name, session('error'));
 
         $this->assertDatabaseHas('categories', ['id' => $category->id]);
     }
 
     public function test_unused_category_can_be_deleted(): void
     {
-        $category = Category::create(['name' => 'Kategori Tanpa Produk']);
+        $category = Category::create(['name' => 'Kategori Tanpa Barang']);
 
         $this->actingAs($this->owner())
             ->delete("/master-data/kategori/{$category->id}")
@@ -142,52 +132,7 @@ class MasterDataTest extends TestCase
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
     }
 
-    public function test_owner_can_create_and_update_supplier(): void
-    {
-        $this->actingAs($this->owner())
-            ->post('/master-data/supplier', [
-                'name' => 'CV Supplier Baru',
-                'contact_name' => 'Dewi',
-                'phone' => '021-1234567',
-                'address' => 'Jl. Baru No. 1',
-            ])
-            ->assertSessionHasNoErrors();
-
-        $supplier = Supplier::where('name', 'CV Supplier Baru')->firstOrFail();
-
-        $this->actingAs($this->owner())
-            ->put("/master-data/supplier/{$supplier->id}", [
-                'name' => 'CV Supplier Baru',
-                'contact_name' => 'Dewi Lestari',
-                'phone' => '021-7654321',
-            ])
-            ->assertSessionHasNoErrors();
-
-        $this->assertDatabaseHas('suppliers', [
-            'id' => $supplier->id,
-            'contact_name' => 'Dewi Lestari',
-            'phone' => '021-7654321',
-        ]);
-    }
-
-    /**
-     * Supplier yang sudah dipakai pembelian tidak boleh dihapus karena
-     * riwayat pembelian memakai RESTRICT.
-     */
-    public function test_supplier_used_in_purchases_cannot_be_deleted(): void
-    {
-        $supplier = Supplier::whereHas('purchases')->firstOrFail();
-
-        $response = $this->actingAs($this->owner())
-            ->delete("/master-data/supplier/{$supplier->id}");
-
-        $response->assertSessionHas('error');
-        $this->assertStringContainsString('pembelian', session('error'));
-
-        $this->assertDatabaseHas('suppliers', ['id' => $supplier->id]);
-    }
-
-    public function test_manager_is_forbidden_on_master_data_routes(): void
+    public function test_manager_is_forbidden_on_category_routes(): void
     {
         $category = Category::create(['name' => 'Kategori Uji']);
         $manager = $this->manager();
@@ -200,7 +145,7 @@ class MasterDataTest extends TestCase
 
         $this->actingAs($manager)->delete("/master-data/kategori/{$category->id}")->assertForbidden();
 
-        $this->assertDatabaseHas('categories', ['id' => $category->id]);
         $this->assertDatabaseMissing('categories', ['name' => 'Kategori Dari Manajer']);
+        $this->assertDatabaseHas('categories', ['id' => $category->id]);
     }
 }

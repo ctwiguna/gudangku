@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\OutletController;
@@ -68,9 +69,18 @@ Route::middleware(['auth', 'owner', 'session.fresh'])->group(function (): void {
     Route::put('master-data/kategori/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('master-data/kategori/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-    Route::post('master-data/supplier', [SupplierController::class, 'store'])->name('suppliers.store');
-    Route::put('master-data/supplier/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-    Route::delete('master-data/supplier/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+    // Database supplier: halaman sendiri, lengkap dengan lead time dan term of payment.
+    Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+    Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+    Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+    Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+
+    // Kelola karyawan: nama, gaji, dan satuan gaji.
+    Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::post('employees', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::put('employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::patch('employees/{employee}/status', [EmployeeController::class, 'toggleStatus'])->name('employees.toggle-status');
+    Route::delete('employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 
     // Produk hanya boleh dikelola owner, termasuk harga beli per pcs.
     Route::get('products/create', [ProductController::class, 'create'])->name('products.create');

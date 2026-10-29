@@ -88,9 +88,14 @@ export default function Form({ product, categories, suppliers }) {
                                 hint="Bawaan pcs. Ubah hanya kalau satuannya berbeda."
                                 required
                             >
-                                <TextInput
+                                <SelectInput
                                     id="unit"
                                     value={data.unit}
+                                    options={[
+                                        { value: 'pcs', label: 'pcs' },
+                                        { value: 'dus', label: 'dus' },
+                                        { value: 'kg', label: 'kg' },
+                                    ]}
                                     error={Boolean(errors.unit)}
                                     onChange={(event) => setData('unit', event.target.value)}
                                 />
@@ -112,10 +117,10 @@ export default function Form({ product, categories, suppliers }) {
                         </FormField>
 
                         <FormField
-                            label="Supplier utama"
+                            label="ID Supplier"
                             htmlFor="supplier_id"
                             error={errors.supplier_id}
-                            hint="Opsional. Supplier bisa dikosongkan."
+                            hint="Opsional, sesuai Database Supplier."
                         >
                             <SelectInput
                                 id="supplier_id"
@@ -123,7 +128,7 @@ export default function Form({ product, categories, suppliers }) {
                                 placeholder="Tanpa supplier"
                                 options={suppliers.map((supplier) => ({
                                     value: String(supplier.id),
-                                    label: supplier.name,
+                                    label: `${supplier.id} · ${supplier.name}`,
                                 }))}
                                 error={Boolean(errors.supplier_id)}
                                 onChange={(event) => setData('supplier_id', event.target.value)}
@@ -150,7 +155,7 @@ export default function Form({ product, categories, suppliers }) {
                             </FormField>
 
                             <FormField
-                                label="Harga beli per pcs"
+                                label="Harga satuan"
                                 htmlFor="price_buy"
                                 error={errors.price_buy}
                                 hint="Harga acuan terakhir, bukan per outlet."

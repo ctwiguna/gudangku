@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -55,6 +56,7 @@ class ProductController extends Controller
                 'is_active' => $product->is_active,
                 'category' => $product->category?->name,
                 'supplier' => $product->supplier?->name,
+                'supplier_id' => $product->supplier_id,
                 'stock' => $stock,
                 'below_min' => $stock < (int) $product->min_stock,
             ];
@@ -62,6 +64,7 @@ class ProductController extends Controller
             // Harga hanya dikirim ke owner. Manajer tidak menerima field ini.
             if ($isOwner) {
                 $row['price_buy'] = (float) $product->price_buy;
+                $row['price_updated_at'] = $product->price_updated_at?->toDateString();
             }
 
             return $row;
@@ -99,11 +102,15 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request): RedirectResponse
     {
-        $product = Product::create($request->validated());
+        $product = Product::create([
+            ...$request->validated(),
+            // Tanggal update harga diisi server, bukan dari klien.
+            'price_updated_at' => Carbon::now('Asia/Jakarta')->toDateString(),
+        ]);
 
         return redirect()
             ->route('products.index')
-            ->with('success', "Produk {$product->name} tersimpan.");
+            ->with('success', "Barang {$product->name} tersimpan.");
     }
 
     public function edit(Product $product): Response
@@ -120,6 +127,7 @@ class ProductController extends Controller
                 'unit' => $product->unit,
                 'min_stock' => (int) $product->min_stock,
                 'price_buy' => (float) $product->price_buy,
+                'price_updated_at' => $product->price_updated_at?->toDateString(),
                 'is_active' => $product->is_active,
             ],
             'categories' => Category::ordered()->get(['id', 'name']),
@@ -131,11 +139,21 @@ class ProductController extends Controller
     {
         $this->authorize('update', $product);
 
-        $product->update($request->validated());
+        $validated = $request->validated();
+        $priceChanged = (float) $validated['price_buy'] !== (float) $product->price_buy;
+
+        $product->update([
+            ...$validated,
+            'price_updated_at' => $priceChanged
+                ? Carbon::now('Asia/Jakarta')->toDateString()
+                : $product->price_updated_at,
+        ]);
 
         return redirect()
             ->route('products.index')
-            ->with('success', "Perubahan produk {$product->name} tersimpan.");
+            ->with('success', $priceChanged
+                ? "Perubahan barang {$product->name} tersimpan. Tanggal update harga diperbarui."
+                : "Perubahan barang {$product->name} tersimpan.");
     }
 
     /**

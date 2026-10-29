@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
+use App\Models\Employee;
 use App\Models\Outlet;
 use App\Models\Product;
 use App\Models\User;
@@ -60,6 +61,7 @@ class WarehouseTest extends TestCase
         $this->assertSame(Product::count(), $page['props']['counts']['products']);
         $this->assertSame(Category::count(), $page['props']['counts']['categories']);
         $this->assertSame(Outlet::count(), $page['props']['counts']['outlets']);
+        $this->assertSame(Employee::count(), $page['props']['counts']['employees']);
     }
 
     public function test_manager_is_forbidden_on_warehouse_hub(): void
@@ -75,21 +77,18 @@ class WarehouseTest extends TestCase
     /**
      * Tombol "Tambah kategori" dari menu Gudang membuka form kategori langsung.
      */
-    public function test_master_data_opens_create_form_from_query_string(): void
+    public function test_category_page_opens_create_form_from_query_string(): void
     {
         $owner = $this->owner();
 
-        $kategori = $this->inertiaPage($this->actingAs($owner)->get('/master-data?tab=kategori&new=1'));
-        $this->assertTrue($kategori['props']['openCreate']);
-        $this->assertSame('kategori', $kategori['props']['tab']);
-
-        $supplier = $this->inertiaPage($this->actingAs($owner)->get('/master-data?tab=supplier&new=1'));
-        $this->assertTrue($supplier['props']['openCreate']);
-        $this->assertSame('supplier', $supplier['props']['tab']);
+        $this->assertTrue(
+            $this->inertiaPage($this->actingAs($owner)->get('/master-data?new=1'))['props']['openCreate'],
+        );
 
         // Tanpa parameter, form tidak dibuka otomatis.
-        $biasa = $this->inertiaPage($this->actingAs($owner)->get('/master-data'));
-        $this->assertFalse($biasa['props']['openCreate']);
+        $this->assertFalse(
+            $this->inertiaPage($this->actingAs($owner)->get('/master-data'))['props']['openCreate'],
+        );
     }
 
     /**
