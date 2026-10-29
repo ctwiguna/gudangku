@@ -28,6 +28,7 @@ export default function Index({ employees, salaryUnits, summary }) {
     const [formOpen, setFormOpen] = useState(false);
     const [editing, setEditing] = useState(null);
     const [pendingDelete, setPendingDelete] = useState(null);
+    const [selected, setSelected] = useState(null);
     const [deleting, setDeleting] = useState(false);
     const [busyId, setBusyId] = useState(null);
 
@@ -91,6 +92,7 @@ export default function Index({ employees, salaryUnits, summary }) {
             onFinish: () => {
                 setDeleting(false);
                 setPendingDelete(null);
+                setSelected(null);
             },
         });
     }
@@ -101,7 +103,28 @@ export default function Index({ employees, salaryUnits, summary }) {
             subtitle="Data acuan gaji. Pengeluaran gaji tetap dicatat di menu Pengeluaran."
             badge={<Badge>{auth.user.role_label}</Badge>}
             backHref="/warehouse"
-            actions={<Button onClick={openCreate}>Tambah karyawan</Button>}
+            actions={
+                <div className="toolbar">
+                    <Button onClick={openCreate}>Tambah karyawan</Button>
+                    <Button
+                        variant="outline"
+                        disabled={selected === null}
+                        title={selected === null ? 'Pilih baris dulu' : undefined}
+                        onClick={() => openEdit(selected)}
+                    >
+                        Ubah
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="btn--danger"
+                        disabled={selected === null}
+                        title={selected === null ? 'Pilih baris dulu' : undefined}
+                        onClick={() => setPendingDelete(selected)}
+                    >
+                        Hapus
+                    </Button>
+                </div>
+            }
         >
             <Head title="Kelola Karyawan" />
 
@@ -114,14 +137,15 @@ export default function Index({ employees, salaryUnits, summary }) {
                 <DataTable
                     caption="Daftar karyawan"
                     columns={[
+                        { key: 'select', label: '' },
                         { key: 'id', label: 'ID', align: 'right' },
                         { key: 'name', label: 'Nama Karyawan' },
                         { key: 'salary', label: 'Gaji', align: 'right' },
                         { key: 'unit', label: 'Satuan Gaji' },
                         { key: 'status', label: 'Status' },
-                        { key: 'action', label: 'Aksi' },
                     ]}
                     rows={employees}
+                    rowClassName={(row) => (selected?.id === row.id ? 'is-selected' : undefined)}
                     renderCell={(row, column) => {
                         switch (column.key) {
                             case 'id':
@@ -148,29 +172,19 @@ export default function Index({ employees, salaryUnits, summary }) {
                                 ) : (
                                     <Badge tone="muted">Nonaktif</Badge>
                                 );
-                            case 'action':
+                            case 'select':
                                 return (
-                                    <span className="row-actions">
-                                        <button type="button" className="link" onClick={() => openEdit(row)}>
-                                            Ubah
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="link"
-                                            disabled={busyId === row.id}
-                                            onClick={() => toggleStatus(row)}
-                                        >
-                                            {row.is_active ? 'Nonaktifkan' : 'Aktifkan'}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="link-danger"
-                                            onClick={() => setPendingDelete(row)}
-                                        >
-                                            Hapus
-                                        </button>
-                                    </span>
+                                    <label className="row-select">
+                                        <input
+                                            type="radio"
+                                            name="pilih-baris"
+                                            checked={selected?.id === row.id}
+                                            onChange={() => setSelected(row)}
+                                            aria-label={`Pilih ${row.name}`}
+                                        />
+                                    </label>
                                 );
+
                             default:
                                 return null;
                         }

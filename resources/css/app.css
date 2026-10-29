@@ -1289,6 +1289,50 @@ body.is-modal-open {
     font-variant-numeric: tabular-nums;
 }
 
+/* ---------- Toolbar aksi di atas tabel ---------- */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.btn--danger {
+    background: var(--color-danger);
+    border-color: transparent;
+    color: #fff;
+}
+
+.btn--danger:hover {
+    background: #b91c1c;
+}
+
+.btn--danger:disabled {
+    background: var(--field-bg-disabled);
+    color: var(--field-text-disabled);
+}
+
+/* Baris yang sedang dipilih untuk aksi Ubah/Hapus */
+.data-table tbody tr.is-selected td,
+.data-table tbody tr.is-selected td:first-child {
+    background: var(--color-primary-soft);
+}
+
+.data-table .row-select {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+    cursor: pointer;
+}
+
+.data-table .row-select input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
 /* ---------- Aksi cepat menu Gudang ---------- */
 .quick-actions {
     display: flex;

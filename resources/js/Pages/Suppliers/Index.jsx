@@ -26,6 +26,7 @@ export default function Index({ suppliers, openCreate = false }) {
     const [formOpen, setFormOpen] = useState(openCreate);
     const [editing, setEditing] = useState(null);
     const [pendingDelete, setPendingDelete] = useState(null);
+    const [selected, setSelected] = useState(null);
     const [deleting, setDeleting] = useState(false);
 
     const form = useForm({ ...emptyForm });
@@ -83,6 +84,7 @@ export default function Index({ suppliers, openCreate = false }) {
             onFinish: () => {
                 setDeleting(false);
                 setPendingDelete(null);
+                setSelected(null);
             },
         });
     }
@@ -93,7 +95,28 @@ export default function Index({ suppliers, openCreate = false }) {
             subtitle="Informasi lengkap pemasok agar mudah dihubungi dan dibandingkan"
             badge={<Badge>{auth.user.role_label}</Badge>}
             backHref="/warehouse"
-            actions={<Button onClick={openCreateForm}>Tambah supplier</Button>}
+            actions={
+                <div className="toolbar">
+                    <Button onClick={openCreateForm}>Tambah supplier</Button>
+                    <Button
+                        variant="outline"
+                        disabled={selected === null}
+                        title={selected === null ? 'Pilih baris dulu' : undefined}
+                        onClick={() => openEdit(selected)}
+                    >
+                        Ubah
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="btn--danger"
+                        disabled={selected === null}
+                        title={selected === null ? 'Pilih baris dulu' : undefined}
+                        onClick={() => setPendingDelete(selected)}
+                    >
+                        Hapus
+                    </Button>
+                </div>
+            }
         >
             <Head title="Database Supplier" />
 
@@ -101,15 +124,16 @@ export default function Index({ suppliers, openCreate = false }) {
                 <DataTable
                     caption="Database supplier"
                     columns={[
+                        { key: 'select', label: '' },
                         { key: 'id', label: 'ID', align: 'right' },
                         { key: 'name', label: 'Nama Supplier' },
                         { key: 'contact', label: 'Kontak/Telepon' },
                         { key: 'address', label: 'Alamat' },
                         { key: 'lead_time', label: 'Lead Time' },
                         { key: 'top', label: 'TOP' },
-                        { key: 'action', label: 'Aksi' },
                     ]}
                     rows={suppliers}
+                    rowClassName={(row) => (selected?.id === row.id ? 'is-selected' : undefined)}
                     renderCell={(row, column) => {
                         switch (column.key) {
                             case 'id':
@@ -144,21 +168,19 @@ export default function Index({ suppliers, openCreate = false }) {
                                 );
                             case 'top':
                                 return row.term_of_payment ?? <span className="muted">-</span>;
-                            case 'action':
+                            case 'select':
                                 return (
-                                    <span className="row-actions">
-                                        <button type="button" className="link" onClick={() => openEdit(row)}>
-                                            Ubah
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="link-danger"
-                                            onClick={() => setPendingDelete(row)}
-                                        >
-                                            Hapus
-                                        </button>
-                                    </span>
+                                    <label className="row-select">
+                                        <input
+                                            type="radio"
+                                            name="pilih-baris"
+                                            checked={selected?.id === row.id}
+                                            onChange={() => setSelected(row)}
+                                            aria-label={`Pilih ${row.name}`}
+                                        />
+                                    </label>
                                 );
+
                             default:
                                 return null;
                         }

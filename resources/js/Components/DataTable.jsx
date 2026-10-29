@@ -14,6 +14,7 @@ export default function DataTable({
     loading = false,
     loadingRows = 4,
     empty = null,
+    rowClassName = () => null,
 }) {
     if (loading) {
         return (
@@ -55,7 +56,7 @@ export default function DataTable({
                         </tr>
                     ) : (
                         rows.map((row) => (
-                            <tr key={rowKey(row)}>
+                            <tr key={rowKey(row)} className={rowClassName(row)}>
                                 {columns.map((column) => (
                                     <td
                                         key={column.key}

@@ -13,6 +13,7 @@ import { dateId, number, rupiah } from '../../utils/format';
 export default function Index({ products, canManage, outletLabel, filters, outlets }) {
     const { auth } = usePage().props;
     const [pendingDelete, setPendingDelete] = useState(null);
+    const [selected, setSelected] = useState(null);
     const [deleting, setDeleting] = useState(false);
     const [busyId, setBusyId] = useState(null);
 
@@ -38,6 +39,7 @@ export default function Index({ products, canManage, outletLabel, filters, outle
             onFinish: () => {
                 setDeleting(false);
                 setPendingDelete(null);
+                setSelected(null);
             },
         });
     }
@@ -54,13 +56,13 @@ export default function Index({ products, canManage, outletLabel, filters, outle
     // Owner melihat daftar harga barang; manajer melihat saldo stok (tanpa harga).
     const columns = canManage
         ? [
+              { key: 'select', label: '' },
               { key: 'sku', label: 'Kode Barang' },
               { key: 'name', label: 'Nama Barang' },
               { key: 'unit', label: 'Satuan' },
               { key: 'supplier_id', label: 'ID Supplier', align: 'right' },
               { key: 'price', label: 'Harga Satuan', align: 'right' },
               { key: 'updated', label: 'Tanggal Update Harga' },
-              { key: 'action', label: 'Aksi' },
           ]
         : [
               { key: 'product', label: 'Barang' },
@@ -78,9 +80,28 @@ export default function Index({ products, canManage, outletLabel, filters, outle
             badge={<Badge>{auth.user.role_label}</Badge>}
             actions={
                 canManage ? (
-                    <Link href="/products/create" className="btn">
-                        Tambah barang
-                    </Link>
+                    <div className="toolbar">
+                        <Link href="/products/create" className="btn">
+                            Tambah barang
+                        </Link>
+                        <Button
+                            variant="outline"
+                            disabled={selected === null}
+                            title={selected === null ? 'Pilih baris dulu' : undefined}
+                            onClick={() => selected && router.visit(`/products/${selected.id}/edit`)}
+                        >
+                            Ubah
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className="btn--danger"
+                            disabled={selected === null}
+                            title={selected === null ? 'Pilih baris dulu' : undefined}
+                            onClick={() => setPendingDelete(selected)}
+                        >
+                            Hapus
+                        </Button>
+                    </div>
                 ) : null
             }
         >
@@ -134,6 +155,7 @@ export default function Index({ products, canManage, outletLabel, filters, outle
                     caption="Daftar produk dan saldo stok"
                     columns={columns}
                     rows={products}
+                    rowClassName={(row) => (selected?.id === row.id ? 'is-selected' : undefined)}
                     renderCell={(row, column) => {
                         switch (column.key) {
                             case 'sku':
@@ -172,26 +194,17 @@ export default function Index({ products, canManage, outletLabel, filters, outle
                                 ) : (
                                     <Badge tone="muted">Nonaktif</Badge>
                                 );
-                            case 'action':
+                            case 'select':
                                 return (
-                                    <span className="row-actions">
-                                        <Link href={`/products/${row.id}/edit`}>Ubah</Link>
-                                        <button
-                                            type="button"
-                                            className="link"
-                                            disabled={busyId === row.id}
-                                            onClick={() => toggleStatus(row)}
-                                        >
-                                            {row.is_active ? 'Nonaktifkan' : 'Aktifkan'}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="link-danger"
-                                            onClick={() => setPendingDelete(row)}
-                                        >
-                                            Hapus
-                                        </button>
-                                    </span>
+                                    <label className="row-select">
+                                        <input
+                                            type="radio"
+                                            name="pilih-baris"
+                                            checked={selected?.id === row.id}
+                                            onChange={() => setSelected(row)}
+                                            aria-label={`Pilih ${row.name}`}
+                                        />
+                                    </label>
                                 );
                             default:
                                 return null;
