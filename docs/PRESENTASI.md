@@ -190,8 +190,10 @@ Semua file di `docs/screenshots/`, diambil pada viewport 390×844 (2× DPR) mema
 | `01-login.png` | Form login, state default |
 | `15-login-tagline.png` | Tagline aplikasi di layar login |
 | `17-warehouse.png` | Menu Gudang: empat kartu yang seluruhnya bisa diklik |
-| `20-barang.png` | Halaman barang: kolom Barang, Kategori, Satuan, Stok, Min, Harga beli |
-| `21-outlet.png` | Halaman outlet tanpa kolom transaksi yang membingungkan |
+| `20-barang.png` | Harga Barang: Kode Barang, Nama Barang, Satuan, ID Supplier, Harga Satuan, Tanggal Update Harga |
+| `21-outlet.png` | Kelola Outlet: kolom ID dan Nama Outlet, tanpa kolom transaksi |
+| `22-supplier.png` | Database Supplier: kontak, alamat, lead time, dan term of payment (TOP) |
+| `23-karyawan.png` | Kelola Karyawan: nama, gaji, dan satuan gaji (harian/mingguan/bulanan) |
 | `18-tambah-kategori.png` | Form tambah kategori terbuka langsung dari menu Gudang |
 | `19-tambah-outlet.png` | Form tambah outlet terbuka langsung dari menu Gudang |
 | `16-dashboard-tagline.png` | Tagline di header aplikasi (dashboard owner) |
