@@ -189,7 +189,9 @@ Semua file di `docs/screenshots/`, diambil pada viewport 390×844 (2× DPR) mema
 | :--- | :--- |
 | `01-login.png` | Form login, state default |
 | `15-login-tagline.png` | Tagline aplikasi di layar login |
-| `17-warehouse.png` | Menu Gudang dengan aksi cepat tambah kategori dan tambah outlet |
+| `17-warehouse.png` | Menu Gudang dengan aksi cepat tambah produk, kategori, supplier, outlet |
+| `18-tambah-kategori.png` | Form tambah kategori terbuka langsung dari menu Gudang |
+| `19-tambah-outlet.png` | Form tambah outlet terbuka langsung dari menu Gudang |
 | `16-dashboard-tagline.png` | Tagline di header aplikasi (dashboard owner) |
 | `02-dashboard-owner.png` | Dashboard owner: 6 kartu angka, status opname, bottom nav |
 | `03-expenses.png` | Daftar pengeluaran + filter bulan/outlet |
