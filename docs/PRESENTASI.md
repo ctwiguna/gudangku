@@ -179,7 +179,7 @@ Grup route: `/*` publik (login/register), `auth` (dashboard, produk, penerimaan,
 11. CRUD produk, kategori, supplier, outlet, user.
 12. Laporan owner per periode dan outlet.
 13. Ekspor Excel pengeluaran per outlet per bulan, empat sheet: Ringkasan (outlet × bulan), Per Kategori (per bulan per kategori + subtotal), Pembelian Produk (per bulan per kategori produk, mis. Gas LPG), dan Rincian.
-14. Menu Gudang dengan empat kartu yang seluruhnya bisa diklik: Kelola Outlet, Database Supplier (lead time + term of payment), Harga Barang (satuan pcs/dus/kg, harga satuan, tanggal update harga), dan Kelola Karyawan (gaji + satuan gaji).
+14. Menu Gudang dengan empat kartu yang seluruhnya bisa diklik: Kelola Outlet, Database Supplier (lead time hari + term of payment dalam hari, contoh 7/14/30), Harga Barang (satuan pcs/dus/kg, harga satuan, tanggal update harga), dan Kelola Karyawan (gaji + satuan gaji).
 
 ## 10. Screenshot (mobile 390px)
 
@@ -192,7 +192,7 @@ Semua file di `docs/screenshots/`, diambil pada viewport 390×844 (2× DPR) mema
 | `17-warehouse.png` | Menu Gudang: empat kartu yang seluruhnya bisa diklik |
 | `20-barang.png` | Harga Barang: Kode Barang, Nama Barang, Satuan, ID Supplier, Harga Satuan, Tanggal Update Harga |
 | `21-outlet.png` | Kelola Outlet: kolom ID dan Nama Outlet, tanpa kolom transaksi |
-| `22-supplier.png` | Database Supplier: kontak, alamat, lead time, dan term of payment (TOP) |
+| `22-supplier.png` | Database Supplier: kontak, alamat, lead time (hari), dan term of payment (TOP) dalam hari |
 | `23-karyawan.png` | Kelola Karyawan: nama, gaji, dan satuan gaji (harian/mingguan/bulanan) |
 | `18-tambah-kategori.png` | Form tambah kategori terbuka langsung dari menu Gudang |
 | `19-tambah-outlet.png` | Form tambah outlet terbuka langsung dari menu Gudang |

@@ -4,7 +4,7 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 
 - Tanggal uji: 28 Oktober 2026
 - Lingkungan live: https://43.173.41.195.sslip.io (PHP 8.5.12, MySQL 8.0.46, nginx 1.24.0)
-- Test otomatis: `php artisan test` → **175 passed, 751 assertions**
+- Test otomatis: `php artisan test` → **176 passed, 754 assertions**
 - Audit: `composer audit` bersih, `npm audit` 0 vulnerability
 
 | No | Butir | Status | Bukti |
@@ -45,7 +45,7 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 | 34 | Ganti password dan penonaktifan user mencabut sesi di perangkat lain | Lulus | `SessionSecurityTest::test_changing_own_password_revokes_other_sessions`, `test_owner_resetting_user_password_revokes_that_users_sessions`, `test_deactivating_user_revokes_their_sessions` |
 | 35 | Ekspor Excel pengeluaran per outlet per bulan berisi angka yang sama dengan database, dan hanya boleh diunduh owner | Lulus | `ExpenseExportTest` (8 test): berkas `.xlsx` valid (magic bytes `PK`, dibaca ulang dengan PhpSpreadsheet), **4 sheet** (Ringkasan, Per Kategori, Pembelian Produk, Rincian), pengeluaran per bulan per kategori dengan subtotal bulanan + total tahunan per outlet cocok dengan DB, pembelian per kategori produk (Gas LPG) cocok dengan DB, manajer 403, tahun tidak valid jatuh ke tahun berjalan |
 | 36 | Menu Gudang tersedia untuk owner (bottom navigation) dan memuat aksi tambah outlet serta tambah kategori barang | Lulus | `WarehouseTest` (5 test): owner `/warehouse` 200, manajer 403, tamu 302, `/master-data?new=1` menghasilkan `openCreate=true`, `/outlets?new=1` menghasilkan `openCreate=true` |
-| 37 | Database Supplier menyimpan informasi lengkap pemasok: kontak, alamat, lead time, dan term of payment | Lulus | `SupplierTest` (8 test): halaman memuat field lengkap, simpan/ubah lead time + TOP, lead time di luar 0–365 ditolak, supplier yang dipakai pembelian tidak bisa dihapus, manajer 403 |
+| 37 | Database Supplier menyimpan informasi lengkap pemasok: kontak, alamat, lead time, dan term of payment dalam hari | Lulus | `SupplierTest` (9 test): halaman memuat field lengkap, simpan/ubah lead time + TOP angka hari, TOP berupa teks (`NET 30`) ditolak dengan pesan "Term of payment harus berupa angka hari", lead time di luar 0–365 ditolak, supplier yang dipakai pembelian tidak bisa dihapus, manajer 403. Bukti live: kolom TOP menampilkan `30 hari` dan `14 hari`; `input[type=number]` menolak teks di sisi klien dan server tetap menolak walau dikirim manual |
 | 38 | Harga Barang memuat kode, nama, satuan (pcs/dus/kg), ID supplier, harga satuan, dan tanggal update harga | Lulus | `ProductTest` + `ProductController`: satuan dibatasi `pcs/dus/kg`, `price_updated_at` diisi server saat barang dibuat dan diperbarui hanya kalau harga berubah |
 | 39 | Kelola Karyawan menyimpan nama, gaji, dan satuan gaji (harian/mingguan/bulanan) | Lulus | `EmployeeTest` (8 test): halaman + 3 pilihan satuan gaji, simpan/ubah, satuan gaji tidak dikenal ditolak, gaji negatif ditolak, toggle status, hapus, manajer 403 |
 
