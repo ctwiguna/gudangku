@@ -15,6 +15,9 @@ export default function Index({ filters, outlets, summary, expensesByCategory, e
     const [to, setTo] = useState(filters.to);
     const [outlet, setOutlet] = useState(filters.outlet ? String(filters.outlet) : '');
 
+    // Ekspor memuat satu tahun penuh, jadi tahunnya diambil dari tanggal awal filter.
+    const exportYear = (filters.from ?? '').slice(0, 4) || String(new Date().getFullYear());
+
     function applyFilter(event) {
         event.preventDefault();
 
@@ -30,6 +33,14 @@ export default function Index({ filters, outlets, summary, expensesByCategory, e
             title="Laporan"
             subtitle={`${dateId(filters.from)} – ${dateId(filters.to)}`}
             badge={<Badge>{auth.user.role_label}</Badge>}
+            actions={
+                <a
+                    href={`/reports/expenses-export?year=${exportYear}`}
+                    className="btn btn--outline"
+                >
+                    Unduh Excel
+                </a>
+            }
         >
             <Head title="Laporan" />
 
@@ -166,6 +177,12 @@ export default function Index({ filters, outlets, summary, expensesByCategory, e
 
             <p className="muted">
                 Hutang supplier dan nilai stok adalah posisi saat ini, tidak dibatasi periode.
+            </p>
+
+            <p className="muted">
+                Tombol Unduh Excel menghasilkan berkas .xlsx berisi pengeluaran{' '}
+                <strong>semua outlet per bulan</strong> untuk tahun {exportYear} (Januari–Desember),
+                lengkap dengan sheet rincian per kategori.
             </p>
         </AppShell>
     );

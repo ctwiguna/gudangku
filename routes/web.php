@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportExportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockOpnameController;
@@ -90,6 +91,8 @@ Route::middleware(['auth', 'owner', 'session.fresh'])->group(function (): void {
 
     // Laporan ringkas hanya untuk owner.
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/expenses-export', [ReportExportController::class, 'expenses'])
+        ->name('reports.expenses-export');
 
     Route::get('outlets', [OutletController::class, 'index'])->name('outlets.index');
     Route::post('outlets', [OutletController::class, 'store'])->name('outlets.store');

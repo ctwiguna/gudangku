@@ -4,7 +4,7 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 
 - Tanggal uji: 28 Oktober 2026
 - Lingkungan live: https://43.173.41.195.sslip.io (PHP 8.5.12, MySQL 8.0.46, nginx 1.24.0)
-- Test otomatis: `php artisan test` → **143 passed, 644 assertions**
+- Test otomatis: `php artisan test` → **154 passed, 679 assertions**
 - Audit: `composer audit` bersih, `npm audit` 0 vulnerability
 
 | No | Butir | Status | Bukti |
@@ -43,6 +43,7 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 | 32 | Sesi tidak menyimpan kredensial di localStorage dan cookie sesi tidak bisa dibaca JavaScript | Lulus | 0 kemunculan `localStorage`/`sessionStorage`; cookie `gudangku-session` `HttpOnly; Secure; SameSite=Lax`; `SessionSecurityTest::test_session_configuration_is_hardened` |
 | 33 | Absolute timeout memaksa login ulang berapa pun aktivitasnya | Lulus | `SessionSecurityTest::test_absolute_timeout_forces_logout`, `test_expired_session_also_blocks_owner_only_routes` |
 | 34 | Ganti password dan penonaktifan user mencabut sesi di perangkat lain | Lulus | `SessionSecurityTest::test_changing_own_password_revokes_other_sessions`, `test_owner_resetting_user_password_revokes_that_users_sessions`, `test_deactivating_user_revokes_their_sessions` |
+| 35 | Ekspor Excel pengeluaran per outlet per bulan berisi angka yang sama dengan database, dan hanya boleh diunduh owner | Lulus | `ExpenseExportTest` (6 test): berkas `.xlsx` valid (magic bytes `PK`, dibaca ulang dengan PhpSpreadsheet), sheet Ringkasan + Rincian, nilai per bulan dan total cocok dengan DB, manajer 403, tahun tidak valid jatuh ke tahun berjalan |
 
 ## Uji manual tambahan di live
 

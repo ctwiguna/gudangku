@@ -178,6 +178,7 @@ Grup route: `/*` publik (login/register), `auth` (dashboard, produk, penerimaan,
 10. CRUD pengeluaran enam kategori (periode wajib untuk gaji).
 11. CRUD produk, kategori, supplier, outlet, user.
 12. Laporan owner per periode dan outlet.
+13. Ekspor Excel pengeluaran per outlet per bulan (Ringkasan matriks outlet × bulan, Rincian per kategori).
 
 ## 10. Screenshot (mobile 390px)
 

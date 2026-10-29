@@ -33,6 +33,7 @@ Register publik hanya membuat akun **manajer nonaktif**. Akun tersebut tidak bis
 10. CRUD produk, kategori, supplier, outlet, dan user.
 11. Laporan owner: pengeluaran per kategori dan outlet, hutang, nilai stok, pembelian per periode.
 12. Keamanan: CSRF, escaping React, Eloquent binding, rate limit, RBAC middleware + policy, penyaringan harga di controller, halaman 403/404 sendiri.
+13. **Ekspor Excel** pengeluaran per outlet per bulan (`.xlsx`, dua sheet: Ringkasan matriks outlet × bulan, dan Rincian per kategori).
 
 ## Stack
 
@@ -105,7 +106,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 ## Pengujian
 
 ```bash
-php artisan test        # 143 test, 644 assertion
+php artisan test        # 154 test, 679 assertion
 composer audit          # tanpa advisory
 npm audit               # 0 vulnerability
 ```
@@ -169,10 +170,11 @@ database/gudangku.sql  ekspor database contoh
 
 ## Catatan jujur
 
-1. Server produksi memakai **MySQL 8.0.46**, bukan 26.10.0 seperti tertulis di PRD. Tidak ada fitur aplikasi yang bergantung pada versi tersebut.
-2. Domain memakai `sslip.io` karena keterbatasan waktu; mengganti ke domain sendiri hanya perlu mengubah `server_name`, A record, dan menerbitkan ulang sertifikat.
-3. Start command produksi memakai `php artisan serve` di belakang nginx. Untuk trafik nyata, ganti ke `php-fpm` + nginx (sudah terpasang) atau FrankenPHP.
-4. `CVE-2026-45070` pada `symfony/mime` sudah dipatch dengan menaikkan ke v8.1.10; `composer audit` bersih.
+1. **Ekspor Excel berada di luar scope PRD.** PRD §5 menaruh "ekspor Excel atau PDF laporan" sebagai fitur di luar scope, dan fitur ini ditambahkan atas permintaan setelah aplikasi selesai. Dicatat sebagai penyimpangan yang disengaja. Library yang dipakai: `phpoffice/phpspreadsheet` (MIT).
+2. Server produksi memakai **MySQL 8.0.46**, bukan 26.10.0 seperti tertulis di PRD. Tidak ada fitur aplikasi yang bergantung pada versi tersebut.
+3. Domain memakai `sslip.io` karena keterbatasan waktu; mengganti ke domain sendiri hanya perlu mengubah `server_name`, A record, dan menerbitkan ulang sertifikat.
+4. Start command produksi memakai `php artisan serve` di belakang nginx. Untuk trafik nyata, ganti ke `php-fpm` + nginx (sudah terpasang) atau FrankenPHP.
+5. `CVE-2026-45070` pada `symfony/mime` sudah dipatch dengan menaikkan ke v8.1.10; `composer audit` bersih.
 
 ## Lisensi pihak ketiga
 
