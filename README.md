@@ -38,7 +38,7 @@ Register publik hanya membuat akun **manajer nonaktif**. Akun tersebut tidak bis
     - **Kelola Outlet** — tambah, ubah, dan hapus outlet (kolom ID dan Nama Outlet).
     - **Database Supplier** — informasi lengkap pemasok: ID, nama, kontak/telepon, alamat, **lead time (hari pengiriman)**, dan **term of payment (TOP) dalam hari** (contoh: 7, 14, atau 30 hari).
     - **Harga Barang** — kode barang, nama barang, **satuan (pcs/dus/kg, bawaan pcs)**, ID supplier, **harga satuan dalam Rupiah**, dan **tanggal update harga** (diisi otomatis oleh server).
-    - **Kelola Karyawan** — nama karyawan, gaji, dan satuan gaji (harian, mingguan, bulanan).
+    - **Kelola Karyawan** — daftar karyawan **dikelompokkan per outlet**, berisi nama karyawan, gaji, dan satuan gaji (harian, mingguan, bulanan). Outlet wajib dipilih dan daftar bisa disaring per outlet.
 
 ## Stack
 
@@ -111,7 +111,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 ## Pengujian
 
 ```bash
-php artisan test        # 176 test, 754 assertion
+php artisan test        # 180 test, 768 assertion
 composer audit          # tanpa advisory
 npm audit               # 0 vulnerability
 ```
