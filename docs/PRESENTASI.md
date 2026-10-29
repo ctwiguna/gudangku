@@ -17,6 +17,8 @@ Sumber materi untuk PDF ringkas UAS. Diagram memakai Mermaid; kalau konverter PD
 
 ## 2. Deskripsi
 
+Tagline: **Catat, monitor dan audit stok + Pengeluaran bisnis**.
+
 gudangku mengelola stok barang di beberapa outlet: penerimaan barang dari supplier, harga beli per pcs, hutang supplier, stock opname mingguan, serta pengeluaran operasional per outlet (listrik, air, IPAL, gaji, sewa, lain).
 
 Ada dua role. **Owner** melihat semua outlet, mengatur master data dan user, mengisi harga, melihat laporan. **Manajer outlet** terikat satu outlet, menerima barang dengan jumlah saja, dan wajib opname mingguan. Harga, total pembelian, dan laporan tidak pernah sampai ke manajer — bukan hanya disembunyikan di tampilan, tetapi tidak dikirim di props Inertia.
@@ -184,6 +186,8 @@ Semua file di `docs/screenshots/`, diambil pada viewport 390×844 (2× DPR) mema
 | File | Isi |
 | :--- | :--- |
 | `01-login.png` | Form login, state default |
+| `15-login-tagline.png` | Tagline aplikasi di layar login |
+| `16-dashboard-tagline.png` | Tagline di header aplikasi (dashboard owner) |
 | `02-dashboard-owner.png` | Dashboard owner: 6 kartu angka, status opname, bottom nav |
 | `03-expenses.png` | Daftar pengeluaran + filter bulan/outlet |
 | `04-expense-form.png` | Form pengeluaran (field periode muncul untuk gaji) |

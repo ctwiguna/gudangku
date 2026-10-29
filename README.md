@@ -1,6 +1,8 @@
 # gudangku
 
-Aplikasi pencatatan dan stock opname inventaris outlet.
+**Catat, monitor dan audit stok + Pengeluaran bisnis**
+
+Aplikasi pencatatan dan stock opname inventaris outlet. Tagline di atas dipakai di layar login, header aplikasi, dan catatan kaki; nilainya diatur lewat `APP_TAGLINE` sehingga cukup diubah di satu tempat.
 
 Mengelola stok barang di beberapa outlet, mencatat penerimaan barang dari supplier, mencatat pembelian beserta harga per pcs, serta mencatat pengeluaran operasional per outlet seperti listrik, air, IPAL, gaji mingguan, sewa, dan biaya lain.
 
