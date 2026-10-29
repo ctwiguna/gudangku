@@ -12,9 +12,12 @@ import TextInput from '../../Components/TextInput';
 import AppShell from '../../Layouts/AppShell';
 import { number } from '../../utils/format';
 
-export default function Index({ outlets, openCreate = false }) {
+// Prop dari server dinamai ulang saat di-destructure: di komponen ini ada
+// fungsi lokal openCreate(), dan dua binding dengan nama sama menyebabkan
+// ReferenceError (temporal dead zone) sehingga halaman blank.
+export default function Index({ outlets, openCreate: startWithFormOpen = false }) {
     const { auth } = usePage().props;
-    const [formOpen, setFormOpen] = useState(openCreate);
+    const [formOpen, setFormOpen] = useState(startWithFormOpen);
     const [editing, setEditing] = useState(null);
     const [pendingDelete, setPendingDelete] = useState(null);
     const [deleting, setDeleting] = useState(false);
