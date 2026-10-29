@@ -749,6 +749,12 @@ button {
     border-radius: var(--radius-card);
 }
 
+/* Baris keadaan kosong: header tetap terlihat di atasnya. */
+.data-table__empty {
+    padding: 0;
+    white-space: normal;
+}
+
 /* ---------- Keadaan kosong ---------- */
 .empty {
     display: flex;

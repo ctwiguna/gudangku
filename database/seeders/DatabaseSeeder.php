@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CatalogSeeder::class,
             PurchaseSeeder::class,
             ExpenseSeeder::class,
+            EmployeeSeeder::class,
             StockOpnameSeeder::class,
         ]);
     }

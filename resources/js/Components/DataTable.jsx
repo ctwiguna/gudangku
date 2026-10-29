@@ -23,9 +23,7 @@ export default function DataTable({
         );
     }
 
-    if (!rows || rows.length === 0) {
-        return empty;
-    }
+    const isEmpty = !rows || rows.length === 0;
 
     return (
         <div className="data-table__scroll">
@@ -47,18 +45,28 @@ export default function DataTable({
                 </thead>
 
                 <tbody>
-                    {rows.map((row) => (
-                        <tr key={rowKey(row)}>
-                            {columns.map((column) => (
-                                <td
-                                    key={column.key}
-                                    className={column.align === 'right' ? 'is-right' : undefined}
-                                >
-                                    {renderCell(row, column)}
-                                </td>
-                            ))}
+                    {isEmpty ? (
+                        // Header tetap tampil walau belum ada data, supaya pengguna
+                        // tahu kolom apa saja yang akan terisi.
+                        <tr>
+                            <td colSpan={columns.length} className="data-table__empty">
+                                {empty}
+                            </td>
                         </tr>
-                    ))}
+                    ) : (
+                        rows.map((row) => (
+                            <tr key={rowKey(row)}>
+                                {columns.map((column) => (
+                                    <td
+                                        key={column.key}
+                                        className={column.align === 'right' ? 'is-right' : undefined}
+                                    >
+                                        {renderCell(row, column)}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
         </div>

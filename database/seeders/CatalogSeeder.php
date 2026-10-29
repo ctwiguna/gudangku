@@ -60,6 +60,7 @@ class CatalogSeeder extends Seeder
                     'unit' => $product['unit'],
                     'min_stock' => $product['min_stock'],
                     'price_buy' => $product['price_buy'],
+                    'price_updated_at' => now('Asia/Jakarta')->toDateString(),
                     'is_active' => true,
                 ],
             );
