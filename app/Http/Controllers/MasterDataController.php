@@ -20,6 +20,8 @@ class MasterDataController extends Controller
 
         return Inertia::render('MasterData/Index', [
             'tab' => $tab,
+            // ?new=1 dipakai tombol "Tambah kategori"/"Tambah supplier" dari menu Gudang.
+            'openCreate' => $request->boolean('new'),
             'categories' => Category::withCount('products')
                 ->ordered()
                 ->get()

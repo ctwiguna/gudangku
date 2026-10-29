@@ -13,7 +13,7 @@ import TextInput from '../../Components/TextInput';
 import AppShell from '../../Layouts/AppShell';
 import { number } from '../../utils/format';
 
-export default function Index({ tab, categories, suppliers }) {
+export default function Index({ tab, categories, suppliers, openCreate = false }) {
     const { auth } = usePage().props;
     const [active, setActive] = useState(tab);
 
@@ -33,16 +33,22 @@ export default function Index({ tab, categories, suppliers }) {
             <Tabs tabs={tabs} active={active} onChange={setActive} />
 
             {active === 'kategori' ? (
-                <CategoryPanel categories={categories} />
+                <CategoryPanel
+                    categories={categories}
+                    initialOpen={openCreate && tab === 'kategori'}
+                />
             ) : (
-                <SupplierPanel suppliers={suppliers} />
+                <SupplierPanel
+                    suppliers={suppliers}
+                    initialOpen={openCreate && tab === 'supplier'}
+                />
             )}
         </AppShell>
     );
 }
 
-function CategoryPanel({ categories }) {
-    const [formOpen, setFormOpen] = useState(false);
+function CategoryPanel({ categories, initialOpen = false }) {
+    const [formOpen, setFormOpen] = useState(initialOpen);
     const [editing, setEditing] = useState(null);
     const [pendingDelete, setPendingDelete] = useState(null);
     const [deleting, setDeleting] = useState(false);
@@ -213,8 +219,8 @@ function CategoryPanel({ categories }) {
     );
 }
 
-function SupplierPanel({ suppliers }) {
-    const [formOpen, setFormOpen] = useState(false);
+function SupplierPanel({ suppliers, initialOpen = false }) {
+    const [formOpen, setFormOpen] = useState(initialOpen);
     const [editing, setEditing] = useState(null);
     const [pendingDelete, setPendingDelete] = useState(null);
     const [deleting, setDeleting] = useState(false);

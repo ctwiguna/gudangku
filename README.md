@@ -33,7 +33,8 @@ Register publik hanya membuat akun **manajer nonaktif**. Akun tersebut tidak bis
 10. CRUD produk, kategori, supplier, outlet, dan user.
 11. Laporan owner: pengeluaran per kategori dan outlet, hutang, nilai stok, pembelian per periode.
 12. Keamanan: CSRF, escaping React, Eloquent binding, rate limit, RBAC middleware + policy, penyaringan harga di controller, halaman 403/404 sendiri.
-13. **Ekspor Excel** pengeluaran per outlet per bulan (`.xlsx`, dua sheet: Ringkasan matriks outlet × bulan, dan Rincian per kategori).
+13. **Ekspor Excel** pengeluaran per outlet per bulan (`.xlsx`, empat sheet: **Ringkasan** total per outlet per bulan, **Per Kategori** pengeluaran per bulan per kategori (listrik, air, ipal, gaji, sewa, lain) dengan subtotal bulanan dan total tahunan per outlet, **Pembelian Produk** pembelian per bulan per kategori produk (mis. Gas LPG) dengan subtotal, dan **Rincian** daftar datar untuk pivot).
+14. **Menu Gudang** (tab tengah navigasi owner) sebagai pintu masuk master data dan transaksi, dengan aksi cepat **Tambah produk**, **Tambah kategori**, **Tambah supplier**, dan **Tambah outlet** yang langsung membuka form terkait (`?new=1`).
 
 ## Stack
 

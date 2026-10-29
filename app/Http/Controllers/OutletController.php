@@ -7,12 +7,13 @@ use App\Http\Requests\UpdateOutletRequest;
 use App\Models\Outlet;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class OutletController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', Outlet::class);
 
@@ -36,6 +37,8 @@ class OutletController extends Controller
 
         return Inertia::render('Outlets/Index', [
             'outlets' => $outlets,
+            // ?new=1 dipakai tombol "Tambah outlet" dari menu Gudang.
+            'openCreate' => $request->boolean('new'),
         ]);
     }
 

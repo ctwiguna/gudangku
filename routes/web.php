@@ -17,6 +17,7 @@ use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 // Route redirect, bukan closure, supaya `route:cache` tetap jalan di produksi.
@@ -85,6 +86,9 @@ Route::middleware(['auth', 'owner', 'session.fresh'])->group(function (): void {
     Route::put('purchases/{purchase}/price', [PurchaseController::class, 'update'])->name('purchases.price.update');
     Route::patch('purchases/{purchase}/paid', [PurchaseController::class, 'markPaid'])->name('purchases.paid');
     Route::delete('purchases/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
+
+    // Menu Gudang: pintu masuk master data dan transaksi barang (termasuk aksi tambah).
+    Route::get('warehouse', [WarehouseController::class, 'index'])->name('warehouse.index');
 
     // Pengaturan owner: outlet dan user.
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');

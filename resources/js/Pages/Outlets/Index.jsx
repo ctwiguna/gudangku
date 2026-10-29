@@ -12,9 +12,9 @@ import TextInput from '../../Components/TextInput';
 import AppShell from '../../Layouts/AppShell';
 import { number } from '../../utils/format';
 
-export default function Index({ outlets }) {
+export default function Index({ outlets, openCreate = false }) {
     const { auth } = usePage().props;
-    const [formOpen, setFormOpen] = useState(false);
+    const [formOpen, setFormOpen] = useState(openCreate);
     const [editing, setEditing] = useState(null);
     const [pendingDelete, setPendingDelete] = useState(null);
     const [deleting, setDeleting] = useState(false);
