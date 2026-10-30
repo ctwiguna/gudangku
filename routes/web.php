@@ -17,6 +17,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SupplierDebtController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -107,6 +108,9 @@ Route::middleware(['auth', 'owner', 'session.fresh'])->group(function (): void {
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/expenses-export', [ReportExportController::class, 'expenses'])
         ->name('reports.expenses-export');
+
+    // Detail barang dari supplier yang belum dibayar (hutang supplier).
+    Route::get('supplier-debts', [SupplierDebtController::class, 'index'])->name('supplier-debts.index');
 
     Route::get('outlets', [OutletController::class, 'index'])->name('outlets.index');
     Route::post('outlets', [OutletController::class, 'store'])->name('outlets.store');

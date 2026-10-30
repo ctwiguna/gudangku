@@ -38,6 +38,8 @@ export default function Owner({ summary, outlets, belowMin, recentReceipts, rece
                     money
                     tone="danger"
                     hint={`${summary.debt_count} pembelian belum dibayar`}
+                    href="/supplier-debts"
+                    moreLabel="Klik lebih detail"
                 />
                 <StatCard
                     label="Menunggu harga"

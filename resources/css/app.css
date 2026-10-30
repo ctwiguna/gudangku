@@ -672,6 +672,40 @@ button {
     overflow-wrap: anywhere;
 }
 
+/* Kartu angka yang bisa diklik seluruhnya. */
+.stat--link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    transition:
+        box-shadow 140ms ease,
+        border-color 140ms ease;
+}
+
+.stat--link:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+    color: inherit;
+}
+
+.stat--link:focus-visible {
+    outline: 3px solid rgb(15 118 110 / 0.35);
+    outline-offset: 2px;
+}
+
+.stat__more {
+    display: inline-block;
+    margin-top: var(--space-3);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.stat--link:hover .stat__more {
+    color: var(--color-primary-dark);
+}
+
 .stat__hint {
     margin: var(--space-1) 0 0;
     font-size: var(--text-caption);
@@ -1310,6 +1344,22 @@ body.is-modal-open {
     color: var(--color-success-text);
     font-weight: 700;
     font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Blok hutang per pembelian (halaman hutang supplier) ---------- */
+.debt {
+    padding: var(--space-4);
+    margin-top: var(--space-3);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+}
+
+.debt__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
 }
 
 /* ---------- Toolbar aksi di atas tabel ---------- */
