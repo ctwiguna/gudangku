@@ -4,12 +4,28 @@ import { CloseIcon } from './Icons';
 const FOCUSABLE =
     'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
+/** Field yang diprioritaskan menerima fokus saat modal dibuka. */
+const FIRST_FIELD =
+    'input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled])';
+
 /**
  * Modal yang berubah menjadi bottom sheet di layar di bawah 640 piksel.
  * Menahan fokus di dalam dialog dan bisa ditutup dengan Esc.
+ *
+ * Catatan penting: effect pemasangan listener HANYA bergantung pada `open`.
+ * Kalau `onClose` dijadikan dependensi, setiap render (termasuk tiap ketikan
+ * di form) akan memasang ulang listener dan merebut fokus ke elemen pertama,
+ * sehingga fokus berpindah ke tombol tutup dan modal ikut tertutup saat
+ * pengguna mengetik. Karena itu `onClose` disimpan di ref.
  */
 export default function Modal({ open, onClose, title, children, footer = null }) {
     const panelRef = useRef(null);
+    const closeRef = useRef(onClose);
+
+    // Selalu simpan handler terbaru tanpa memicu ulang effect.
+    useEffect(() => {
+        closeRef.current = onClose;
+    });
 
     useEffect(() => {
         if (!open) {
@@ -19,12 +35,14 @@ export default function Modal({ open, onClose, title, children, footer = null })
         const panel = panelRef.current;
         const previousActive = document.activeElement;
 
-        panel?.querySelector(FOCUSABLE)?.focus();
+        // Fokus ke field pertama; tombol tutup hanya dipakai kalau tidak ada field.
+        const firstField = panel?.querySelector(FIRST_FIELD);
+        (firstField ?? panel?.querySelector(FOCUSABLE) ?? panel)?.focus?.();
 
         function handleKeyDown(event) {
             if (event.key === 'Escape') {
                 event.stopPropagation();
-                onClose();
+                closeRef.current?.();
 
                 return;
             }
@@ -61,7 +79,7 @@ export default function Modal({ open, onClose, title, children, footer = null })
             document.body.classList.remove('is-modal-open');
             previousActive?.focus?.();
         };
-    }, [open, onClose]);
+    }, [open]);
 
     if (!open) {
         return null;
