@@ -4,7 +4,7 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 
 - Tanggal uji: 28 Oktober 2026
 - Lingkungan live: https://43.173.41.195.sslip.io (PHP 8.5.12, MySQL 8.0.46, nginx 1.24.0)
-- Test otomatis: `php artisan test` → **180 passed, 768 assertions**
+- Test otomatis: `php artisan test` → **186 passed, 792 assertions**
 - Audit: `composer audit` bersih, `npm audit` 0 vulnerability
 
 | No | Butir | Status | Bukti |
@@ -30,7 +30,7 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 | 19 | Setelah opname disimpan, pengingat hilang dan stok sama dengan jumlah hitung | Lulus | `StockOpnameTest::test_reminder_disappears_after_opname`, `test_manager_can_submit_opname_and_stock_equals_counted`; live: `opname_due` false, `BTL-PRF` 30 → 28 |
 | 20 | Selisih opname menulis movement adjustment; selisih nol tidak menulis movement | Lulus | `StockOpnameTest::test_only_non_zero_differences_write_adjustment_movements` (2 movement untuk 2 produk berselisih); live: hanya `BTL-PRF -2` yang tercatat |
 | 21 | Opname kedua di minggu yang sama ditolak | Lulus | `StockOpnameTest::test_second_opname_in_same_week_is_rejected`; live: jumlah opname per outlet tetap 1 setelah percobaan kedua |
-| 22 | Dashboard owner menampilkan status opname per outlet untuk minggu berjalan | Lulus | `DashboardTest::test_outlet_status_marks_opname_per_outlet`; live: `CKR-01` sudah, `CKR-02` belum |
+| 22 | Dashboard owner menampilkan status opname per outlet untuk minggu berjalan | Lulus | `DashboardTest::test_outlet_status_marks_opname_per_outlet`; live: `KDM-01` (Kedungmundu) sudah, `TMB-01` dan `ALT-01` belum |
 | 23 | Total pengeluaran bulan ini di dashboard sama dengan query langsung ke database | Lulus | `DashboardTest::test_owner_dashboard_numbers_match_database`; live: `9.675.000` di props = `9.675.000,00` di SQL |
 | 24 | Produk di bawah minimum muncul di dashboard dan halaman produk | Lulus | `DashboardTest::test_below_min_products_are_listed_for_owner`, `ProductTest` (panel "Perlu restock"); live: `belowMin` 10 baris |
 | 25 | Semua form store dan update memakai FormRequest | Lulus | 14 FormRequest di `app/Http/Requests`; route store/update tidak menerima `Request` biasa |
@@ -47,7 +47,8 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 | 36 | Menu Gudang tersedia untuk owner (bottom navigation) dan memuat aksi tambah outlet serta tambah kategori barang | Lulus | `WarehouseTest` (5 test): owner `/warehouse` 200, manajer 403, tamu 302, `/master-data?new=1` menghasilkan `openCreate=true`, `/outlets?new=1` menghasilkan `openCreate=true` |
 | 37 | Database Supplier menyimpan informasi lengkap pemasok: kontak, alamat, lead time, dan term of payment dalam hari | Lulus | `SupplierTest` (9 test): halaman memuat field lengkap, simpan/ubah lead time + TOP angka hari, TOP berupa teks (`NET 30`) ditolak dengan pesan "Term of payment harus berupa angka hari", lead time di luar 0–365 ditolak, supplier yang dipakai pembelian tidak bisa dihapus, manajer 403. Bukti live: kolom TOP menampilkan `30 hari` dan `14 hari`; `input[type=number]` menolak teks di sisi klien dan server tetap menolak walau dikirim manual |
 | 38 | Harga Barang memuat kode, nama, satuan (pcs/dus/kg), ID supplier, harga satuan, dan tanggal update harga | Lulus | `ProductTest` + `ProductController`: satuan dibatasi `pcs/dus/kg`, `price_updated_at` diisi server saat barang dibuat dan diperbarui hanya kalau harga berubah |
-| 39 | Kelola Karyawan menyimpan nama, gaji, dan satuan gaji (harian/mingguan/bulanan), dikelompokkan per outlet | Lulus | `EmployeeTest` (12 test): outlet wajib dipilih, filter `?outlet=` hanya menampilkan karyawan outlet tersebut, karyawan bisa dipindah antar outlet, outlet yang masih punya karyawan tidak bisa dihapus, 3 pilihan satuan gaji, gaji negatif dan satuan gaji tidak dikenal ditolak, toggle status, hapus, manajer 403. Bukti live: ringkasan "Karyawan per outlet" menampilkan CKR-01 = 2 karyawan, CKR-02 = 1 karyawan; filter outlet menandai baris aktif; form kosong menghasilkan pesan "Pilih outlet untuk karyawan ini." |
+| 39 | Kelola Karyawan menyimpan nama, gaji, dan satuan gaji (harian/mingguan/bulanan), dikelompokkan per outlet | Lulus | `EmployeeTest` (12 test): outlet wajib dipilih, filter `?outlet=` hanya menampilkan karyawan outlet tersebut, karyawan bisa dipindah antar outlet, outlet yang masih punya karyawan tidak bisa dihapus, 3 pilihan satuan gaji, gaji negatif dan satuan gaji tidak dikenal ditolak, toggle status, hapus, manajer 403. Bukti live: ringkasan "Karyawan per outlet" menampilkan Kedungmundu = 8 karyawan, Tembalang = 4 karyawan, Alton = 2 karyawan; filter outlet menandai baris aktif; form kosong menghasilkan pesan "Pilih outlet untuk karyawan ini." |
+| 40 | Kartu "Hutang supplier" di dashboard menampilkan nominal dan jumlah pembelian belum dibayar, bisa diklik, dan membuka halaman detail barang yang belum dibayar | Lulus | `SupplierDebtTest` (6 test): angka ringkasan sama dengan `Purchase::unpaid()`, detail memuat nama produk + jumlah + harga satuan + subtotal (subtotal = harga × jumlah), pembelian yang sudah dibayar hilang dari daftar, filter outlet, manajer 403, tamu 302. Bukti live: kartu bertag `A` dengan `href=/supplier-debts`, ajakan "Klik lebih detail", nominal `Rp 492.000` + "2 pembelian belum dibayar"; halaman menampilkan PT Sumber Gas Nusantara (Rp 375.000) dan CV Aroma Kemas Nusantara (Rp 117.000) beserta barangnya; tombol "Tandai dibayar" tersedia per pembelian |
 
 ## Uji manual tambahan di live
 

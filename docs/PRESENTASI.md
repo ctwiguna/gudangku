@@ -180,6 +180,7 @@ Grup route: `/*` publik (login/register), `auth` (dashboard, produk, penerimaan,
 12. Laporan owner per periode dan outlet.
 13. Ekspor Excel pengeluaran per outlet per bulan, empat sheet: Ringkasan (outlet × bulan), Per Kategori (per bulan per kategori + subtotal), Pembelian Produk (per bulan per kategori produk, mis. Gas LPG), dan Rincian.
 14. Menu Gudang dengan empat kartu yang seluruhnya bisa diklik: Kelola Outlet, Database Supplier (lead time hari + term of payment dalam hari, contoh 7/14/30), Harga Barang (satuan pcs/dus/kg, harga satuan, tanggal update harga), dan Kelola Karyawan (dikelompokkan per outlet; gaji + satuan gaji).
+15. Kartu hutang supplier di dashboard menampilkan nominal + jumlah pembelian belum dibayar, bertuliskan "Klik lebih detail", dan membuka halaman detail barang per supplier (produk, jumlah, harga satuan, subtotal, total supplier) dengan tombol Tandai dibayar.
 
 ## 10. Screenshot (mobile 390px)
 
@@ -194,6 +195,7 @@ Semua file di `docs/screenshots/`, diambil pada viewport 390×844 (2× DPR) mema
 | `21-outlet.png` | Kelola Outlet: kolom ID dan Nama Outlet, tanpa kolom transaksi |
 | `22-supplier.png` | Database Supplier: kontak, alamat, lead time (hari), dan term of payment (TOP) dalam hari |
 | `23-karyawan.png` | Kelola Karyawan dikelompokkan per outlet: ringkasan per outlet, kolom outlet, gaji, dan satuan gaji |
+| `24-hutang-supplier.png` | Halaman Hutang Supplier: barang per supplier yang belum dibayar, subtotal, dan tombol Tandai dibayar |
 | `18-tambah-kategori.png` | Form tambah kategori terbuka langsung dari menu Gudang |
 | `19-tambah-outlet.png` | Form tambah outlet terbuka langsung dari menu Gudang |
 | `16-dashboard-tagline.png` | Tagline di header aplikasi (dashboard owner) |
@@ -229,7 +231,7 @@ Detail lengkap dan 6 masalah nyata saat deploy: `docs/DEPLOY_VPS.md`.
 
 | Bukti | Angka |
 | :--- | :--- |
-| Test otomatis | 133 test, 609 assertion, semua lulus |
+| Test otomatis | 186 test, 792 assertion, semua lulus |
 | Matriks route × role di live | 48 pemeriksaan, 0 menyimpang |
 | Pemeriksaan mobile (390px & 360px) | 28 halaman, 0 overflow horizontal, bottom nav 57px, target sentuh ≥ 44px |
 | `composer audit` | bersih (CVE-2026-45070 dipatch ke symfony/mime 8.1.10) |

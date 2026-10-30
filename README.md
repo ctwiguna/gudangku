@@ -39,6 +39,7 @@ Register publik hanya membuat akun **manajer nonaktif**. Akun tersebut tidak bis
     - **Database Supplier** — informasi lengkap pemasok: ID, nama, kontak/telepon, alamat, **lead time (hari pengiriman)**, dan **term of payment (TOP) dalam hari** (contoh: 7, 14, atau 30 hari).
     - **Harga Barang** — kode barang, nama barang, **satuan (pcs/dus/kg, bawaan pcs)**, ID supplier, **harga satuan dalam Rupiah**, dan **tanggal update harga** (diisi otomatis oleh server).
     - **Kelola Karyawan** — daftar karyawan **dikelompokkan per outlet**, berisi nama karyawan, gaji, dan satuan gaji (harian, mingguan, bulanan). Outlet wajib dipilih dan daftar bisa disaring per outlet.
+15. **Detail hutang supplier** — kartu "Hutang supplier" di dashboard menampilkan nominal **dan** jumlah pembelian yang belum dibayar, bertuliskan *Klik lebih detail*, dan seluruh kartunya bisa diklik menuju halaman **Hutang Supplier**: daftar barang per supplier (nama produk, jumlah, harga satuan, subtotal), total tiap supplier, filter outlet, tombol **Tandai dibayar**, dan tautan ke detail penerimaan.
 
 ## Stack
 
@@ -112,7 +113,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 ## Pengujian
 
 ```bash
-php artisan test        # 180 test, 768 assertion
+php artisan test        # 186 test, 792 assertion
 composer audit          # tanpa advisory
 npm audit               # 0 vulnerability
 ```
