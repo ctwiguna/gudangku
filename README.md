@@ -96,6 +96,14 @@ Sesuaikan `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` di `.env`, lalu:
 php artisan migrate --seed
 ```
 
+`migrate --seed` hanya mengisi **data dasar**: outlet, akun pengguna, dan karyawan. Data contoh produk, kategori, supplier, pembelian, pengeluaran, dan stock opname sengaja dipisah supaya aplikasi bisa dimulai dari data kosong dan diisi sendiri lewat UI.
+
+Kalau ingin data contoh lengkap (data inilah yang dipakai test otomatis):
+
+```bash
+php artisan db:seed --class=DemoDataSeeder
+```
+
 ### Menjalankan
 
 ```bash

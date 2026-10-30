@@ -17,7 +17,7 @@ class UserTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed();
+        $this->seed(\Database\Seeders\DemoDataSeeder::class);
     }
 
     private function owner(): User
