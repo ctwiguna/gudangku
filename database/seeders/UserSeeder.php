@@ -25,21 +25,21 @@ class UserSeeder extends Seeder
             ],
             [
                 // Manajer sekaligus karyawan di outlet Kedungmundu.
-                'email' => 'ina@gudangku.test',
+                'email' => 'manajer1@gudangku.test',
                 'name' => 'Ina',
                 'outlet_id' => $kedungmundu->id,
                 'role' => UserRole::Manajer,
                 'is_active' => true,
             ],
             [
-                'email' => 'salsi@gudangku.test',
+                'email' => 'manajer3@gudangku.test',
                 'name' => 'Salsi',
                 'outlet_id' => $tembalang->id,
                 'role' => UserRole::Manajer,
                 'is_active' => true,
             ],
             [
-                'email' => 'nafa@gudangku.test',
+                'email' => 'manajer2@gudangku.test',
                 'name' => 'Nafa',
                 'outlet_id' => $alton->id,
                 'role' => UserRole::Manajer,
@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
             $user->fill([
                 'name' => $data['name'],
                 'outlet_id' => $data['outlet_id'],
-                'password' => 'password',
+                'password' => 'hidupberkah',
             ]);
 
             // role dan is_active tidak fillable, jadi diisi terkontrol di sini.

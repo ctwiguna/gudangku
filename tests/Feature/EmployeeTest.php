@@ -27,7 +27,7 @@ class EmployeeTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'ina@gudangku.test')->firstOrFail();
+        return User::where('email', 'manajer1@gudangku.test')->firstOrFail();
     }
 
     private function outlet(string $code = 'KDM-01'): Outlet

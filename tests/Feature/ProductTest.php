@@ -28,12 +28,12 @@ class ProductTest extends TestCase
 
     private function managerPusat(): User
     {
-        return User::where('email', 'ina@gudangku.test')->firstOrFail();
+        return User::where('email', 'manajer1@gudangku.test')->firstOrFail();
     }
 
     private function managerCabang(): User
     {
-        return User::where('email', 'salsi@gudangku.test')->firstOrFail();
+        return User::where('email', 'manajer3@gudangku.test')->firstOrFail();
     }
 
     /**

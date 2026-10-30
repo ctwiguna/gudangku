@@ -67,16 +67,18 @@ Ringkasan ini bisa dipakai sebagai naskah pendukung video; versi lengkap ada di 
 | Video esai | `docs/SKRIP_VIDEO.md` | naskah siap, perlu rekam |
 | Catatan uji DoD | `docs/UJI.md` | selesai |
 | Panduan deploy | `docs/DEPLOY_VPS.md` | selesai |
+| Panduan penguji | `docs/PANDUAN_PENGUJI.md` | selesai |
 
-## 6. Akun demo
+## 6. Akun pengujian
 
-| Peran | Email | Password |
-| :--- | :--- | :--- |
-| Owner | `owner@gudangku.test` | `password` |
-| Manajer | `ina@gudangku.test` | `password` | Outlet Kedungmundu (KDM-01) |
-| Manajer | `salsi@gudangku.test` | `password` | Outlet Tembalang (TMB-01) |
-| Manajer | `nafa@gudangku.test` | `password` | Outlet Alton (ALT-01) |
-| Manajer nonaktif | `kandidat@gudangku.test` | `password` | Belum punya outlet |
+Semua akun memakai password `hidupberkah`. Skenario uji langkah demi langkah: `docs/PANDUAN_PENGUJI.md`.
+
+| Peran | Email | Password | Outlet |
+| :--- | :--- | :--- | :--- |
+| Owner | `owner@gudangku.test` | `hidupberkah` | semua outlet |
+| Manajer | `manajer1@gudangku.test` | `hidupberkah` | Kedungmundu (KDM-01) |
+| Manajer | `manajer2@gudangku.test` | `hidupberkah` | Alton (ALT-01) |
+| Manajer | `manajer3@gudangku.test` | `hidupberkah` | Tembalang (TMB-01) |
 
 ## 7. Catatan untuk penilai
 

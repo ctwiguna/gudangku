@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 26.10.0, for macos26.6 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.46, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: gudangku
 -- ------------------------------------------------------
--- Server version	26.10.0
+-- Server version	8.0.46-0ubuntu0.24.04.4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,14 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'c014ecb0-d29a-11f1-8990-ed9626fb7b76:1-729';
 
 --
 -- Table structure for table `cache`
@@ -88,7 +80,7 @@ CREATE TABLE `categories` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `categories_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +89,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'Gas LPG',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,'Deterjen',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,'Plastik packing kecil',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,'Plastik packing besar',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,'Botol parfum',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,'Softener',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,'Botol parfum ruangan',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,'Pembersih lantai',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,'Selotip',NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42');
+INSERT INTO `categories` VALUES (1,'diantar supplier ke outlet',NULL,'2026-10-30 10:30:53','2026-10-30 10:30:53'),(2,'ambil sendiri',NULL,'2026-10-30 10:31:03','2026-10-30 10:31:03');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +123,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES (1,1,'Salsa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,'Ida',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,'Fera',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,1,'Mila',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,'Cynthia',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,1,'Sevina',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,1,'Salwa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,1,'Ina',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,2,'Dinda',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(10,2,'Salsi',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(11,2,'Valen',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(12,2,'Shifa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(13,3,'Nafa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(14,3,'Ajwa',600000.00,'mingguan',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42');
+INSERT INTO `employees` VALUES (1,1,'Salsa',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(2,1,'Ida',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(3,1,'Fera',550000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-30 10:53:27'),(4,1,'Mila',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(5,1,'Cynthia',580000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-30 10:53:15'),(6,1,'Sevina',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(7,1,'Salwa',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(8,1,'Ina',550000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-30 10:53:41'),(9,2,'Dinda',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(10,2,'Salsi',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(11,2,'Valen',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(12,2,'Shifa',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(13,3,'Nafa',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15'),(14,3,'Ajwa',600000.00,'mingguan',1,NULL,'2026-10-29 08:44:15','2026-10-29 08:44:15');
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +152,7 @@ CREATE TABLE `expenses` (
   KEY `expenses_category_expense_date_index` (`category`,`expense_date`),
   CONSTRAINT `expenses_outlet_id_foreign` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `expenses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +161,6 @@ CREATE TABLE `expenses` (
 
 LOCK TABLES `expenses` WRITE;
 /*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
-INSERT INTO `expenses` VALUES (1,1,1,'sewa','2026-10-01',NULL,NULL,3000000.00,'Sewa tempat bulan berjalan','2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,1,'listrik','2026-10-05',NULL,NULL,350000.00,'Token listrik outlet pusat','2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,1,'air','2026-10-06',NULL,NULL,180000.00,'Tagihan PDAM','2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,1,1,'ipal','2026-10-07',NULL,NULL,250000.00,'Iuran IPAL bulanan','2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,1,'lain','2026-10-10',NULL,NULL,120000.00,'Perbaikan keran dan lampu','2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,1,1,'gaji','2026-10-19','2026-10-19','2026-10-25',1500000.00,'Gaji karyawan minggu ketiga','2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,2,1,'sewa','2026-10-01',NULL,NULL,2250000.00,'Sewa tempat cabang','2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,2,1,'listrik','2026-10-05',NULL,NULL,275000.00,'Token listrik cabang','2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,2,1,'air','2026-10-06',NULL,NULL,150000.00,'Tagihan PDAM cabang','2026-10-29 09:42:42','2026-10-29 09:42:42'),(10,2,1,'ipal','2026-10-07',NULL,NULL,200000.00,'Iuran IPAL cabang','2026-10-29 09:42:42','2026-10-29 09:42:42'),(11,2,1,'gaji','2026-10-19','2026-10-19','2026-10-25',1400000.00,'Gaji karyawan minggu ketiga','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,7 +306,7 @@ CREATE TABLE `outlets` (
 
 LOCK TABLES `outlets` WRITE;
 /*!40000 ALTER TABLE `outlets` DISABLE KEYS */;
-INSERT INTO `outlets` VALUES (1,'Kedungmundu','KDM-01','Jl. Kedungmundu Raya, Semarang','024-767001',1,'2026-10-29 09:42:41','2026-10-29 09:42:41'),(2,'Tembalang','TMB-01','Jl. Setiabudi, Tembalang, Semarang','024-767002',1,'2026-10-29 09:42:41','2026-10-29 09:42:41'),(3,'Alton','ALT-01','Kawasan Alton, Semarang','024-767003',1,'2026-10-29 09:42:41','2026-10-29 09:42:41');
+INSERT INTO `outlets` VALUES (1,'Kedungmundu','KDM-01','Jl. Kedungmundu Raya, Semarang','024-767001',1,'2026-10-29 08:44:14','2026-10-29 08:44:14'),(2,'Tembalang','TMB-01','Jl. Setiabudi, Tembalang, Semarang','024-767002',1,'2026-10-29 08:44:14','2026-10-29 08:44:14'),(3,'Alton','ALT-01','Kawasan Alton, Semarang','024-767003',1,'2026-10-29 08:44:14','2026-10-29 08:44:14');
 /*!40000 ALTER TABLE `outlets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,7 +361,7 @@ CREATE TABLE `products` (
   KEY `products_is_active_category_id_index` (`is_active`,`category_id`),
   CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `products_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,7 +370,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,1,1,'Gas LPG 12kg kondisi full','LPG-12','pcs',6,21000.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,2,2,'Jerigen deterjen','DTR-JRG','pcs',4,33000.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,3,2,'Plastik packing kecil','PLK-KCL','pcs',50,500.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,4,2,'Plastik packing besar','PLK-BSR','pcs',30,1200.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,5,2,'Botol parfum','BTL-PRF','pcs',20,4200.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,6,2,'Box sachet softener','BOX-SFT','pcs',10,7800.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,7,2,'Botol parfum ruangan','BTL-PRR','pcs',12,9500.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,8,2,'Pembersih lantai','PBR-LNT','pcs',10,18000.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,9,2,'Selotip','SLT-01','pcs',6,5000.00,'2026-10-29',1,'2026-10-29 09:42:42','2026-10-29 09:42:42');
+INSERT INTO `products` VALUES (1,1,1,'deterjen 5 liter LD3','htsa-LD3','pcs',5,42500.00,'2026-10-30',1,'2026-10-30 10:32:00','2026-10-30 10:33:13'),(2,1,1,'Parfum 1.5 liter','HTSA-Prfm','pcs',3,32000.00,'2026-10-30',1,'2026-10-30 10:34:35','2026-10-30 10:34:35'),(3,2,2,'softener 1 Dus','FTMW-SOFT','pcs',1,150000.00,'2026-10-30',1,'2026-10-30 10:45:01','2026-10-30 10:45:01'),(4,1,4,'Gas LPG 12kg','LPG-12kg','pcs',2,229000.00,'2026-10-30',1,'2026-10-30 10:46:15','2026-10-30 10:46:15'),(5,2,7,'Plastik Packing kecil','PLSTK-KCL','pcs',3,34000.00,'2026-10-30',1,'2026-10-30 10:50:51','2026-10-30 10:50:51'),(6,2,7,'Plastik Packing Besar','PLSTK-BSR','pcs',3,50000.00,'2026-10-30',1,'2026-10-30 10:51:57','2026-10-30 10:51:57');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -404,7 +395,7 @@ CREATE TABLE `purchase_items` (
   KEY `purchase_items_product_id_foreign` (`product_id`),
   CONSTRAINT `purchase_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `purchase_items_purchase_id_foreign` FOREIGN KEY (`purchase_id`) REFERENCES `purchases` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -413,7 +404,6 @@ CREATE TABLE `purchase_items` (
 
 LOCK TABLES `purchase_items` WRITE;
 /*!40000 ALTER TABLE `purchase_items` DISABLE KEYS */;
-INSERT INTO `purchase_items` VALUES (1,1,3,100,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,4,50,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,9,20,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,2,1,10,21000.00,210000.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,2,2,5,33000.00,165000.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,3,5,30,4200.00,126000.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,3,6,12,7800.00,93600.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,4,8,8,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,4,7,10,NULL,0.00,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(10,5,8,6,19500.00,117000.00,'2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `purchase_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -445,7 +435,7 @@ CREATE TABLE `purchases` (
   CONSTRAINT `purchases_outlet_id_foreign` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `purchases_supplier_id_foreign` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `purchases_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -454,7 +444,6 @@ CREATE TABLE `purchases` (
 
 LOCK TABLES `purchases` WRITE;
 /*!40000 ALTER TABLE `purchases` DISABLE KEYS */;
-INSERT INTO `purchases` VALUES (1,1,2,2,'INV-SEED-001','2026-10-26',NULL,NULL,0.00,'Penerimaan rutin mingguan, menunggu harga owner.','2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,1,2,'INV-SEED-002','2026-10-22','2026-10-23',NULL,375000.00,'Gas LPG dan deterjen, masuk hitungan hutang.','2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,2,2,3,'INV-SEED-003','2026-10-19','2026-10-19','2026-10-20',219600.00,'Pembelian packaging cabang, sudah dilunasi.','2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,2,2,3,'INV-SEED-004','2026-10-28',NULL,NULL,0.00,'Penerimaan cabang, menunggu harga.','2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,2,1,'INV-SEED-005','2026-10-27','2026-10-27',NULL,117000.00,'Dibuat owner lengkap dengan harga sejak awal.','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `purchases` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -516,7 +505,7 @@ CREATE TABLE `stock_movements` (
   CONSTRAINT `stock_movements_outlet_id_foreign` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `stock_movements_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `stock_movements_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -525,7 +514,6 @@ CREATE TABLE `stock_movements` (
 
 LOCK TABLES `stock_movements` WRITE;
 /*!40000 ALTER TABLE `stock_movements` DISABLE KEYS */;
-INSERT INTO `stock_movements` VALUES (1,1,3,2,'in',100,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-26 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,4,2,'in',50,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-26 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,9,2,'in',20,'App\\Models\\Purchase',1,'Penerimaan INV-SEED-001','2026-10-26 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,1,1,2,'in',10,'App\\Models\\Purchase',2,'Penerimaan INV-SEED-002','2026-10-22 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,2,2,'in',5,'App\\Models\\Purchase',2,'Penerimaan INV-SEED-002','2026-10-22 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,2,5,3,'in',30,'App\\Models\\Purchase',3,'Penerimaan INV-SEED-003','2026-10-19 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,2,6,3,'in',12,'App\\Models\\Purchase',3,'Penerimaan INV-SEED-003','2026-10-19 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,2,8,3,'in',8,'App\\Models\\Purchase',4,'Penerimaan INV-SEED-004','2026-10-28 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,2,7,3,'in',10,'App\\Models\\Purchase',4,'Penerimaan INV-SEED-004','2026-10-28 09:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(10,1,8,1,'in',6,'App\\Models\\Purchase',5,'Penerimaan INV-SEED-005','2026-10-27 10:00:00','2026-10-29 09:42:42','2026-10-29 09:42:42'),(11,1,3,2,'adjustment',-4,'App\\Models\\StockOpname',1,'Penyesuaian stock opname 2026-10-26','2026-10-29 16:42:42','2026-10-29 09:42:42','2026-10-29 09:42:42'),(12,1,9,2,'adjustment',2,'App\\Models\\StockOpname',1,'Penyesuaian stock opname 2026-10-26','2026-10-29 16:42:42','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `stock_movements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -551,7 +539,7 @@ CREATE TABLE `stock_opname_items` (
   KEY `stock_opname_items_product_id_foreign` (`product_id`),
   CONSTRAINT `stock_opname_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `stock_opname_items_stock_opname_id_foreign` FOREIGN KEY (`stock_opname_id`) REFERENCES `stock_opnames` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -560,7 +548,6 @@ CREATE TABLE `stock_opname_items` (
 
 LOCK TABLES `stock_opname_items` WRITE;
 /*!40000 ALTER TABLE `stock_opname_items` DISABLE KEYS */;
-INSERT INTO `stock_opname_items` VALUES (1,1,5,0,0,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,1,7,0,0,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,1,6,0,0,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,1,1,10,10,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,1,2,5,5,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(6,1,8,6,6,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(7,1,4,50,50,0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(8,1,3,100,96,-4,'Selisih hasil hitung fisik','2026-10-29 09:42:42','2026-10-29 09:42:42'),(9,1,9,20,22,2,'Selisih hasil hitung fisik','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `stock_opname_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -586,7 +573,7 @@ CREATE TABLE `stock_opnames` (
   KEY `stock_opnames_user_id_foreign` (`user_id`),
   CONSTRAINT `stock_opnames_outlet_id_foreign` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `stock_opnames_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -595,7 +582,6 @@ CREATE TABLE `stock_opnames` (
 
 LOCK TABLES `stock_opnames` WRITE;
 /*!40000 ALTER TABLE `stock_opnames` DISABLE KEYS */;
-INSERT INTO `stock_opnames` VALUES (1,1,2,'2026-10-26','2026-11-01','2026-10-28 09:30:00','Opname rutin mingguan outlet pusat.','2026-10-29 09:42:42','2026-10-29 09:42:42');
 /*!40000 ALTER TABLE `stock_opnames` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -618,7 +604,7 @@ CREATE TABLE `suppliers` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `suppliers_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -627,7 +613,7 @@ CREATE TABLE `suppliers` (
 
 LOCK TABLES `suppliers` WRITE;
 /*!40000 ALTER TABLE `suppliers` DISABLE KEYS */;
-INSERT INTO `suppliers` VALUES (1,'PT Sumber Gas Nusantara','Hendra','021-7001111',3,14,'Jl. Industri Gas No. 4, Bekasi','2026-10-29 09:42:42','2026-10-29 09:42:42'),(2,'CV Aroma Kemas Nusantara','Lestari','021-7002222',7,30,'Jl. Kemasan Raya No. 21, Tangerang','2026-10-29 09:42:42','2026-10-29 09:42:42');
+INSERT INTO `suppliers` VALUES (1,'CV. HTSA','pak Kris','08888132211',1,7,'Mulawarman, Tembalang','2026-10-30 10:10:51','2026-10-30 10:10:51'),(2,'Toko jl. Fatmawati','-','-',0,0,'jl. fatmawati','2026-10-30 10:11:40','2026-10-30 10:12:00'),(3,'PT Gagas Energi Indonesia','Bu Vivin','0888888888',1,33,'Semarang','2026-10-30 10:13:36','2026-10-30 10:13:36'),(4,'Supplier LPG Tembalang','PT. Usaha Mugi Berkah','08888888',1,1,'Tembalang','2026-10-30 10:14:45','2026-10-30 10:14:45'),(5,'PDAM','PDAM','-',1,30,'Semarang','2026-10-30 10:15:53','2026-10-30 10:15:53'),(6,'PLN Kedungmundu','PLN Kedungmundu','-',0,0,'-','2026-10-30 10:16:28','2026-10-30 10:19:05'),(7,'Toko Plastik Sambiroto','-','-',0,0,'Jl. Sambiroto, Semarang','2026-10-30 10:17:30','2026-10-30 10:17:30'),(8,'BM Alton','BM Alton','-',NULL,NULL,'-','2026-10-30 10:18:36','2026-10-30 10:18:36'),(9,'PLN Tembalang','PLN Tembalang','-',0,0,'-','2026-10-30 10:19:27','2026-10-30 10:19:27'),(10,'indomarco kedungmundu','indomarco kedungmundu','-',NULL,NULL,'-','2026-10-30 10:20:17','2026-10-30 10:20:44'),(11,'indomarco tembalang','indomarco tembalang','-',NULL,NULL,'-','2026-10-30 10:21:01','2026-10-30 10:21:01'),(12,'Pusat Sparepart Mesin','-','-',NULL,NULL,'-','2026-10-30 10:21:30','2026-10-30 10:21:30'),(13,'Biznet','Biznet','-',NULL,30,'-','2026-10-30 10:55:50','2026-10-30 10:55:50'),(14,'Indihome','indihome','-',NULL,30,'-','2026-10-30 10:56:09','2026-10-30 10:56:09'),(15,'ByU','ByU','-',NULL,NULL,'-','2026-10-30 10:56:21','2026-10-30 10:56:21');
 /*!40000 ALTER TABLE `suppliers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -655,7 +641,7 @@ CREATE TABLE `users` (
   KEY `users_outlet_id_foreign` (`outlet_id`),
   KEY `users_role_is_active_index` (`role`,`is_active`),
   CONSTRAINT `users_outlet_id_foreign` FOREIGN KEY (`outlet_id`) REFERENCES `outlets` (`id`) ON DELETE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -664,10 +650,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,NULL,'Chandra TW','owner@gudangku.test',NULL,'$2y$12$4kW3r2PszsOdC.yxHhZhROugYL4LJJrlISw7gpKVzGcIO7V1bvLXC','owner',1,NULL,'2026-10-29 09:42:41','2026-10-29 09:42:41'),(2,1,'Ina','ina@gudangku.test',NULL,'$2y$12$94TfOgv7Qt1KlW9GWRxMA.pL.kjXoxYXRm4uLtuF5AaAxNgK71lmG','manajer',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(3,2,'Salsi','salsi@gudangku.test',NULL,'$2y$12$1VgF3B/yyPpRavE/l81vC.U6MjY3X9zwBinR7UJr9EZEjC/eTRY3K','manajer',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(4,3,'Nafa','nafa@gudangku.test',NULL,'$2y$12$hL0WRO8KW4ic2iLYf/D3ceDYgct272pgKIdQ1mOg/sWZ7b4sY1rfe','manajer',1,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42'),(5,NULL,'Kandidat Pendaftar','kandidat@gudangku.test',NULL,'$2y$12$dOFOp.MaYfHXTxUDocdeF.nWs266Tks9kQbk076CYytx.zYOvpzNK','manajer',0,NULL,'2026-10-29 09:42:42','2026-10-29 09:42:42');
+INSERT INTO `users` VALUES (1,NULL,'Chandra TW','owner@gudangku.test',NULL,'$2y$12$ojxkSS2whq7Qgyc2bhRCiO38DwM.dh1JNZDbu49tPodj8Z3nORAuS','owner',1,NULL,'2026-10-29 08:44:14','2026-10-30 11:09:02'),(2,1,'Ina','manajer1@gudangku.test',NULL,'$2y$12$ekg770wxkNSFG1m2G8OMq.jI0TNyVsXhEFMdV.zpcc5oDxUHuLnmW','manajer',1,NULL,'2026-10-29 08:44:14','2026-10-30 11:09:23'),(3,2,'Salsi','manajer3@gudangku.test',NULL,'$2y$12$yxWqUjlM5qJzHafT59fCzu37Xz8OpCj5oyV.lzfDAvFv/1JUU67/.','manajer',1,NULL,'2026-10-29 08:44:15','2026-10-30 11:09:56'),(4,3,'Nafa','manajer2@gudangku.test',NULL,'$2y$12$HfBH2pFz3McxfwCHH7w9.OXLc13dfCjXyuz1tj8fZb4sughHG/VFq','manajer',1,NULL,'2026-10-29 08:44:15','2026-10-30 11:09:39');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -678,4 +663,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-29 16:43:40
+-- Dump completed on 2026-10-30 20:27:59

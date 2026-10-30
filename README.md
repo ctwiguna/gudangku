@@ -53,15 +53,18 @@ Register publik hanya membuat akun **manajer nonaktif**. Akun tersebut tidak bis
 | Server | nginx + PHP-FPM | nginx 1.24.0 |
 | Node saat build | Node | 22.23.4 (server), 24.15.0 (lokal) |
 
-## Akun contoh (dari seeder)
+## Akun pengujian
+
+Semua akun memakai password `hidupberkah`. Panduan langkah demi langkah untuk penguji ada di [docs/PANDUAN_PENGUJI.md](docs/PANDUAN_PENGUJI.md).
 
 | Peran | Email | Password | Keterangan |
 | :--- | :--- | :--- | :--- |
-| Owner | `owner@gudangku.test` | `password` | Akses penuh, tidak terikat outlet |
-| Manajer | `ina@gudangku.test` | `password` | Outlet Kedungmundu (KDM-01) |
-| Manajer | `salsi@gudangku.test` | `password` | Outlet Tembalang (TMB-01) |
-| Manajer | `nafa@gudangku.test` | `password` | Outlet Alton (ALT-01) |
-| Manajer nonaktif | `kandidat@gudangku.test` | `password` | Belum punya outlet, tidak bisa login |
+| Owner | `owner@gudangku.test` | `hidupberkah` | Akses penuh, tidak terikat outlet |
+| Manajer | `manajer1@gudangku.test` | `hidupberkah` | Outlet Kedungmundu (KDM-01) |
+| Manajer | `manajer2@gudangku.test` | `hidupberkah` | Outlet Alton (ALT-01) |
+| Manajer | `manajer3@gudangku.test` | `hidupberkah` | Outlet Tembalang (TMB-01) |
+
+`migrate --seed` juga membuat satu akun nonaktif `kandidat@gudangku.test` untuk memperagakan alur registrasi dan aktivasi oleh owner.
 
 Akun ini hanya untuk keperluan demonstrasi UAS.
 
@@ -126,7 +129,7 @@ composer audit          # tanpa advisory
 npm audit               # 0 vulnerability
 ```
 
-Skenario uji manual dan hasilnya ada di [docs/UJI.md](docs/UJI.md).
+Skenario uji manual dan hasilnya ada di [docs/UJI.md](docs/UJI.md). Panduan singkat untuk penguji ada di [docs/PANDUAN_PENGUJI.md](docs/PANDUAN_PENGUJI.md).
 
 ### Ekspor database
 
@@ -179,7 +182,7 @@ resources/js/Pages     halaman React
 resources/js/Components komponen design system
 resources/css/app.css  token warna, tipografi, spasi
 routes/web.php         definisi route dan middleware
-docs/                  panduan deploy dan catatan uji
+docs/                  panduan penguji, deploy, dan catatan uji
 database/gudangku.sql  ekspor database contoh
 ```
 

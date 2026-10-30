@@ -29,7 +29,7 @@ class StockMovementTest extends TestCase
 
     private function managerPusat(): User
     {
-        return User::where('email', 'ina@gudangku.test')->firstOrFail();
+        return User::where('email', 'manajer1@gudangku.test')->firstOrFail();
     }
 
     private function outletPusat(): Outlet

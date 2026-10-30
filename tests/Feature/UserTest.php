@@ -27,7 +27,7 @@ class UserTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'ina@gudangku.test')->firstOrFail();
+        return User::where('email', 'manajer1@gudangku.test')->firstOrFail();
     }
 
     private function outlet(): Outlet
@@ -182,7 +182,7 @@ class UserTest extends TestCase
 
         $this->post('/login', [
             'email' => $pending->email,
-            'password' => 'password',
+            'password' => 'hidupberkah',
         ])->assertRedirect('/dashboard');
 
         $this->assertAuthenticatedAs($pending->fresh());
@@ -219,7 +219,7 @@ class UserTest extends TestCase
 
         // Owner kedua dibuat lebih dulu supaya penghapusan diuji lewat akun lain,
         // bukan lewat aturan "tidak bisa menghapus diri sendiri".
-        $second = User::where('email', 'ina@gudangku.test')->firstOrFail();
+        $second = User::where('email', 'manajer1@gudangku.test')->firstOrFail();
 
         $this->actingAs($owner)
             ->delete("/users/{$owner->id}")
@@ -259,7 +259,7 @@ class UserTest extends TestCase
     public function test_manager_is_forbidden_on_user_routes(): void
     {
         $manager = $this->manager();
-        $target = User::where('email', 'salsi@gudangku.test')->firstOrFail();
+        $target = User::where('email', 'manajer3@gudangku.test')->firstOrFail();
 
         $this->actingAs($manager)->get('/users')->assertForbidden();
         $this->actingAs($manager)->post('/users', [

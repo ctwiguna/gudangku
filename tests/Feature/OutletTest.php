@@ -26,7 +26,7 @@ class OutletTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'ina@gudangku.test')->firstOrFail();
+        return User::where('email', 'manajer1@gudangku.test')->firstOrFail();
     }
 
     /**

@@ -21,8 +21,8 @@ class PurchaseSeeder extends Seeder
         $gas = Supplier::where('name', 'PT Sumber Gas Nusantara')->firstOrFail();
         $kemas = Supplier::where('name', 'CV Aroma Kemas Nusantara')->firstOrFail();
         $owner = User::where('email', 'owner@gudangku.test')->firstOrFail();
-        $manajerPusat = User::where('email', 'ina@gudangku.test')->firstOrFail();
-        $manajerCabang = User::where('email', 'salsi@gudangku.test')->firstOrFail();
+        $manajerPusat = User::where('email', 'manajer1@gudangku.test')->firstOrFail();
+        $manajerCabang = User::where('email', 'manajer3@gudangku.test')->firstOrFail();
 
         $today = Carbon::now('Asia/Jakarta')->startOfDay();
 

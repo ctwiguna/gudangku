@@ -26,7 +26,7 @@ class SessionSecurityTest extends TestCase
 
     private function manager(): User
     {
-        return User::where('email', 'ina@gudangku.test')->firstOrFail();
+        return User::where('email', 'manajer1@gudangku.test')->firstOrFail();
     }
 
     private function insertSession(int $userId, string $id): void
@@ -58,7 +58,7 @@ class SessionSecurityTest extends TestCase
     {
         $this->post('/login', [
             'email' => 'owner@gudangku.test',
-            'password' => 'password',
+            'password' => 'hidupberkah',
         ]);
 
         $this->assertAuthenticated();
@@ -111,7 +111,7 @@ class SessionSecurityTest extends TestCase
         $this->put('/profile', [
             'name' => $user->name,
             'email' => $user->email,
-            'current_password' => 'password',
+            'current_password' => 'hidupberkah',
             'password' => 'password-baru-123',
             'password_confirmation' => 'password-baru-123',
         ])->assertSessionHasNoErrors();
