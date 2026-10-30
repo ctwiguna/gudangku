@@ -610,7 +610,8 @@ button {
 /* ---------- Kartu angka ---------- */
 .stat-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Ponsel: satu kartu per baris supaya nominal rupiah tidak terpotong. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
     margin-bottom: var(--space-4);
 }
@@ -618,6 +619,11 @@ button {
 @media (min-width: 640px) {
     .stat-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    /* Kartu uang mengambil dua kolom agar nominal panjang tetap muat. */
+    .stat--money {
+        grid-column: span 2;
     }
 }
 
@@ -655,6 +661,15 @@ button {
     font-size: 22px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Jaring pengaman terakhir: kalau nominalnya luar biasa panjang, teks boleh
+ * turun baris daripada keluar dari kartu. Nominal normal tetap satu baris.
+ */
+.stat--money .stat__value {
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .stat__hint {

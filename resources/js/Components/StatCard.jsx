@@ -8,7 +8,9 @@ export default function StatCard({ label, value, hint = null, tone = 'default', 
     const display = money ? rupiah(value) : value;
 
     return (
-        <div className={`stat stat--${tone}`}>
+        // Kartu uang memakai kelas tambahan: lebarnya dibuat lebih lebar
+        // supaya nominal rupiah tidak keluar dari batas kartu.
+        <div className={`stat stat--${tone}${money ? ' stat--money' : ''}`}>
             <div className="stat__head">
                 <p className="stat__label">{label}</p>
                 {icon}
