@@ -30,7 +30,11 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+        // Fitur "Ingat saya" dihapus setelah audit keamanan 31 Okt 2026:
+        // cookie recaller melewati pemeriksaan is_active dan reset batas
+        // absolute sesi. Aplikasi dipakai di perangkat bersama, jadi sesi
+        // harus berakhir saat browser ditutup sesuai SESSION_EXPIRE_ON_CLOSE.
+        if (! Auth::attempt($credentials)) {
             RateLimiter::hit($request->throttleKey(), 60);
 
             throw ValidationException::withMessages([

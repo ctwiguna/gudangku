@@ -85,7 +85,7 @@ Padanan konsepnya di dunia session:
 | :--- | :--- |
 | Access token pendek | `SESSION_LIFETIME` (idle) |
 | Absolute cap | kolom `login_at` + middleware |
-| Refresh token panjang | kolom `remember_token` (fitur "Ingat saya") |
+| Refresh token panjang | — (fitur "Ingat saya" dihapus 31 Okt 2026 setelah audit: cookie recaller melewati pemeriksaan akun nonaktif dan absolute timeout) |
 | Refresh token dicuri → rotasi | revoke sesi lain saat ganti password |
 
 ## 5. Rekomendasi untuk gudangku
@@ -131,6 +131,8 @@ Yang **tidak** disarankan untuk aplikasi ini: memasang JWT + refresh token, atau
 | 4. Absolute timeout sejak login | **diterapkan** | middleware `EnsureSessionIsFresh` + `SESSION_ABSOLUTE_LIFETIME=720`; timestamp `auth.login_at` disimpan di server saat login |
 | 5. Cabut sesi lain saat ganti password | **diterapkan** | `SessionService::revokeForUser()`, dipakai `ProfileController` dan `UserController` (juga saat user dinonaktifkan) |
 
-Semua kontrol dikunci `tests/Feature/SessionSecurityTest.php` (10 test, 35 assertion).
+Semua kontrol dikunci `tests/Feature/SessionSecurityTest.php` (14 test, 49 assertions), ditambah 2 regression test di `AuthTest` dan `ReceiptTest`.
+
+Catatan 31 Okt 2026: dua temuan audit pada cookie "Ingat saya" (bypass deaktivasi akun + bypass absolute timeout/expire-on-close) diperbaiki dengan menghapus fitur tersebut. Rinciannya di `docs/PRESENTASI.md` §13.
 
 Konsekuensi yang disadari: menutup browser bererti harus login lagi, dan sesi berakhir setelah 60 menit tanpa aktivitas atau 720 menit sejak login, berapa pun aktivitasnya. Ini pilihan sadar untuk konteks perangkat bersama di outlet.

@@ -175,7 +175,9 @@ class ExpenseTest extends TestCase
     public function test_month_filter_only_returns_selected_month(): void
     {
         $month = Carbon::now('Asia/Jakarta')->format('Y-m');
-        $previous = Carbon::now('Asia/Jakarta')->subMonth()->format('Y-m');
+        // startOfMonth() dulu supaya tidak kena overflow bulan: tanggal 31
+        // dikurangi satu bulan bisa melompat mundur/ maju ke bulan yang salah.
+        $previous = Carbon::now('Asia/Jakarta')->startOfMonth()->subMonth()->format('Y-m');
 
         Expense::create([
             'outlet_id' => $this->outlet()->id,

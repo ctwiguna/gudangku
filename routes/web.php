@@ -29,10 +29,12 @@ Route::middleware('guest')->group(function (): void {
     Route::get('login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('login', [AuthController::class, 'login']);
     Route::get('register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('register', [AuthController::class, 'register']);
+    // Register dibatasi agar tidak bisa dipakai membebani server: setiap
+    // percobaan menjalankan bcrypt dan menulis baris user (audit 31 Okt 2026).
+    Route::post('register', [AuthController::class, 'register'])->middleware('throttle:5,1');
 });
 
-Route::middleware(['auth', 'session.fresh'])->group(function (): void {
+Route::middleware(['auth', 'active', 'session.fresh'])->group(function (): void {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -60,7 +62,7 @@ Route::middleware(['auth', 'session.fresh'])->group(function (): void {
 });
 
 // Data keuangan hanya untuk owner. Manajer yang membuka URL langsung mendapat 403.
-Route::middleware(['auth', 'owner', 'session.fresh'])->group(function (): void {
+Route::middleware(['auth', 'active', 'owner', 'session.fresh'])->group(function (): void {
     Route::resource('expenses', ExpenseController::class)->except(['show']);
 
     // Kategori dan supplier dalam satu halaman bertab.

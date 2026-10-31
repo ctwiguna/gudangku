@@ -68,6 +68,29 @@ class AuthTest extends TestCase
         $this->assertSame(1, User::count());
     }
 
+    /**
+     * Regresi audit 31 Okt 2026: register publik dibatasi rate limit karena
+     * setiap percobaan menjalankan bcrypt dan menulis baris user.
+     */
+    public function test_register_is_rate_limited_after_five_attempts(): void
+    {
+        for ($attempt = 1; $attempt <= 5; $attempt++) {
+            $this->post('/register', [
+                'name' => "Pendaftar {$attempt}",
+                'email' => "pendaftar{$attempt}@gudangku.test",
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ])->assertRedirect('/login');
+        }
+
+        $this->post('/register', [
+            'name' => 'Pendaftar Keenam',
+            'email' => 'pendaftar6@gudangku.test',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ])->assertStatus(429);
+    }
+
     public function test_inactive_account_cannot_login(): void
     {
         $this->makeUser(UserRole::Manajer, false, $this->makeOutlet()->id);

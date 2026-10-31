@@ -10,7 +10,9 @@ use App\Models\StockMovement;
 use App\Models\Supplier;
 use App\Models\User;
 use App\Services\StockService;
+use Illuminate\Database\Query\Grammars\MySqlGrammar;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -292,6 +294,45 @@ class ReceiptTest extends TestCase
             quantity: -1,
             note: 'Uji saldo negatif',
         );
+    }
+
+    /**
+     * Regresi audit 31 Okt 2026: guard saldo harus mengunci baris produk
+     * (SELECT ... FOR UPDATE di MySQL) sebelum membaca saldo, supaya dua
+     * transaksi keluar yang bersamaan tidak sama-sama lolos (race).
+     *
+     * Test suite berjalan di SQLite yang mengabaikan lock, jadi SQL diperiksa
+     * dengan grammar MySQL dalam mode pretend (tidak dieksekusi).
+     */
+    public function test_stock_guard_locks_product_row_before_reading_balance(): void
+    {
+        // Resolve di luar pretend(): dalam mode pretend semua query kosong.
+        $outletId = (int) $this->outletPusat()->id;
+        $productId = (int) $this->product('BTL-PRF')->id;
+
+        $service = $this->partialMock(StockService::class, function ($mock): void {
+            $mock->shouldReceive('balance')->andReturn(0);
+        });
+
+        $connection = DB::connection();
+        $originalGrammar = $connection->getQueryGrammar();
+
+        $connection->setQueryGrammar(new MySqlGrammar($connection));
+
+        try {
+            $queries = $connection->pretend(function () use ($service, $outletId, $productId): void {
+                $service->assertSufficientStock($outletId, $productId, 0);
+            });
+        } finally {
+            $connection->setQueryGrammar($originalGrammar);
+        }
+
+        $locked = collect($queries)->contains(
+            fn (array $query): bool => str_contains(strtolower($query['query']), 'from `products`')
+                && str_contains(strtolower($query['query']), 'for update'),
+        );
+
+        $this->assertTrue($locked, 'Guard saldo harus mengeksekusi SELECT ... FOR UPDATE pada products.');
     }
 
     public function test_receipt_requires_at_least_one_item_and_valid_quantity(): void

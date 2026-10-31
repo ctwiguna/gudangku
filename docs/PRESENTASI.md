@@ -13,7 +13,7 @@ Sumber materi untuk PDF ringkas UAS. Diagram memakai Mermaid; kalau konverter PD
 | Judul project | gudangku — aplikasi pencatatan dan stock opname inventaris outlet |
 | Live | https://43.173.41.195.sslip.io |
 | Repository | https://github.com/ctwiguna/gudangku |
-| Tanggal | 28–29 Oktober 2026 |
+| Tanggal | 28–31 Oktober 2026 |
 
 ## 2. Deskripsi
 
@@ -118,7 +118,8 @@ app/
 │   ├── Controllers/       13 controller (auth, dashboard, expense, receipt, purchase,
 │   │                      stock opname, product, master data, outlet, user, report,
 │   │                      stock movement, profile)
-│   ├── Middleware/        EnsureOwner, EnsureManager, HandleInertiaRequests
+│   ├── Middleware/        EnsureOwner, EnsureManager, EnsureUserIsActive,
+│   │                      EnsureSessionIsFresh, HandleInertiaRequests
 │   └── Requests/          14 FormRequest
 ├── Models/                11 model Eloquent
 ├── Policies/              7 policy
@@ -166,7 +167,7 @@ Grup route: `/*` publik (login/register), `auth` (dashboard, produk, penerimaan,
 
 ## 9. Daftar fitur
 
-1. Login, register (manajer nonaktif), logout, rate limit 5/menit.
+1. Login (tanpa fitur "Ingat saya"), register (manajer nonaktif), logout, rate limit 5/menit per IP untuk login dan register.
 2. Aktivasi akun dan penugasan outlet oleh owner.
 3. Dashboard owner: pengeluaran bulan ini, hutang, antrean harga, nilai stok, produk kritis, status opname.
 4. Dashboard manajer: stok outlet, produk kritis, pengingat opname, penerimaan terakhir (tanpa uang).
@@ -231,9 +232,35 @@ Detail lengkap dan 6 masalah nyata saat deploy: `docs/DEPLOY_VPS.md`.
 
 | Bukti | Angka |
 | :--- | :--- |
-| Test otomatis | 186 test, 792 assertion, semua lulus |
+| Test otomatis | 192 test, 818 assertion, semua lulus |
 | Matriks route × role di live | 48 pemeriksaan, 0 menyimpang |
 | Pemeriksaan mobile (390px & 360px) | 28 halaman, 0 overflow horizontal, bottom nav 57px, target sentuh ≥ 44px |
 | `composer audit` | bersih (CVE-2026-45070 dipatch ke symfony/mime 8.1.10) |
 | `npm audit` | 0 vulnerability |
 | Error log produksi | 0 |
+
+## 13. Audit keamanan (31 Oktober 2026) dan perbaikannya
+
+Audit keamanan terstruktur (15 unit cakupan, validasi skema lulus) menemukan **2 temuan terkonfirmasi, 2 lead yang ikut diperbaiki, dan 3 kandidat ditolak**. Dua temuan terkonfirmasi ada pada fitur "Ingat saya" (remember-me).
+
+| Severity | Temuan | Bukti sebelum perbaikan |
+| :--- | :--- | :--- |
+| Tinggi | Akun nonaktif tetap bisa masuk lewat cookie "Ingat saya". Deaktivasi hanya menghapus baris `sessions`, tidak memutus `remember_token`; cookie recaller berlaku ±400 hari. | Login `remember=true` → owner nonaktifkan user → sesi dikosongkan → `GET /dashboard` **hanya** dengan cookie recaller → **200**, guard `true`, `is_active=false`. Verifier independen (cookie dibangun langsung dari state database) mereproduksi hasil sama. |
+| Sedang | Cookie "Ingat saya" mengalahkan absolute timeout 720 menit dan `SESSION_EXPIRE_ON_CLOSE`: sesi pulih dengan `auth.login_at` baru, jadi cap tidak pernah tercapai. | Login `remember=true` → `flushSession()` (simulasi tutup browser) → `GET /dashboard` dengan cookie recaller → **200** dan `auth.login_at` segar. |
+
+### Perbaikan yang diterapkan
+
+| # | Perbaikan | Berkas |
+| :--- | :--- | :--- |
+| 1 | Fitur "Ingat saya" **dihapus total**: login memakai `Auth::attempt($credentials)` tanpa flag remember, checkbox di form login dihapus, aturan validasi `remember` dihapus. | `AuthController`, `LoginRequest`, `Login.jsx` |
+| 2 | `SessionService::revokeForUser()` kini sekaligus mengosongkan `remember_token`, sehingga deaktivasi dan ganti password memutus kredensial persisten. | `SessionService` |
+| 3 | Migrasi `2026_10_31_000100_null_legacy_remember_tokens` menolkan seluruh token lama supaya cookie recaller yang sudah beredar tidak bisa dipakai. | `database/migrations` |
+| 4 | Middleware baru `EnsureUserIsActive` (alias `active`) dipasang di semua grup route `auth`: akun nonaktif langsung logout + sesi diinvalidasi pada request berikutnya, walau revoke baris sesi terlewat. | `EnsureUserIsActive`, `routes/web.php` |
+| 5 | Register publik diberi `throttle:5,1` (5 percobaan per menit per IP) — menutup lead bcrypt tanpa gerbang laju. | `routes/web.php` |
+| 6 | `StockService::assertSufficientStock()` mengunci baris produk (`lockForUpdate()`) sebelum membaca saldo — menutup lead race check-then-act di MySQL. | `StockService` |
+
+Tiga kandidat ditolak karena boundary-nya tidak melanggar: formula injection ekspor Excel (dampak hanya ke berkas milik owner sendiri), kebocoran harga ke manajer (sudah difilter di controller dan diuji), dan IDOR outlet pada penerimaan (sudah dicegah `PurchasePolicy`).
+
+Perbaikan dikunci **6 regression test baru**: `SessionSecurityTest` (login tanpa cookie remember, deaktivasi menghapus token, cookie recaller tidak bisa menghidupkan akun nonaktif, middleware `active` menolak recaller akun nonaktif), `AuthTest` (register percobaan ke-6 → 429), dan `ReceiptTest` (SQL `SELECT ... FOR UPDATE` diperiksa dengan grammar MySQL). Total suite naik dari 186 → **192 test, 818 assertion**, semuanya lulus.
+
+Hardening yang dicatat tetapi belum dikerjakan (di luar cakupan UAS): `TrustProxies` untuk IP asli di belakang nginx, wajib password lama saat ganti email, dan `setCellValueExplicit` untuk ekspor Excel.

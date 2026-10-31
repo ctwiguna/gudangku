@@ -4,7 +4,7 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 
 - Tanggal uji: 28 Oktober 2026
 - Lingkungan live: https://43.173.41.195.sslip.io (PHP 8.5.12, MySQL 8.0.46, nginx 1.24.0)
-- Test otomatis: `php artisan test` → **186 passed, 792 assertions**
+- Test otomatis: `php artisan test` → **192 passed, 818 assertions**
 - Audit: `composer audit` bersih, `npm audit` 0 vulnerability
 
 | No | Butir | Status | Bukti |
@@ -49,6 +49,12 @@ Merujuk `PRD_gudangku.md` bagian 16. Setiap butir punya bukti: nama test otomati
 | 38 | Harga Barang memuat kode, nama, satuan (pcs/dus/kg), ID supplier, harga satuan, dan tanggal update harga | Lulus | `ProductTest` + `ProductController`: satuan dibatasi `pcs/dus/kg`, `price_updated_at` diisi server saat barang dibuat dan diperbarui hanya kalau harga berubah |
 | 39 | Kelola Karyawan menyimpan nama, gaji, dan satuan gaji (harian/mingguan/bulanan), dikelompokkan per outlet | Lulus | `EmployeeTest` (12 test): outlet wajib dipilih, filter `?outlet=` hanya menampilkan karyawan outlet tersebut, karyawan bisa dipindah antar outlet, outlet yang masih punya karyawan tidak bisa dihapus, 3 pilihan satuan gaji, gaji negatif dan satuan gaji tidak dikenal ditolak, toggle status, hapus, manajer 403. Bukti live: ringkasan "Karyawan per outlet" menampilkan Kedungmundu = 8 karyawan, Tembalang = 4 karyawan, Alton = 2 karyawan; filter outlet menandai baris aktif; form kosong menghasilkan pesan "Pilih outlet untuk karyawan ini." |
 | 40 | Kartu "Hutang supplier" di dashboard menampilkan nominal dan jumlah pembelian belum dibayar, bisa diklik, dan membuka halaman detail barang yang belum dibayar | Lulus | `SupplierDebtTest` (6 test): angka ringkasan sama dengan `Purchase::unpaid()`, detail memuat nama produk + jumlah + harga satuan + subtotal (subtotal = harga × jumlah), pembelian yang sudah dibayar hilang dari daftar, filter outlet, manajer 403, tamu 302. Bukti live: kartu bertag `A` dengan `href=/supplier-debts`, ajakan "Klik lebih detail", nominal `Rp 492.000` + "2 pembelian belum dibayar"; halaman menampilkan PT Sumber Gas Nusantara (Rp 375.000) dan CV Aroma Kemas Nusantara (Rp 117.000) beserta barangnya; tombol "Tandai dibayar" tersedia per pembelian |
+
+| 41 | Fitur "Ingat saya" dihapus total: login tidak menerbitkan cookie recaller dan checkbox hilang dari form | Lulus | `SessionSecurityTest::test_login_does_not_issue_a_remember_cookie`; `AuthController` memakai `Auth::attempt($credentials)`; `Login.jsx` tanpa checkbox |
+| 42 | Menonaktifkan user memutus `remember_token`, sehingga cookie recaller lama tidak bisa membangun sesi | Lulus | `SessionSecurityTest::test_deactivating_user_clears_remember_token`, `test_recaller_cookie_cannot_revive_deactivated_account`; migrasi `2026_10_31_000100_null_legacy_remember_tokens` |
+| 43 | Akun nonaktif ditendang di request berikutnya walau sesi/recaller masih valid (lapis kedua) | Lulus | `SessionSecurityTest::test_active_middleware_rejects_inactive_user_even_with_valid_recaller`; middleware `EnsureUserIsActive` di grup route `auth` |
+| 44 | Register dibatasi rate limit 5 percobaan per menit per IP | Lulus | `AuthTest::test_register_is_rate_limited_after_five_attempts` (percobaan ke-6 → 429); `routes/web.php` `throttle:5,1` |
+| 45 | Guard saldo stok mengunci baris produk (`SELECT ... FOR UPDATE` di MySQL) sebelum membaca saldo | Lulus | `ReceiptTest::test_stock_guard_locks_product_row_before_reading_balance` (SQL diperiksa dengan grammar MySQL) |
 
 ## Uji manual tambahan di live
 

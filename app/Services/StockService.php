@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\MovementType;
+use App\Models\Product;
 use App\Models\StockMovement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -21,6 +22,9 @@ class StockService
      *
      * Pemanggil bertanggung jawab membungkusnya dalam DB::transaction bersama
      * perubahan data lain, supaya stok dan dokumen tidak pernah berbeda.
+     *
+     * Guard saldo mengambil row lock produk, jadi transaksi pemanggil harus
+     * aktif agar lock-nya berlaku sampai commit (temuan audit 31 Okt 2026).
      */
     public function record(
         Model $reference,
@@ -64,6 +68,12 @@ class StockService
      */
     public function assertSufficientStock(int $outletId, int $productId, int $delta): void
     {
+        // Kunci baris produk sebelum membaca saldo. Tanpa ini dua transaksi
+        // yang sama-sama mengurangi stok bisa lolos pemeriksaan bergantian
+        // lalu membuat saldo negatif (race check-then-act). Baris produk
+        // selalu ada, berbeda dari baris ledger yang bisa belum terbentuk.
+        Product::query()->whereKey($productId)->lockForUpdate()->first();
+
         $balance = $this->balance($outletId, $productId);
 
         if ($balance + $delta < 0) {

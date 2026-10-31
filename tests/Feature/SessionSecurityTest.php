@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class SessionSecurityTest extends TestCase
@@ -181,6 +182,95 @@ class SessionSecurityTest extends TestCase
 
         $this->assertDatabaseMissing('sessions', ['id' => 'sesi-target-c']);
         $this->assertFalse($target->fresh()->is_active);
+    }
+
+    /**
+     * Regresi audit 31 Okt 2026 (temuan tinggi): cookie "Ingat saya" milik
+     * akun yang dinonaktifkan tidak boleh membangun sesi baru. Login tidak
+     * lagi menerbitkan cookie recaller, dan token lama diputus saat revoke.
+     */
+    public function test_login_does_not_issue_a_remember_cookie(): void
+    {
+        $response = $this->post('/login', [
+            'email' => 'owner@gudangku.test',
+            'password' => 'hidupberkah',
+            // Klien memaksa remember; tetap harus diabaikan.
+            'remember' => true,
+        ]);
+
+        $response->assertRedirect('/dashboard');
+        $response->assertCookieMissing($this->app['auth']->guard('web')->getRecallerName());
+        $this->assertAuthenticated();
+    }
+
+    public function test_deactivating_user_clears_remember_token(): void
+    {
+        $target = $this->manager();
+
+        $target->setRememberToken(Str::random(60));
+        $target->save();
+
+        $this->assertNotNull($target->fresh()->remember_token);
+
+        $this->actingAs($this->owner());
+        $this->patch("/users/{$target->id}/status")->assertSessionHas('success');
+
+        $this->assertNull($target->fresh()->remember_token);
+    }
+
+    public function test_recaller_cookie_cannot_revive_deactivated_account(): void
+    {
+        $user = $this->manager();
+        $guard = $this->app['auth']->guard('web');
+
+        $user->setRememberToken(Str::random(60));
+        $user->save();
+
+        $raw = $user->getAuthIdentifier()
+            .'|'.$user->getRememberToken()
+            .'|'.$guard->hashPasswordForCookie($user->getAuthPassword());
+
+        // Owner menonaktifkan akun: sesi dan token remember dicabut.
+        $this->actingAs($this->owner());
+        $this->patch("/users/{$user->id}/status")->assertSessionHas('success');
+
+        $this->flushSession();
+        $this->app['auth']->forgetGuards();
+
+        $this->withCookie($guard->getRecallerName(), $raw)
+            ->get('/dashboard')
+            ->assertRedirect('/login');
+
+        $this->assertGuest();
+    }
+
+    /**
+     * Lapis kedua: middleware `active` menendang akun nonaktif pada request
+     * berikutnya walau baris sesi/recaller masih ada (mis. revoke terlewat).
+     */
+    public function test_active_middleware_rejects_inactive_user_even_with_valid_recaller(): void
+    {
+        $user = $this->manager();
+        $guard = $this->app['auth']->guard('web');
+
+        $user->setRememberToken(Str::random(60));
+        $user->save();
+
+        $raw = $user->getAuthIdentifier()
+            .'|'.$user->getRememberToken()
+            .'|'.$guard->hashPasswordForCookie($user->getAuthPassword());
+
+        // Nonaktifkan langsung di database tanpa mencabut token.
+        $user->forceFill(['is_active' => false])->save();
+
+        $this->flushSession();
+        $this->app['auth']->forgetGuards();
+
+        $this->withCookie($guard->getRecallerName(), $raw)
+            ->get('/dashboard')
+            ->assertRedirect('/login');
+
+        $this->assertGuest();
     }
 
     public function test_guest_is_not_affected_by_session_freshness_middleware(): void

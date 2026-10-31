@@ -8,7 +8,6 @@ export default function Login() {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
-        remember: false,
     });
 
     function submit(event) {
@@ -50,15 +49,6 @@ export default function Login() {
                             onChange={(event) => setData('password', event.target.value)}
                         />
                     </FormField>
-
-                    <label className="checkbox">
-                        <input
-                            type="checkbox"
-                            checked={data.remember}
-                            onChange={(event) => setData('remember', event.target.checked)}
-                        />
-                        <span>Ingat saya di perangkat ini</span>
-                    </label>
 
                     <Button type="submit" processing={processing} processingLabel="Memeriksa">
                         Masuk

@@ -124,7 +124,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 ## Pengujian
 
 ```bash
-php artisan test        # 186 test, 792 assertion
+php artisan test        # 192 test, 818 assertion
 composer audit          # tanpa advisory
 npm audit               # 0 vulnerability
 ```
@@ -155,9 +155,11 @@ Aplikasi **tidak menyimpan kunci apa pun di localStorage** — tidak ada access 
 | Absolute timeout | 720 menit sejak login (`SESSION_ABSOLUTE_LIFETIME`), dipaksa middleware `EnsureSessionIsFresh` |
 | Tutup browser | sesi berakhir (`SESSION_EXPIRE_ON_CLOSE=true`) — penting untuk perangkat bersama di outlet |
 | Payload sesi | dienkripsi di database (`SESSION_ENCRYPT=true`) |
-| Ganti password | seluruh sesi lain milik user itu dicabut (`SessionService::revokeForUser()`) |
-| Nonaktifkan user | sesi user tersebut langsung dicabut |
+| Ganti password | seluruh sesi lain milik user itu dicabut + `remember_token` dikosongkan (`SessionService::revokeForUser()`) |
+| Nonaktifkan user | sesi + token remember user tersebut langsung dicabut; middleware `EnsureUserIsActive` menendang akun nonaktif di request berikutnya |
+| "Ingat saya" | dihapus total (31 Okt 2026) — audit menemukan cookie recaller melewati pemeriksaan akun nonaktif dan absolute timeout |
 | Rate limit login | 5 percobaan per menit per email + IP |
+| Rate limit register | 5 percobaan per menit per IP |
 | Session fixation | dicegah dengan regenerasi ID sesi saat login |
 
 Analisis lengkap pertimbangan localStorage vs cookie HttpOnly, idle vs absolute timeout, dan kapan refresh token diperlukan ada di [docs/ANALISIS_SESI.md](docs/ANALISIS_SESI.md).
